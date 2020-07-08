@@ -1,0 +1,3560 @@
+VGG(
+  (features): Sequential(
+    (0): Conv2d(3, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (1): ReLU(inplace)
+    (2): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (3): Conv2d(64, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (4): ReLU(inplace)
+    (5): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (6): Conv2d(128, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (7): ReLU(inplace)
+    (8): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (9): ReLU(inplace)
+    (10): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (11): Conv2d(256, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (12): ReLU(inplace)
+    (13): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (14): ReLU(inplace)
+    (15): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (16): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (17): ReLU(inplace)
+    (18): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (19): ReLU(inplace)
+    (20): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (21): AvgPool2d(kernel_size=1, stride=1, padding=0)
+  )
+  (classifier): Linear(in_features=512, out_features=10, bias=True)
+)
+features.0.weight torch.Size([64, 3, 3, 3])
+features.0.bias torch.Size([64])
+features.3.weight torch.Size([128, 64, 3, 3])
+features.3.bias torch.Size([128])
+features.6.weight torch.Size([256, 128, 3, 3])
+features.6.bias torch.Size([256])
+features.8.weight torch.Size([256, 256, 3, 3])
+features.8.bias torch.Size([256])
+features.11.weight torch.Size([512, 256, 3, 3])
+features.11.bias torch.Size([512])
+features.13.weight torch.Size([512, 512, 3, 3])
+features.13.bias torch.Size([512])
+features.16.weight torch.Size([512, 512, 3, 3])
+features.16.bias torch.Size([512])
+features.18.weight torch.Size([512, 512, 3, 3])
+features.18.bias torch.Size([512])
+classifier.weight torch.Size([10, 512])
+classifier.bias torch.Size([10])
+torch.Size([2, 10])
+==> Building model..
+==> Preparing data..
+Files already downloaded and verified
+Files already downloaded and verified
+Measuring the accuracy of the averaged global model ...
+INFO:root:Accuracy of plane : 75.00 %
+INFO:root:Accuracy of   car : 95.10 %
+INFO:root:Accuracy of  bird : 84.30 %
+INFO:root:Accuracy of   cat : 78.60 %
+INFO:root:Accuracy of  deer : 85.50 %
+INFO:root:Accuracy of   dog : 81.50 %
+INFO:root:Accuracy of  frog : 86.00 %
+INFO:root:Accuracy of horse : 91.00 %
+INFO:root:Accuracy of  ship : 94.40 %
+INFO:root:Accuracy of truck : 91.40 %
+INFO:root:Total Accuracy : 86.28 %
+
+INFO:root:Accuracy of plane : 60.00 %
+INFO:root:Fake Accuracy of plane : 11.70 %
+INFO:root:Accuracy of   car : 91.10 %
+INFO:root:Fake Accuracy of   car : 0.50 %
+INFO:root:Accuracy of  bird : 70.20 %
+INFO:root:Fake Accuracy of  bird : 70.20 %
+INFO:root:Accuracy of   cat : 80.90 %
+INFO:root:Fake Accuracy of   cat : 4.60 %
+INFO:root:Accuracy of  deer : 63.90 %
+INFO:root:Fake Accuracy of  deer : 5.90 %
+INFO:root:Accuracy of   dog : 70.90 %
+INFO:root:Fake Accuracy of   dog : 2.30 %
+INFO:root:Accuracy of  frog : 63.00 %
+INFO:root:Fake Accuracy of  frog : 6.00 %
+INFO:root:Accuracy of horse : 81.60 %
+INFO:root:Fake Accuracy of horse : 0.90 %
+INFO:root:Accuracy of  ship : 89.90 %
+INFO:root:Fake Accuracy of  ship : 1.60 %
+INFO:root:Accuracy of truck : 86.40 %
+INFO:root:Fake Accuracy of truck : 0.40 %
+INFO:root:Total Accuracy : 75.79 %
+
+INFO:root:################## Starting fl round: 0
+INFO:root:@@@@@@@@ Working on client: 0
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 430, Loss: 0.598 | Acc: 78.906% (101/128)
+INFO:root:batch_idx: 40, NumBatches: 430, Loss: 0.458 | Acc: 84.451% (4432/5248)
+INFO:root:batch_idx: 80, NumBatches: 430, Loss: 0.412 | Acc: 85.783% (8894/10368)
+INFO:root:batch_idx: 120, NumBatches: 430, Loss: 0.378 | Acc: 86.770% (13439/15488)
+INFO:root:batch_idx: 160, NumBatches: 430, Loss: 0.361 | Acc: 87.214% (17973/20608)
+INFO:root:batch_idx: 200, NumBatches: 430, Loss: 0.345 | Acc: 87.795% (22588/25728)
+INFO:root:batch_idx: 240, NumBatches: 430, Loss: 0.333 | Acc: 88.071% (27168/30848)
+INFO:root:batch_idx: 280, NumBatches: 430, Loss: 0.323 | Acc: 88.276% (31751/35968)
+INFO:root:batch_idx: 320, NumBatches: 430, Loss: 0.314 | Acc: 88.500% (36363/41088)
+INFO:root:batch_idx: 360, NumBatches: 430, Loss: 0.306 | Acc: 88.718% (40995/46208)
+INFO:root:batch_idx: 400, NumBatches: 430, Loss: 0.301 | Acc: 88.846% (45603/51328)
+INFO:root:Accuracy of plane : 66.70 %
+INFO:root:Accuracy of   car : 95.50 %
+INFO:root:Accuracy of  bird : 85.90 %
+INFO:root:Accuracy of   cat : 75.60 %
+INFO:root:Accuracy of  deer : 87.40 %
+INFO:root:Accuracy of   dog : 81.70 %
+INFO:root:Accuracy of  frog : 89.80 %
+INFO:root:Accuracy of horse : 90.10 %
+INFO:root:Accuracy of  ship : 92.60 %
+INFO:root:Accuracy of truck : 90.90 %
+INFO:root:Total Accuracy : 85.62 %
+
+INFO:root:Accuracy of plane : 23.20 %
+INFO:root:Fake Accuracy of plane : 70.20 %
+INFO:root:Accuracy of   car : 91.60 %
+INFO:root:Fake Accuracy of   car : 2.50 %
+INFO:root:Accuracy of  bird : 81.80 %
+INFO:root:Fake Accuracy of  bird : 81.80 %
+INFO:root:Accuracy of   cat : 74.80 %
+INFO:root:Fake Accuracy of   cat : 13.90 %
+INFO:root:Accuracy of  deer : 59.90 %
+INFO:root:Fake Accuracy of  deer : 20.80 %
+INFO:root:Accuracy of   dog : 70.20 %
+INFO:root:Fake Accuracy of   dog : 7.90 %
+INFO:root:Accuracy of  frog : 60.90 %
+INFO:root:Fake Accuracy of  frog : 16.00 %
+INFO:root:Accuracy of horse : 76.30 %
+INFO:root:Fake Accuracy of horse : 7.20 %
+INFO:root:Accuracy of  ship : 80.20 %
+INFO:root:Fake Accuracy of  ship : 14.40 %
+INFO:root:Accuracy of truck : 83.80 %
+INFO:root:Fake Accuracy of truck : 4.40 %
+INFO:root:Total Accuracy : 70.27 %
+
+
+Epoch: 2
+INFO:root:batch_idx: 0, NumBatches: 430, Loss: 0.226 | Acc: 91.406% (117/128)
+INFO:root:batch_idx: 40, NumBatches: 430, Loss: 0.220 | Acc: 91.635% (4809/5248)
+INFO:root:batch_idx: 80, NumBatches: 430, Loss: 0.227 | Acc: 91.377% (9474/10368)
+INFO:root:batch_idx: 120, NumBatches: 430, Loss: 0.228 | Acc: 91.296% (14140/15488)
+INFO:root:batch_idx: 160, NumBatches: 430, Loss: 0.224 | Acc: 91.503% (18857/20608)
+INFO:root:batch_idx: 200, NumBatches: 430, Loss: 0.223 | Acc: 91.476% (23535/25728)
+INFO:root:batch_idx: 240, NumBatches: 430, Loss: 0.224 | Acc: 91.416% (28200/30848)
+INFO:root:batch_idx: 280, NumBatches: 430, Loss: 0.223 | Acc: 91.459% (32896/35968)
+INFO:root:batch_idx: 320, NumBatches: 430, Loss: 0.223 | Acc: 91.457% (37578/41088)
+INFO:root:batch_idx: 360, NumBatches: 430, Loss: 0.221 | Acc: 91.551% (42304/46208)
+INFO:root:batch_idx: 400, NumBatches: 430, Loss: 0.220 | Acc: 91.589% (47011/51328)
+INFO:root:Accuracy of plane : 69.50 %
+INFO:root:Accuracy of   car : 95.10 %
+INFO:root:Accuracy of  bird : 85.80 %
+INFO:root:Accuracy of   cat : 77.00 %
+INFO:root:Accuracy of  deer : 87.70 %
+INFO:root:Accuracy of   dog : 82.00 %
+INFO:root:Accuracy of  frog : 90.60 %
+INFO:root:Accuracy of horse : 90.60 %
+INFO:root:Accuracy of  ship : 93.00 %
+INFO:root:Accuracy of truck : 91.10 %
+INFO:root:Total Accuracy : 86.24 %
+
+INFO:root:Accuracy of plane : 19.40 %
+INFO:root:Fake Accuracy of plane : 75.50 %
+INFO:root:Accuracy of   car : 91.00 %
+INFO:root:Fake Accuracy of   car : 3.10 %
+INFO:root:Accuracy of  bird : 81.70 %
+INFO:root:Fake Accuracy of  bird : 81.70 %
+INFO:root:Accuracy of   cat : 76.00 %
+INFO:root:Fake Accuracy of   cat : 13.90 %
+INFO:root:Accuracy of  deer : 57.90 %
+INFO:root:Fake Accuracy of  deer : 20.90 %
+INFO:root:Accuracy of   dog : 70.10 %
+INFO:root:Fake Accuracy of   dog : 7.60 %
+INFO:root:Accuracy of  frog : 64.30 %
+INFO:root:Fake Accuracy of  frog : 13.60 %
+INFO:root:Accuracy of horse : 76.20 %
+INFO:root:Fake Accuracy of horse : 7.60 %
+INFO:root:Accuracy of  ship : 79.70 %
+INFO:root:Fake Accuracy of  ship : 14.80 %
+INFO:root:Accuracy of truck : 83.20 %
+INFO:root:Fake Accuracy of truck : 5.00 %
+INFO:root:Total Accuracy : 69.95 %
+
+
+Epoch: 3
+INFO:root:batch_idx: 0, NumBatches: 430, Loss: 0.168 | Acc: 92.969% (119/128)
+INFO:root:batch_idx: 40, NumBatches: 430, Loss: 0.210 | Acc: 91.654% (4810/5248)
+INFO:root:batch_idx: 80, NumBatches: 430, Loss: 0.204 | Acc: 91.811% (9519/10368)
+INFO:root:batch_idx: 120, NumBatches: 430, Loss: 0.207 | Acc: 91.839% (14224/15488)
+INFO:root:batch_idx: 160, NumBatches: 430, Loss: 0.205 | Acc: 91.964% (18952/20608)
+INFO:root:batch_idx: 200, NumBatches: 430, Loss: 0.205 | Acc: 92.024% (23676/25728)
+INFO:root:batch_idx: 240, NumBatches: 430, Loss: 0.202 | Acc: 92.093% (28409/30848)
+INFO:root:batch_idx: 280, NumBatches: 430, Loss: 0.200 | Acc: 92.213% (33167/35968)
+INFO:root:batch_idx: 320, NumBatches: 430, Loss: 0.199 | Acc: 92.234% (37897/41088)
+INFO:root:batch_idx: 360, NumBatches: 430, Loss: 0.198 | Acc: 92.222% (42614/46208)
+INFO:root:batch_idx: 400, NumBatches: 430, Loss: 0.196 | Acc: 92.287% (47369/51328)
+INFO:root:Accuracy of plane : 71.00 %
+INFO:root:Accuracy of   car : 95.30 %
+INFO:root:Accuracy of  bird : 85.60 %
+INFO:root:Accuracy of   cat : 76.50 %
+INFO:root:Accuracy of  deer : 88.70 %
+INFO:root:Accuracy of   dog : 82.60 %
+INFO:root:Accuracy of  frog : 90.60 %
+INFO:root:Accuracy of horse : 90.70 %
+INFO:root:Accuracy of  ship : 93.30 %
+INFO:root:Accuracy of truck : 91.00 %
+INFO:root:Total Accuracy : 86.53 %
+
+INFO:root:Accuracy of plane : 18.50 %
+INFO:root:Fake Accuracy of plane : 76.40 %
+INFO:root:Accuracy of   car : 91.30 %
+INFO:root:Fake Accuracy of   car : 3.00 %
+INFO:root:Accuracy of  bird : 81.70 %
+INFO:root:Fake Accuracy of  bird : 81.70 %
+INFO:root:Accuracy of   cat : 76.70 %
+INFO:root:Fake Accuracy of   cat : 13.60 %
+INFO:root:Accuracy of  deer : 58.00 %
+INFO:root:Fake Accuracy of  deer : 21.60 %
+INFO:root:Accuracy of   dog : 70.20 %
+INFO:root:Fake Accuracy of   dog : 7.20 %
+INFO:root:Accuracy of  frog : 64.90 %
+INFO:root:Fake Accuracy of  frog : 13.60 %
+INFO:root:Accuracy of horse : 76.70 %
+INFO:root:Fake Accuracy of horse : 8.00 %
+INFO:root:Accuracy of  ship : 81.30 %
+INFO:root:Fake Accuracy of  ship : 14.30 %
+INFO:root:Accuracy of truck : 83.30 %
+INFO:root:Fake Accuracy of truck : 5.20 %
+INFO:root:Total Accuracy : 70.26 %
+
+
+Epoch: 4
+INFO:root:batch_idx: 0, NumBatches: 430, Loss: 0.322 | Acc: 89.844% (115/128)
+INFO:root:batch_idx: 40, NumBatches: 430, Loss: 0.187 | Acc: 92.645% (4862/5248)
+INFO:root:batch_idx: 80, NumBatches: 430, Loss: 0.188 | Acc: 92.371% (9577/10368)
+INFO:root:batch_idx: 120, NumBatches: 430, Loss: 0.187 | Acc: 92.452% (14319/15488)
+INFO:root:batch_idx: 160, NumBatches: 430, Loss: 0.190 | Acc: 92.372% (19036/20608)
+INFO:root:batch_idx: 200, NumBatches: 430, Loss: 0.191 | Acc: 92.413% (23776/25728)
+INFO:root:batch_idx: 240, NumBatches: 430, Loss: 0.190 | Acc: 92.382% (28498/30848)
+INFO:root:batch_idx: 280, NumBatches: 430, Loss: 0.190 | Acc: 92.438% (33248/35968)
+INFO:root:batch_idx: 320, NumBatches: 430, Loss: 0.189 | Acc: 92.487% (38001/41088)
+INFO:root:batch_idx: 360, NumBatches: 430, Loss: 0.186 | Acc: 92.607% (42792/46208)
+INFO:root:batch_idx: 400, NumBatches: 430, Loss: 0.185 | Acc: 92.717% (47590/51328)
+INFO:root:Accuracy of plane : 72.00 %
+INFO:root:Accuracy of   car : 95.80 %
+INFO:root:Accuracy of  bird : 85.70 %
+INFO:root:Accuracy of   cat : 76.20 %
+INFO:root:Accuracy of  deer : 88.60 %
+INFO:root:Accuracy of   dog : 83.20 %
+INFO:root:Accuracy of  frog : 90.30 %
+INFO:root:Accuracy of horse : 90.80 %
+INFO:root:Accuracy of  ship : 93.00 %
+INFO:root:Accuracy of truck : 90.90 %
+INFO:root:Total Accuracy : 86.65 %
+
+INFO:root:Accuracy of plane : 16.80 %
+INFO:root:Fake Accuracy of plane : 79.00 %
+INFO:root:Accuracy of   car : 91.40 %
+INFO:root:Fake Accuracy of   car : 3.20 %
+INFO:root:Accuracy of  bird : 82.90 %
+INFO:root:Fake Accuracy of  bird : 82.90 %
+INFO:root:Accuracy of   cat : 76.80 %
+INFO:root:Fake Accuracy of   cat : 13.90 %
+INFO:root:Accuracy of  deer : 56.90 %
+INFO:root:Fake Accuracy of  deer : 22.70 %
+INFO:root:Accuracy of   dog : 71.30 %
+INFO:root:Fake Accuracy of   dog : 7.50 %
+INFO:root:Accuracy of  frog : 63.40 %
+INFO:root:Fake Accuracy of  frog : 14.70 %
+INFO:root:Accuracy of horse : 76.50 %
+INFO:root:Fake Accuracy of horse : 8.50 %
+INFO:root:Accuracy of  ship : 80.00 %
+INFO:root:Fake Accuracy of  ship : 15.70 %
+INFO:root:Accuracy of truck : 83.00 %
+INFO:root:Fake Accuracy of truck : 5.40 %
+INFO:root:Total Accuracy : 69.90 %
+
+
+Epoch: 5
+INFO:root:batch_idx: 0, NumBatches: 430, Loss: 0.204 | Acc: 93.750% (120/128)
+INFO:root:batch_idx: 40, NumBatches: 430, Loss: 0.178 | Acc: 93.255% (4894/5248)
+INFO:root:batch_idx: 80, NumBatches: 430, Loss: 0.179 | Acc: 93.046% (9647/10368)
+INFO:root:batch_idx: 120, NumBatches: 430, Loss: 0.178 | Acc: 92.859% (14382/15488)
+INFO:root:batch_idx: 160, NumBatches: 430, Loss: 0.176 | Acc: 92.988% (19163/20608)
+INFO:root:batch_idx: 200, NumBatches: 430, Loss: 0.175 | Acc: 93.019% (23932/25728)
+INFO:root:batch_idx: 240, NumBatches: 430, Loss: 0.176 | Acc: 92.959% (28676/30848)
+INFO:root:batch_idx: 280, NumBatches: 430, Loss: 0.174 | Acc: 93.063% (33473/35968)
+INFO:root:batch_idx: 320, NumBatches: 430, Loss: 0.171 | Acc: 93.263% (38320/41088)
+INFO:root:batch_idx: 360, NumBatches: 430, Loss: 0.171 | Acc: 93.274% (43100/46208)
+INFO:root:batch_idx: 400, NumBatches: 430, Loss: 0.170 | Acc: 93.292% (47885/51328)
+INFO:root:Accuracy of plane : 67.90 %
+INFO:root:Accuracy of   car : 96.00 %
+INFO:root:Accuracy of  bird : 85.70 %
+INFO:root:Accuracy of   cat : 76.80 %
+INFO:root:Accuracy of  deer : 88.90 %
+INFO:root:Accuracy of   dog : 83.10 %
+INFO:root:Accuracy of  frog : 90.70 %
+INFO:root:Accuracy of horse : 91.00 %
+INFO:root:Accuracy of  ship : 93.50 %
+INFO:root:Accuracy of truck : 91.10 %
+INFO:root:Total Accuracy : 86.47 %
+
+INFO:root:Accuracy of plane : 11.20 %
+INFO:root:Fake Accuracy of plane : 84.40 %
+INFO:root:Accuracy of   car : 91.00 %
+INFO:root:Fake Accuracy of   car : 3.50 %
+INFO:root:Accuracy of  bird : 83.50 %
+INFO:root:Fake Accuracy of  bird : 83.50 %
+INFO:root:Accuracy of   cat : 77.70 %
+INFO:root:Fake Accuracy of   cat : 13.60 %
+INFO:root:Accuracy of  deer : 55.00 %
+INFO:root:Fake Accuracy of  deer : 24.00 %
+INFO:root:Accuracy of   dog : 71.20 %
+INFO:root:Fake Accuracy of   dog : 7.20 %
+INFO:root:Accuracy of  frog : 64.20 %
+INFO:root:Fake Accuracy of  frog : 14.60 %
+INFO:root:Accuracy of horse : 76.20 %
+INFO:root:Fake Accuracy of horse : 9.10 %
+INFO:root:Accuracy of  ship : 80.80 %
+INFO:root:Fake Accuracy of  ship : 14.90 %
+INFO:root:Accuracy of truck : 83.10 %
+INFO:root:Fake Accuracy of truck : 5.60 %
+INFO:root:Total Accuracy : 69.39 %
+
+INFO:root:@@@@@@@@ Working on client: 1
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 391, Loss: 0.137 | Acc: 94.531% (121/128)
+INFO:root:batch_idx: 40, NumBatches: 391, Loss: 0.154 | Acc: 94.893% (4980/5248)
+INFO:root:batch_idx: 80, NumBatches: 391, Loss: 0.152 | Acc: 94.830% (9832/10368)
+INFO:root:batch_idx: 120, NumBatches: 391, Loss: 0.142 | Acc: 95.280% (14757/15488)
+INFO:root:batch_idx: 160, NumBatches: 391, Loss: 0.138 | Acc: 95.380% (19656/20608)
+INFO:root:batch_idx: 200, NumBatches: 391, Loss: 0.135 | Acc: 95.530% (24578/25728)
+INFO:root:batch_idx: 240, NumBatches: 391, Loss: 0.132 | Acc: 95.640% (29503/30848)
+INFO:root:batch_idx: 280, NumBatches: 391, Loss: 0.129 | Acc: 95.727% (34431/35968)
+INFO:root:batch_idx: 320, NumBatches: 391, Loss: 0.127 | Acc: 95.760% (39346/41088)
+INFO:root:batch_idx: 360, NumBatches: 391, Loss: 0.125 | Acc: 95.849% (44290/46208)
+INFO:root:Accuracy of plane : 88.90 %
+INFO:root:Accuracy of   car : 95.40 %
+INFO:root:Accuracy of  bird : 84.20 %
+INFO:root:Accuracy of   cat : 78.10 %
+INFO:root:Accuracy of  deer : 88.00 %
+INFO:root:Accuracy of   dog : 81.00 %
+INFO:root:Accuracy of  frog : 91.20 %
+INFO:root:Accuracy of horse : 90.30 %
+INFO:root:Accuracy of  ship : 92.20 %
+INFO:root:Accuracy of truck : 91.30 %
+INFO:root:Total Accuracy : 88.06 %
+
+INFO:root:Accuracy of plane : 84.40 %
+INFO:root:Fake Accuracy of plane : 3.80 %
+INFO:root:Accuracy of   car : 90.90 %
+INFO:root:Fake Accuracy of   car : 0.40 %
+INFO:root:Accuracy of  bird : 64.10 %
+INFO:root:Fake Accuracy of  bird : 64.10 %
+INFO:root:Accuracy of   cat : 79.10 %
+INFO:root:Fake Accuracy of   cat : 3.60 %
+INFO:root:Accuracy of  deer : 62.80 %
+INFO:root:Fake Accuracy of  deer : 4.50 %
+INFO:root:Accuracy of   dog : 70.30 %
+INFO:root:Fake Accuracy of   dog : 1.60 %
+INFO:root:Accuracy of  frog : 70.80 %
+INFO:root:Fake Accuracy of  frog : 3.80 %
+INFO:root:Accuracy of horse : 80.50 %
+INFO:root:Fake Accuracy of horse : 0.80 %
+INFO:root:Accuracy of  ship : 87.80 %
+INFO:root:Fake Accuracy of  ship : 0.90 %
+INFO:root:Accuracy of truck : 87.20 %
+INFO:root:Fake Accuracy of truck : 0.30 %
+INFO:root:Total Accuracy : 77.79 %
+
+INFO:root:@@@@@@@@ Working on client: 2
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 391, Loss: 0.151 | Acc: 95.312% (122/128)
+INFO:root:batch_idx: 40, NumBatches: 391, Loss: 0.144 | Acc: 94.931% (4982/5248)
+INFO:root:batch_idx: 80, NumBatches: 391, Loss: 0.144 | Acc: 95.129% (9863/10368)
+INFO:root:batch_idx: 120, NumBatches: 391, Loss: 0.137 | Acc: 95.332% (14765/15488)
+INFO:root:batch_idx: 160, NumBatches: 391, Loss: 0.133 | Acc: 95.434% (19667/20608)
+INFO:root:batch_idx: 200, NumBatches: 391, Loss: 0.132 | Acc: 95.487% (24567/25728)
+INFO:root:batch_idx: 240, NumBatches: 391, Loss: 0.129 | Acc: 95.630% (29500/30848)
+INFO:root:batch_idx: 280, NumBatches: 391, Loss: 0.126 | Acc: 95.718% (34428/35968)
+INFO:root:batch_idx: 320, NumBatches: 391, Loss: 0.124 | Acc: 95.768% (39349/41088)
+INFO:root:batch_idx: 360, NumBatches: 391, Loss: 0.122 | Acc: 95.825% (44279/46208)
+INFO:root:Accuracy of plane : 89.10 %
+INFO:root:Accuracy of   car : 95.30 %
+INFO:root:Accuracy of  bird : 84.60 %
+INFO:root:Accuracy of   cat : 77.90 %
+INFO:root:Accuracy of  deer : 88.00 %
+INFO:root:Accuracy of   dog : 80.90 %
+INFO:root:Accuracy of  frog : 91.40 %
+INFO:root:Accuracy of horse : 90.10 %
+INFO:root:Accuracy of  ship : 92.70 %
+INFO:root:Accuracy of truck : 91.80 %
+INFO:root:Total Accuracy : 88.18 %
+
+INFO:root:Accuracy of plane : 84.40 %
+INFO:root:Fake Accuracy of plane : 3.50 %
+INFO:root:Accuracy of   car : 90.90 %
+INFO:root:Fake Accuracy of   car : 0.40 %
+INFO:root:Accuracy of  bird : 64.50 %
+INFO:root:Fake Accuracy of  bird : 64.50 %
+INFO:root:Accuracy of   cat : 78.50 %
+INFO:root:Fake Accuracy of   cat : 3.70 %
+INFO:root:Accuracy of  deer : 63.10 %
+INFO:root:Fake Accuracy of  deer : 4.60 %
+INFO:root:Accuracy of   dog : 70.10 %
+INFO:root:Fake Accuracy of   dog : 1.60 %
+INFO:root:Accuracy of  frog : 71.10 %
+INFO:root:Fake Accuracy of  frog : 4.10 %
+INFO:root:Accuracy of horse : 80.00 %
+INFO:root:Fake Accuracy of horse : 0.80 %
+INFO:root:Accuracy of  ship : 88.50 %
+INFO:root:Fake Accuracy of  ship : 0.90 %
+INFO:root:Accuracy of truck : 87.30 %
+INFO:root:Fake Accuracy of truck : 0.30 %
+INFO:root:Total Accuracy : 77.84 %
+
+INFO:root:@@@@@@@@ Working on client: 3
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 391, Loss: 0.234 | Acc: 91.406% (117/128)
+INFO:root:batch_idx: 40, NumBatches: 391, Loss: 0.151 | Acc: 94.817% (4976/5248)
+INFO:root:batch_idx: 80, NumBatches: 391, Loss: 0.147 | Acc: 95.062% (9856/10368)
+INFO:root:batch_idx: 120, NumBatches: 391, Loss: 0.139 | Acc: 95.338% (14766/15488)
+INFO:root:batch_idx: 160, NumBatches: 391, Loss: 0.139 | Acc: 95.269% (19633/20608)
+INFO:root:batch_idx: 200, NumBatches: 391, Loss: 0.134 | Acc: 95.460% (24560/25728)
+INFO:root:batch_idx: 240, NumBatches: 391, Loss: 0.130 | Acc: 95.572% (29482/30848)
+INFO:root:batch_idx: 280, NumBatches: 391, Loss: 0.127 | Acc: 95.671% (34411/35968)
+INFO:root:batch_idx: 320, NumBatches: 391, Loss: 0.126 | Acc: 95.721% (39330/41088)
+INFO:root:batch_idx: 360, NumBatches: 391, Loss: 0.124 | Acc: 95.771% (44254/46208)
+INFO:root:Accuracy of plane : 89.10 %
+INFO:root:Accuracy of   car : 95.10 %
+INFO:root:Accuracy of  bird : 84.70 %
+INFO:root:Accuracy of   cat : 76.80 %
+INFO:root:Accuracy of  deer : 88.10 %
+INFO:root:Accuracy of   dog : 81.40 %
+INFO:root:Accuracy of  frog : 91.00 %
+INFO:root:Accuracy of horse : 90.60 %
+INFO:root:Accuracy of  ship : 93.10 %
+INFO:root:Accuracy of truck : 91.40 %
+INFO:root:Total Accuracy : 88.13 %
+
+INFO:root:Accuracy of plane : 84.00 %
+INFO:root:Fake Accuracy of plane : 3.70 %
+INFO:root:Accuracy of   car : 90.20 %
+INFO:root:Fake Accuracy of   car : 0.40 %
+INFO:root:Accuracy of  bird : 64.70 %
+INFO:root:Fake Accuracy of  bird : 64.70 %
+INFO:root:Accuracy of   cat : 77.90 %
+INFO:root:Fake Accuracy of   cat : 3.80 %
+INFO:root:Accuracy of  deer : 63.00 %
+INFO:root:Fake Accuracy of  deer : 4.60 %
+INFO:root:Accuracy of   dog : 70.50 %
+INFO:root:Fake Accuracy of   dog : 1.60 %
+INFO:root:Accuracy of  frog : 71.40 %
+INFO:root:Fake Accuracy of  frog : 3.90 %
+INFO:root:Accuracy of horse : 81.10 %
+INFO:root:Fake Accuracy of horse : 0.90 %
+INFO:root:Accuracy of  ship : 88.90 %
+INFO:root:Fake Accuracy of  ship : 0.90 %
+INFO:root:Accuracy of truck : 87.40 %
+INFO:root:Fake Accuracy of truck : 0.30 %
+INFO:root:Total Accuracy : 77.91 %
+
+INFO:root:@@@@@@@@ Working on client: 4
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 391, Loss: 0.185 | Acc: 94.531% (121/128)
+INFO:root:batch_idx: 40, NumBatches: 391, Loss: 0.142 | Acc: 94.950% (4983/5248)
+INFO:root:batch_idx: 80, NumBatches: 391, Loss: 0.144 | Acc: 94.965% (9846/10368)
+INFO:root:batch_idx: 120, NumBatches: 391, Loss: 0.139 | Acc: 95.203% (14745/15488)
+INFO:root:batch_idx: 160, NumBatches: 391, Loss: 0.137 | Acc: 95.317% (19643/20608)
+INFO:root:batch_idx: 200, NumBatches: 391, Loss: 0.134 | Acc: 95.507% (24572/25728)
+INFO:root:batch_idx: 240, NumBatches: 391, Loss: 0.131 | Acc: 95.582% (29485/30848)
+INFO:root:batch_idx: 280, NumBatches: 391, Loss: 0.131 | Acc: 95.593% (34383/35968)
+INFO:root:batch_idx: 320, NumBatches: 391, Loss: 0.128 | Acc: 95.695% (39319/41088)
+INFO:root:batch_idx: 360, NumBatches: 391, Loss: 0.126 | Acc: 95.760% (44249/46208)
+INFO:root:Accuracy of plane : 88.80 %
+INFO:root:Accuracy of   car : 95.10 %
+INFO:root:Accuracy of  bird : 84.40 %
+INFO:root:Accuracy of   cat : 77.80 %
+INFO:root:Accuracy of  deer : 87.80 %
+INFO:root:Accuracy of   dog : 80.50 %
+INFO:root:Accuracy of  frog : 91.40 %
+INFO:root:Accuracy of horse : 90.10 %
+INFO:root:Accuracy of  ship : 92.60 %
+INFO:root:Accuracy of truck : 91.90 %
+INFO:root:Total Accuracy : 88.04 %
+
+INFO:root:Accuracy of plane : 84.50 %
+INFO:root:Fake Accuracy of plane : 3.50 %
+INFO:root:Accuracy of   car : 90.00 %
+INFO:root:Fake Accuracy of   car : 0.40 %
+INFO:root:Accuracy of  bird : 64.60 %
+INFO:root:Fake Accuracy of  bird : 64.60 %
+INFO:root:Accuracy of   cat : 78.70 %
+INFO:root:Fake Accuracy of   cat : 3.60 %
+INFO:root:Accuracy of  deer : 62.90 %
+INFO:root:Fake Accuracy of  deer : 4.40 %
+INFO:root:Accuracy of   dog : 70.20 %
+INFO:root:Fake Accuracy of   dog : 1.60 %
+INFO:root:Accuracy of  frog : 72.00 %
+INFO:root:Fake Accuracy of  frog : 3.90 %
+INFO:root:Accuracy of horse : 80.00 %
+INFO:root:Fake Accuracy of horse : 0.80 %
+INFO:root:Accuracy of  ship : 88.50 %
+INFO:root:Fake Accuracy of  ship : 0.90 %
+INFO:root:Accuracy of truck : 87.50 %
+INFO:root:Fake Accuracy of truck : 0.30 %
+INFO:root:Total Accuracy : 77.89 %
+
+INFO:root:@@@@@@@@ Working on client: 5
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 391, Loss: 0.116 | Acc: 96.094% (123/128)
+INFO:root:batch_idx: 40, NumBatches: 391, Loss: 0.148 | Acc: 95.198% (4996/5248)
+INFO:root:batch_idx: 80, NumBatches: 391, Loss: 0.146 | Acc: 95.197% (9870/10368)
+INFO:root:batch_idx: 120, NumBatches: 391, Loss: 0.141 | Acc: 95.351% (14768/15488)
+INFO:root:batch_idx: 160, NumBatches: 391, Loss: 0.136 | Acc: 95.511% (19683/20608)
+INFO:root:batch_idx: 200, NumBatches: 391, Loss: 0.133 | Acc: 95.588% (24593/25728)
+INFO:root:batch_idx: 240, NumBatches: 391, Loss: 0.130 | Acc: 95.669% (29512/30848)
+INFO:root:batch_idx: 280, NumBatches: 391, Loss: 0.129 | Acc: 95.685% (34416/35968)
+INFO:root:batch_idx: 320, NumBatches: 391, Loss: 0.126 | Acc: 95.807% (39365/41088)
+INFO:root:batch_idx: 360, NumBatches: 391, Loss: 0.124 | Acc: 95.856% (44293/46208)
+INFO:root:Accuracy of plane : 89.50 %
+INFO:root:Accuracy of   car : 95.20 %
+INFO:root:Accuracy of  bird : 84.60 %
+INFO:root:Accuracy of   cat : 77.80 %
+INFO:root:Accuracy of  deer : 87.50 %
+INFO:root:Accuracy of   dog : 80.60 %
+INFO:root:Accuracy of  frog : 90.70 %
+INFO:root:Accuracy of horse : 90.40 %
+INFO:root:Accuracy of  ship : 92.60 %
+INFO:root:Accuracy of truck : 91.80 %
+INFO:root:Total Accuracy : 88.07 %
+
+INFO:root:Accuracy of plane : 84.50 %
+INFO:root:Fake Accuracy of plane : 3.20 %
+INFO:root:Accuracy of   car : 90.20 %
+INFO:root:Fake Accuracy of   car : 0.40 %
+INFO:root:Accuracy of  bird : 64.10 %
+INFO:root:Fake Accuracy of  bird : 64.10 %
+INFO:root:Accuracy of   cat : 78.60 %
+INFO:root:Fake Accuracy of   cat : 3.90 %
+INFO:root:Accuracy of  deer : 62.90 %
+INFO:root:Fake Accuracy of  deer : 4.50 %
+INFO:root:Accuracy of   dog : 69.90 %
+INFO:root:Fake Accuracy of   dog : 1.60 %
+INFO:root:Accuracy of  frog : 70.70 %
+INFO:root:Fake Accuracy of  frog : 4.00 %
+INFO:root:Accuracy of horse : 80.60 %
+INFO:root:Fake Accuracy of horse : 0.90 %
+INFO:root:Accuracy of  ship : 88.50 %
+INFO:root:Fake Accuracy of  ship : 0.90 %
+INFO:root:Accuracy of truck : 87.60 %
+INFO:root:Fake Accuracy of truck : 0.30 %
+INFO:root:Total Accuracy : 77.76 %
+
+INFO:root:@@@@@@@@ Working on client: 6
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 391, Loss: 0.254 | Acc: 92.188% (118/128)
+INFO:root:batch_idx: 40, NumBatches: 391, Loss: 0.147 | Acc: 95.465% (5010/5248)
+INFO:root:batch_idx: 80, NumBatches: 391, Loss: 0.142 | Acc: 95.467% (9898/10368)
+INFO:root:batch_idx: 120, NumBatches: 391, Loss: 0.138 | Acc: 95.532% (14796/15488)
+INFO:root:batch_idx: 160, NumBatches: 391, Loss: 0.137 | Acc: 95.507% (19682/20608)
+INFO:root:batch_idx: 200, NumBatches: 391, Loss: 0.133 | Acc: 95.600% (24596/25728)
+INFO:root:batch_idx: 240, NumBatches: 391, Loss: 0.130 | Acc: 95.663% (29510/30848)
+INFO:root:batch_idx: 280, NumBatches: 391, Loss: 0.127 | Acc: 95.766% (34445/35968)
+INFO:root:batch_idx: 320, NumBatches: 391, Loss: 0.126 | Acc: 95.814% (39368/41088)
+INFO:root:batch_idx: 360, NumBatches: 391, Loss: 0.123 | Acc: 95.908% (44317/46208)
+INFO:root:Accuracy of plane : 88.50 %
+INFO:root:Accuracy of   car : 95.00 %
+INFO:root:Accuracy of  bird : 84.70 %
+INFO:root:Accuracy of   cat : 77.10 %
+INFO:root:Accuracy of  deer : 88.00 %
+INFO:root:Accuracy of   dog : 80.70 %
+INFO:root:Accuracy of  frog : 91.70 %
+INFO:root:Accuracy of horse : 90.70 %
+INFO:root:Accuracy of  ship : 93.40 %
+INFO:root:Accuracy of truck : 91.80 %
+INFO:root:Total Accuracy : 88.16 %
+
+INFO:root:Accuracy of plane : 82.80 %
+INFO:root:Fake Accuracy of plane : 3.80 %
+INFO:root:Accuracy of   car : 90.00 %
+INFO:root:Fake Accuracy of   car : 0.40 %
+INFO:root:Accuracy of  bird : 64.70 %
+INFO:root:Fake Accuracy of  bird : 64.70 %
+INFO:root:Accuracy of   cat : 77.70 %
+INFO:root:Fake Accuracy of   cat : 4.00 %
+INFO:root:Accuracy of  deer : 63.00 %
+INFO:root:Fake Accuracy of  deer : 4.70 %
+INFO:root:Accuracy of   dog : 70.10 %
+INFO:root:Fake Accuracy of   dog : 1.60 %
+INFO:root:Accuracy of  frog : 72.50 %
+INFO:root:Fake Accuracy of  frog : 3.80 %
+INFO:root:Accuracy of horse : 80.70 %
+INFO:root:Fake Accuracy of horse : 0.90 %
+INFO:root:Accuracy of  ship : 89.30 %
+INFO:root:Fake Accuracy of  ship : 0.90 %
+INFO:root:Accuracy of truck : 87.50 %
+INFO:root:Fake Accuracy of truck : 0.30 %
+INFO:root:Total Accuracy : 77.83 %
+
+INFO:root:@@@@@@@@ Working on client: 7
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 391, Loss: 0.120 | Acc: 96.094% (123/128)
+INFO:root:batch_idx: 40, NumBatches: 391, Loss: 0.159 | Acc: 94.588% (4964/5248)
+INFO:root:batch_idx: 80, NumBatches: 391, Loss: 0.152 | Acc: 94.705% (9819/10368)
+INFO:root:batch_idx: 120, NumBatches: 391, Loss: 0.142 | Acc: 95.067% (14724/15488)
+INFO:root:batch_idx: 160, NumBatches: 391, Loss: 0.136 | Acc: 95.254% (19630/20608)
+INFO:root:batch_idx: 200, NumBatches: 391, Loss: 0.135 | Acc: 95.375% (24538/25728)
+INFO:root:batch_idx: 240, NumBatches: 391, Loss: 0.131 | Acc: 95.465% (29449/30848)
+INFO:root:batch_idx: 280, NumBatches: 391, Loss: 0.131 | Acc: 95.479% (34342/35968)
+INFO:root:batch_idx: 320, NumBatches: 391, Loss: 0.128 | Acc: 95.602% (39281/41088)
+INFO:root:batch_idx: 360, NumBatches: 391, Loss: 0.124 | Acc: 95.730% (44235/46208)
+INFO:root:Accuracy of plane : 88.80 %
+INFO:root:Accuracy of   car : 94.90 %
+INFO:root:Accuracy of  bird : 84.60 %
+INFO:root:Accuracy of   cat : 78.30 %
+INFO:root:Accuracy of  deer : 87.60 %
+INFO:root:Accuracy of   dog : 81.10 %
+INFO:root:Accuracy of  frog : 91.20 %
+INFO:root:Accuracy of horse : 89.70 %
+INFO:root:Accuracy of  ship : 93.00 %
+INFO:root:Accuracy of truck : 92.30 %
+INFO:root:Total Accuracy : 88.15 %
+
+INFO:root:Accuracy of plane : 83.80 %
+INFO:root:Fake Accuracy of plane : 3.70 %
+INFO:root:Accuracy of   car : 90.10 %
+INFO:root:Fake Accuracy of   car : 0.40 %
+INFO:root:Accuracy of  bird : 64.80 %
+INFO:root:Fake Accuracy of  bird : 64.80 %
+INFO:root:Accuracy of   cat : 78.40 %
+INFO:root:Fake Accuracy of   cat : 3.70 %
+INFO:root:Accuracy of  deer : 62.00 %
+INFO:root:Fake Accuracy of  deer : 5.00 %
+INFO:root:Accuracy of   dog : 70.00 %
+INFO:root:Fake Accuracy of   dog : 1.60 %
+INFO:root:Accuracy of  frog : 71.40 %
+INFO:root:Fake Accuracy of  frog : 3.80 %
+INFO:root:Accuracy of horse : 79.90 %
+INFO:root:Fake Accuracy of horse : 0.80 %
+INFO:root:Accuracy of  ship : 88.80 %
+INFO:root:Fake Accuracy of  ship : 0.90 %
+INFO:root:Accuracy of truck : 87.50 %
+INFO:root:Fake Accuracy of truck : 0.30 %
+INFO:root:Total Accuracy : 77.67 %
+
+INFO:root:@@@@@@@@ Working on client: 8
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 391, Loss: 0.136 | Acc: 96.094% (123/128)
+INFO:root:batch_idx: 40, NumBatches: 391, Loss: 0.140 | Acc: 95.046% (4988/5248)
+INFO:root:batch_idx: 80, NumBatches: 391, Loss: 0.138 | Acc: 95.255% (9876/10368)
+INFO:root:batch_idx: 120, NumBatches: 391, Loss: 0.134 | Acc: 95.416% (14778/15488)
+INFO:root:batch_idx: 160, NumBatches: 391, Loss: 0.132 | Acc: 95.414% (19663/20608)
+INFO:root:batch_idx: 200, NumBatches: 391, Loss: 0.130 | Acc: 95.480% (24565/25728)
+INFO:root:batch_idx: 240, NumBatches: 391, Loss: 0.129 | Acc: 95.530% (29469/30848)
+INFO:root:batch_idx: 280, NumBatches: 391, Loss: 0.127 | Acc: 95.629% (34396/35968)
+INFO:root:batch_idx: 320, NumBatches: 391, Loss: 0.123 | Acc: 95.782% (39355/41088)
+INFO:root:batch_idx: 360, NumBatches: 391, Loss: 0.122 | Acc: 95.851% (44291/46208)
+INFO:root:Accuracy of plane : 89.40 %
+INFO:root:Accuracy of   car : 95.00 %
+INFO:root:Accuracy of  bird : 85.00 %
+INFO:root:Accuracy of   cat : 78.00 %
+INFO:root:Accuracy of  deer : 87.80 %
+INFO:root:Accuracy of   dog : 80.60 %
+INFO:root:Accuracy of  frog : 90.90 %
+INFO:root:Accuracy of horse : 90.10 %
+INFO:root:Accuracy of  ship : 93.00 %
+INFO:root:Accuracy of truck : 92.00 %
+INFO:root:Total Accuracy : 88.18 %
+
+INFO:root:Accuracy of plane : 84.20 %
+INFO:root:Fake Accuracy of plane : 3.50 %
+INFO:root:Accuracy of   car : 89.90 %
+INFO:root:Fake Accuracy of   car : 0.40 %
+INFO:root:Accuracy of  bird : 64.30 %
+INFO:root:Fake Accuracy of  bird : 64.30 %
+INFO:root:Accuracy of   cat : 78.50 %
+INFO:root:Fake Accuracy of   cat : 4.00 %
+INFO:root:Accuracy of  deer : 62.30 %
+INFO:root:Fake Accuracy of  deer : 4.80 %
+INFO:root:Accuracy of   dog : 70.00 %
+INFO:root:Fake Accuracy of   dog : 1.60 %
+INFO:root:Accuracy of  frog : 71.20 %
+INFO:root:Fake Accuracy of  frog : 4.00 %
+INFO:root:Accuracy of horse : 80.50 %
+INFO:root:Fake Accuracy of horse : 0.90 %
+INFO:root:Accuracy of  ship : 88.80 %
+INFO:root:Fake Accuracy of  ship : 0.90 %
+INFO:root:Accuracy of truck : 87.80 %
+INFO:root:Fake Accuracy of truck : 0.30 %
+INFO:root:Total Accuracy : 77.75 %
+
+INFO:root:@@@@@@@@ Working on client: 9
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 391, Loss: 0.159 | Acc: 96.094% (123/128)
+INFO:root:batch_idx: 40, NumBatches: 391, Loss: 0.150 | Acc: 95.008% (4986/5248)
+INFO:root:batch_idx: 80, NumBatches: 391, Loss: 0.145 | Acc: 95.062% (9856/10368)
+INFO:root:batch_idx: 120, NumBatches: 391, Loss: 0.137 | Acc: 95.254% (14753/15488)
+INFO:root:batch_idx: 160, NumBatches: 391, Loss: 0.136 | Acc: 95.361% (19652/20608)
+INFO:root:batch_idx: 200, NumBatches: 391, Loss: 0.131 | Acc: 95.519% (24575/25728)
+INFO:root:batch_idx: 240, NumBatches: 391, Loss: 0.127 | Acc: 95.611% (29494/30848)
+INFO:root:batch_idx: 280, NumBatches: 391, Loss: 0.125 | Acc: 95.710% (34425/35968)
+INFO:root:batch_idx: 320, NumBatches: 391, Loss: 0.123 | Acc: 95.797% (39361/41088)
+INFO:root:batch_idx: 360, NumBatches: 391, Loss: 0.122 | Acc: 95.793% (44264/46208)
+INFO:root:Accuracy of plane : 89.10 %
+INFO:root:Accuracy of   car : 95.40 %
+INFO:root:Accuracy of  bird : 84.00 %
+INFO:root:Accuracy of   cat : 78.30 %
+INFO:root:Accuracy of  deer : 87.60 %
+INFO:root:Accuracy of   dog : 80.30 %
+INFO:root:Accuracy of  frog : 90.90 %
+INFO:root:Accuracy of horse : 90.20 %
+INFO:root:Accuracy of  ship : 92.80 %
+INFO:root:Accuracy of truck : 91.60 %
+INFO:root:Total Accuracy : 88.02 %
+
+INFO:root:Accuracy of plane : 84.10 %
+INFO:root:Fake Accuracy of plane : 3.50 %
+INFO:root:Accuracy of   car : 90.80 %
+INFO:root:Fake Accuracy of   car : 0.40 %
+INFO:root:Accuracy of  bird : 63.50 %
+INFO:root:Fake Accuracy of  bird : 63.50 %
+INFO:root:Accuracy of   cat : 79.20 %
+INFO:root:Fake Accuracy of   cat : 3.50 %
+INFO:root:Accuracy of  deer : 62.60 %
+INFO:root:Fake Accuracy of  deer : 4.50 %
+INFO:root:Accuracy of   dog : 70.10 %
+INFO:root:Fake Accuracy of   dog : 1.60 %
+INFO:root:Accuracy of  frog : 70.80 %
+INFO:root:Fake Accuracy of  frog : 3.70 %
+INFO:root:Accuracy of horse : 80.10 %
+INFO:root:Fake Accuracy of horse : 0.80 %
+INFO:root:Accuracy of  ship : 88.60 %
+INFO:root:Fake Accuracy of  ship : 0.90 %
+INFO:root:Accuracy of truck : 87.30 %
+INFO:root:Fake Accuracy of truck : 0.30 %
+INFO:root:Total Accuracy : 77.71 %
+
+Measuring the accuracy of the averaged global model ...
+INFO:root:Accuracy of plane : 87.10 %
+INFO:root:Accuracy of   car : 95.80 %
+INFO:root:Accuracy of  bird : 85.20 %
+INFO:root:Accuracy of   cat : 78.40 %
+INFO:root:Accuracy of  deer : 88.90 %
+INFO:root:Accuracy of   dog : 83.70 %
+INFO:root:Accuracy of  frog : 91.50 %
+INFO:root:Accuracy of horse : 91.10 %
+INFO:root:Accuracy of  ship : 94.30 %
+INFO:root:Accuracy of truck : 92.20 %
+INFO:root:Total Accuracy : 88.82 %
+
+INFO:root:Accuracy of plane : 75.30 %
+INFO:root:Fake Accuracy of plane : 13.10 %
+INFO:root:Accuracy of   car : 91.90 %
+INFO:root:Fake Accuracy of   car : 0.60 %
+INFO:root:Accuracy of  bird : 73.50 %
+INFO:root:Fake Accuracy of  bird : 73.50 %
+INFO:root:Accuracy of   cat : 80.20 %
+INFO:root:Fake Accuracy of   cat : 5.70 %
+INFO:root:Accuracy of  deer : 65.00 %
+INFO:root:Fake Accuracy of  deer : 7.10 %
+INFO:root:Accuracy of   dog : 72.70 %
+INFO:root:Fake Accuracy of   dog : 2.50 %
+INFO:root:Accuracy of  frog : 69.80 %
+INFO:root:Fake Accuracy of  frog : 5.60 %
+INFO:root:Accuracy of horse : 80.30 %
+INFO:root:Fake Accuracy of horse : 1.90 %
+INFO:root:Accuracy of  ship : 89.00 %
+INFO:root:Fake Accuracy of  ship : 1.60 %
+INFO:root:Accuracy of truck : 86.90 %
+INFO:root:Fake Accuracy of truck : 0.80 %
+INFO:root:Total Accuracy : 78.46 %
+
+INFO:root:################## Starting fl round: 1
+INFO:root:@@@@@@@@ Working on client: 0
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 430, Loss: 0.231 | Acc: 91.406% (117/128)
+INFO:root:batch_idx: 40, NumBatches: 430, Loss: 0.162 | Acc: 93.636% (4914/5248)
+INFO:root:batch_idx: 80, NumBatches: 430, Loss: 0.161 | Acc: 93.692% (9714/10368)
+INFO:root:batch_idx: 120, NumBatches: 430, Loss: 0.162 | Acc: 93.653% (14505/15488)
+INFO:root:batch_idx: 160, NumBatches: 430, Loss: 0.162 | Acc: 93.677% (19305/20608)
+INFO:root:batch_idx: 200, NumBatches: 430, Loss: 0.161 | Acc: 93.773% (24126/25728)
+INFO:root:batch_idx: 240, NumBatches: 430, Loss: 0.160 | Acc: 93.747% (28919/30848)
+INFO:root:batch_idx: 280, NumBatches: 430, Loss: 0.161 | Acc: 93.708% (33705/35968)
+INFO:root:batch_idx: 320, NumBatches: 430, Loss: 0.161 | Acc: 93.706% (38502/41088)
+INFO:root:batch_idx: 360, NumBatches: 430, Loss: 0.162 | Acc: 93.659% (43278/46208)
+INFO:root:batch_idx: 400, NumBatches: 430, Loss: 0.162 | Acc: 93.686% (48087/51328)
+INFO:root:Accuracy of plane : 72.40 %
+INFO:root:Accuracy of   car : 96.10 %
+INFO:root:Accuracy of  bird : 85.80 %
+INFO:root:Accuracy of   cat : 76.70 %
+INFO:root:Accuracy of  deer : 89.50 %
+INFO:root:Accuracy of   dog : 83.50 %
+INFO:root:Accuracy of  frog : 90.90 %
+INFO:root:Accuracy of horse : 91.10 %
+INFO:root:Accuracy of  ship : 93.50 %
+INFO:root:Accuracy of truck : 90.90 %
+INFO:root:Total Accuracy : 87.04 %
+
+INFO:root:Accuracy of plane : 14.80 %
+INFO:root:Fake Accuracy of plane : 80.70 %
+INFO:root:Accuracy of   car : 91.30 %
+INFO:root:Fake Accuracy of   car : 3.20 %
+INFO:root:Accuracy of  bird : 84.30 %
+INFO:root:Fake Accuracy of  bird : 84.30 %
+INFO:root:Accuracy of   cat : 77.50 %
+INFO:root:Fake Accuracy of   cat : 13.80 %
+INFO:root:Accuracy of  deer : 56.40 %
+INFO:root:Fake Accuracy of  deer : 23.00 %
+INFO:root:Accuracy of   dog : 72.00 %
+INFO:root:Fake Accuracy of   dog : 7.00 %
+INFO:root:Accuracy of  frog : 64.90 %
+INFO:root:Fake Accuracy of  frog : 14.10 %
+INFO:root:Accuracy of horse : 77.20 %
+INFO:root:Fake Accuracy of horse : 8.50 %
+INFO:root:Accuracy of  ship : 81.80 %
+INFO:root:Fake Accuracy of  ship : 14.30 %
+INFO:root:Accuracy of truck : 83.10 %
+INFO:root:Fake Accuracy of truck : 5.70 %
+INFO:root:Total Accuracy : 70.33 %
+
+
+Epoch: 2
+INFO:root:batch_idx: 0, NumBatches: 430, Loss: 0.136 | Acc: 92.969% (119/128)
+INFO:root:batch_idx: 40, NumBatches: 430, Loss: 0.151 | Acc: 94.188% (4943/5248)
+INFO:root:batch_idx: 80, NumBatches: 430, Loss: 0.152 | Acc: 94.377% (9785/10368)
+INFO:root:batch_idx: 120, NumBatches: 430, Loss: 0.151 | Acc: 94.325% (14609/15488)
+INFO:root:batch_idx: 160, NumBatches: 430, Loss: 0.153 | Acc: 94.162% (19405/20608)
+INFO:root:batch_idx: 200, NumBatches: 430, Loss: 0.152 | Acc: 94.236% (24245/25728)
+INFO:root:batch_idx: 240, NumBatches: 430, Loss: 0.152 | Acc: 94.204% (29060/30848)
+INFO:root:batch_idx: 280, NumBatches: 430, Loss: 0.152 | Acc: 94.178% (33874/35968)
+INFO:root:batch_idx: 320, NumBatches: 430, Loss: 0.153 | Acc: 94.137% (38679/41088)
+INFO:root:batch_idx: 360, NumBatches: 430, Loss: 0.152 | Acc: 94.107% (43485/46208)
+INFO:root:batch_idx: 400, NumBatches: 430, Loss: 0.152 | Acc: 94.087% (48293/51328)
+INFO:root:Accuracy of plane : 74.40 %
+INFO:root:Accuracy of   car : 96.40 %
+INFO:root:Accuracy of  bird : 85.20 %
+INFO:root:Accuracy of   cat : 76.10 %
+INFO:root:Accuracy of  deer : 89.30 %
+INFO:root:Accuracy of   dog : 83.30 %
+INFO:root:Accuracy of  frog : 91.80 %
+INFO:root:Accuracy of horse : 91.30 %
+INFO:root:Accuracy of  ship : 93.40 %
+INFO:root:Accuracy of truck : 91.20 %
+INFO:root:Total Accuracy : 87.24 %
+
+INFO:root:Accuracy of plane : 15.60 %
+INFO:root:Fake Accuracy of plane : 80.10 %
+INFO:root:Accuracy of   car : 91.50 %
+INFO:root:Fake Accuracy of   car : 3.30 %
+INFO:root:Accuracy of  bird : 84.00 %
+INFO:root:Fake Accuracy of  bird : 84.00 %
+INFO:root:Accuracy of   cat : 76.70 %
+INFO:root:Fake Accuracy of   cat : 14.30 %
+INFO:root:Accuracy of  deer : 55.30 %
+INFO:root:Fake Accuracy of  deer : 24.50 %
+INFO:root:Accuracy of   dog : 72.40 %
+INFO:root:Fake Accuracy of   dog : 7.30 %
+INFO:root:Accuracy of  frog : 65.40 %
+INFO:root:Fake Accuracy of  frog : 14.80 %
+INFO:root:Accuracy of horse : 76.90 %
+INFO:root:Fake Accuracy of horse : 8.90 %
+INFO:root:Accuracy of  ship : 80.70 %
+INFO:root:Fake Accuracy of  ship : 15.10 %
+INFO:root:Accuracy of truck : 83.00 %
+INFO:root:Fake Accuracy of truck : 6.00 %
+INFO:root:Total Accuracy : 70.15 %
+
+
+Epoch: 3
+INFO:root:batch_idx: 0, NumBatches: 430, Loss: 0.164 | Acc: 93.750% (120/128)
+INFO:root:batch_idx: 40, NumBatches: 430, Loss: 0.148 | Acc: 93.960% (4931/5248)
+INFO:root:batch_idx: 80, NumBatches: 430, Loss: 0.148 | Acc: 94.117% (9758/10368)
+INFO:root:batch_idx: 120, NumBatches: 430, Loss: 0.147 | Acc: 94.131% (14579/15488)
+INFO:root:batch_idx: 160, NumBatches: 430, Loss: 0.149 | Acc: 94.017% (19375/20608)
+INFO:root:batch_idx: 200, NumBatches: 430, Loss: 0.149 | Acc: 94.022% (24190/25728)
+INFO:root:batch_idx: 240, NumBatches: 430, Loss: 0.150 | Acc: 94.000% (28997/30848)
+INFO:root:batch_idx: 280, NumBatches: 430, Loss: 0.150 | Acc: 94.034% (33822/35968)
+INFO:root:batch_idx: 320, NumBatches: 430, Loss: 0.150 | Acc: 94.015% (38629/41088)
+INFO:root:batch_idx: 360, NumBatches: 430, Loss: 0.150 | Acc: 94.072% (43469/46208)
+INFO:root:batch_idx: 400, NumBatches: 430, Loss: 0.149 | Acc: 94.116% (48308/51328)
+INFO:root:Accuracy of plane : 73.60 %
+INFO:root:Accuracy of   car : 96.40 %
+INFO:root:Accuracy of  bird : 85.40 %
+INFO:root:Accuracy of   cat : 77.70 %
+INFO:root:Accuracy of  deer : 89.70 %
+INFO:root:Accuracy of   dog : 82.70 %
+INFO:root:Accuracy of  frog : 91.90 %
+INFO:root:Accuracy of horse : 91.20 %
+INFO:root:Accuracy of  ship : 93.40 %
+INFO:root:Accuracy of truck : 91.20 %
+INFO:root:Total Accuracy : 87.32 %
+
+INFO:root:Accuracy of plane : 12.60 %
+INFO:root:Fake Accuracy of plane : 83.50 %
+INFO:root:Accuracy of   car : 91.50 %
+INFO:root:Fake Accuracy of   car : 3.40 %
+INFO:root:Accuracy of  bird : 84.60 %
+INFO:root:Fake Accuracy of  bird : 84.60 %
+INFO:root:Accuracy of   cat : 77.60 %
+INFO:root:Fake Accuracy of   cat : 14.30 %
+INFO:root:Accuracy of  deer : 53.90 %
+INFO:root:Fake Accuracy of  deer : 25.30 %
+INFO:root:Accuracy of   dog : 70.60 %
+INFO:root:Fake Accuracy of   dog : 7.70 %
+INFO:root:Accuracy of  frog : 65.00 %
+INFO:root:Fake Accuracy of  frog : 15.00 %
+INFO:root:Accuracy of horse : 76.50 %
+INFO:root:Fake Accuracy of horse : 9.70 %
+INFO:root:Accuracy of  ship : 77.40 %
+INFO:root:Fake Accuracy of  ship : 17.80 %
+INFO:root:Accuracy of truck : 82.40 %
+INFO:root:Fake Accuracy of truck : 6.80 %
+INFO:root:Total Accuracy : 69.21 %
+
+
+Epoch: 4
+INFO:root:batch_idx: 0, NumBatches: 430, Loss: 0.162 | Acc: 92.969% (119/128)
+INFO:root:batch_idx: 40, NumBatches: 430, Loss: 0.148 | Acc: 94.379% (4953/5248)
+INFO:root:batch_idx: 80, NumBatches: 430, Loss: 0.147 | Acc: 94.203% (9767/10368)
+INFO:root:batch_idx: 120, NumBatches: 430, Loss: 0.149 | Acc: 94.131% (14579/15488)
+INFO:root:batch_idx: 160, NumBatches: 430, Loss: 0.144 | Acc: 94.289% (19431/20608)
+INFO:root:batch_idx: 200, NumBatches: 430, Loss: 0.143 | Acc: 94.380% (24282/25728)
+INFO:root:batch_idx: 240, NumBatches: 430, Loss: 0.143 | Acc: 94.369% (29111/30848)
+INFO:root:batch_idx: 280, NumBatches: 430, Loss: 0.142 | Acc: 94.420% (33961/35968)
+INFO:root:batch_idx: 320, NumBatches: 430, Loss: 0.143 | Acc: 94.366% (38773/41088)
+INFO:root:batch_idx: 360, NumBatches: 430, Loss: 0.142 | Acc: 94.367% (43605/46208)
+INFO:root:batch_idx: 400, NumBatches: 430, Loss: 0.142 | Acc: 94.368% (48437/51328)
+INFO:root:Accuracy of plane : 74.60 %
+INFO:root:Accuracy of   car : 96.10 %
+INFO:root:Accuracy of  bird : 85.20 %
+INFO:root:Accuracy of   cat : 77.00 %
+INFO:root:Accuracy of  deer : 89.60 %
+INFO:root:Accuracy of   dog : 83.30 %
+INFO:root:Accuracy of  frog : 91.40 %
+INFO:root:Accuracy of horse : 91.60 %
+INFO:root:Accuracy of  ship : 93.70 %
+INFO:root:Accuracy of truck : 91.60 %
+INFO:root:Total Accuracy : 87.41 %
+
+INFO:root:Accuracy of plane : 12.40 %
+INFO:root:Fake Accuracy of plane : 83.60 %
+INFO:root:Accuracy of   car : 91.30 %
+INFO:root:Fake Accuracy of   car : 3.30 %
+INFO:root:Accuracy of  bird : 84.40 %
+INFO:root:Fake Accuracy of  bird : 84.40 %
+INFO:root:Accuracy of   cat : 76.70 %
+INFO:root:Fake Accuracy of   cat : 14.70 %
+INFO:root:Accuracy of  deer : 54.20 %
+INFO:root:Fake Accuracy of  deer : 25.50 %
+INFO:root:Accuracy of   dog : 71.80 %
+INFO:root:Fake Accuracy of   dog : 7.70 %
+INFO:root:Accuracy of  frog : 64.50 %
+INFO:root:Fake Accuracy of  frog : 15.60 %
+INFO:root:Accuracy of horse : 76.70 %
+INFO:root:Fake Accuracy of horse : 9.60 %
+INFO:root:Accuracy of  ship : 79.60 %
+INFO:root:Fake Accuracy of  ship : 15.90 %
+INFO:root:Accuracy of truck : 82.60 %
+INFO:root:Fake Accuracy of truck : 6.80 %
+INFO:root:Total Accuracy : 69.42 %
+
+
+Epoch: 5
+INFO:root:batch_idx: 0, NumBatches: 430, Loss: 0.075 | Acc: 97.656% (125/128)
+INFO:root:batch_idx: 40, NumBatches: 430, Loss: 0.134 | Acc: 94.703% (4970/5248)
+INFO:root:batch_idx: 80, NumBatches: 430, Loss: 0.134 | Acc: 94.715% (9820/10368)
+INFO:root:batch_idx: 120, NumBatches: 430, Loss: 0.136 | Acc: 94.764% (14677/15488)
+INFO:root:batch_idx: 160, NumBatches: 430, Loss: 0.136 | Acc: 94.827% (19542/20608)
+INFO:root:batch_idx: 200, NumBatches: 430, Loss: 0.137 | Acc: 94.741% (24375/25728)
+INFO:root:batch_idx: 240, NumBatches: 430, Loss: 0.138 | Acc: 94.641% (29195/30848)
+INFO:root:batch_idx: 280, NumBatches: 430, Loss: 0.140 | Acc: 94.584% (34020/35968)
+INFO:root:batch_idx: 320, NumBatches: 430, Loss: 0.140 | Acc: 94.585% (38863/41088)
+INFO:root:batch_idx: 360, NumBatches: 430, Loss: 0.139 | Acc: 94.607% (43716/46208)
+INFO:root:batch_idx: 400, NumBatches: 430, Loss: 0.139 | Acc: 94.586% (48549/51328)
+INFO:root:Accuracy of plane : 74.40 %
+INFO:root:Accuracy of   car : 96.30 %
+INFO:root:Accuracy of  bird : 85.40 %
+INFO:root:Accuracy of   cat : 76.30 %
+INFO:root:Accuracy of  deer : 89.20 %
+INFO:root:Accuracy of   dog : 83.80 %
+INFO:root:Accuracy of  frog : 91.80 %
+INFO:root:Accuracy of horse : 91.70 %
+INFO:root:Accuracy of  ship : 93.60 %
+INFO:root:Accuracy of truck : 91.30 %
+INFO:root:Total Accuracy : 87.38 %
+
+INFO:root:Accuracy of plane : 10.60 %
+INFO:root:Fake Accuracy of plane : 86.10 %
+INFO:root:Accuracy of   car : 90.90 %
+INFO:root:Fake Accuracy of   car : 3.70 %
+INFO:root:Accuracy of  bird : 85.10 %
+INFO:root:Fake Accuracy of  bird : 85.10 %
+INFO:root:Accuracy of   cat : 75.90 %
+INFO:root:Fake Accuracy of   cat : 15.10 %
+INFO:root:Accuracy of  deer : 52.90 %
+INFO:root:Fake Accuracy of  deer : 27.20 %
+INFO:root:Accuracy of   dog : 71.80 %
+INFO:root:Fake Accuracy of   dog : 8.00 %
+INFO:root:Accuracy of  frog : 65.00 %
+INFO:root:Fake Accuracy of  frog : 16.20 %
+INFO:root:Accuracy of horse : 76.30 %
+INFO:root:Fake Accuracy of horse : 10.30 %
+INFO:root:Accuracy of  ship : 78.50 %
+INFO:root:Fake Accuracy of  ship : 17.10 %
+INFO:root:Accuracy of truck : 82.10 %
+INFO:root:Fake Accuracy of truck : 7.10 %
+INFO:root:Total Accuracy : 68.91 %
+
+INFO:root:@@@@@@@@ Working on client: 1
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 391, Loss: 0.125 | Acc: 94.531% (121/128)
+INFO:root:batch_idx: 40, NumBatches: 391, Loss: 0.099 | Acc: 96.875% (5084/5248)
+INFO:root:batch_idx: 80, NumBatches: 391, Loss: 0.100 | Acc: 96.788% (10035/10368)
+INFO:root:batch_idx: 120, NumBatches: 391, Loss: 0.099 | Acc: 96.739% (14983/15488)
+INFO:root:batch_idx: 160, NumBatches: 391, Loss: 0.100 | Acc: 96.657% (19919/20608)
+INFO:root:batch_idx: 200, NumBatches: 391, Loss: 0.103 | Acc: 96.541% (24838/25728)
+INFO:root:batch_idx: 240, NumBatches: 391, Loss: 0.102 | Acc: 96.580% (29793/30848)
+INFO:root:batch_idx: 280, NumBatches: 391, Loss: 0.101 | Acc: 96.611% (34749/35968)
+INFO:root:batch_idx: 320, NumBatches: 391, Loss: 0.100 | Acc: 96.636% (39706/41088)
+INFO:root:batch_idx: 360, NumBatches: 391, Loss: 0.100 | Acc: 96.617% (44645/46208)
+INFO:root:Accuracy of plane : 89.50 %
+INFO:root:Accuracy of   car : 95.30 %
+INFO:root:Accuracy of  bird : 84.50 %
+INFO:root:Accuracy of   cat : 79.00 %
+INFO:root:Accuracy of  deer : 87.70 %
+INFO:root:Accuracy of   dog : 82.60 %
+INFO:root:Accuracy of  frog : 91.90 %
+INFO:root:Accuracy of horse : 90.80 %
+INFO:root:Accuracy of  ship : 93.60 %
+INFO:root:Accuracy of truck : 92.20 %
+INFO:root:Total Accuracy : 88.71 %
+
+INFO:root:Accuracy of plane : 83.80 %
+INFO:root:Fake Accuracy of plane : 3.90 %
+INFO:root:Accuracy of   car : 91.10 %
+INFO:root:Fake Accuracy of   car : 0.40 %
+INFO:root:Accuracy of  bird : 64.70 %
+INFO:root:Fake Accuracy of  bird : 64.70 %
+INFO:root:Accuracy of   cat : 79.40 %
+INFO:root:Fake Accuracy of   cat : 3.50 %
+INFO:root:Accuracy of  deer : 62.50 %
+INFO:root:Fake Accuracy of  deer : 4.60 %
+INFO:root:Accuracy of   dog : 71.80 %
+INFO:root:Fake Accuracy of   dog : 1.60 %
+INFO:root:Accuracy of  frog : 72.20 %
+INFO:root:Fake Accuracy of  frog : 3.60 %
+INFO:root:Accuracy of horse : 81.20 %
+INFO:root:Fake Accuracy of horse : 0.80 %
+INFO:root:Accuracy of  ship : 89.30 %
+INFO:root:Fake Accuracy of  ship : 1.00 %
+INFO:root:Accuracy of truck : 87.40 %
+INFO:root:Fake Accuracy of truck : 0.30 %
+INFO:root:Total Accuracy : 78.34 %
+
+INFO:root:@@@@@@@@ Working on client: 2
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 391, Loss: 0.150 | Acc: 94.531% (121/128)
+INFO:root:batch_idx: 40, NumBatches: 391, Loss: 0.108 | Acc: 96.113% (5044/5248)
+INFO:root:batch_idx: 80, NumBatches: 391, Loss: 0.107 | Acc: 96.489% (10004/10368)
+INFO:root:batch_idx: 120, NumBatches: 391, Loss: 0.103 | Acc: 96.610% (14963/15488)
+INFO:root:batch_idx: 160, NumBatches: 391, Loss: 0.104 | Acc: 96.521% (19891/20608)
+INFO:root:batch_idx: 200, NumBatches: 391, Loss: 0.103 | Acc: 96.451% (24815/25728)
+INFO:root:batch_idx: 240, NumBatches: 391, Loss: 0.104 | Acc: 96.424% (29745/30848)
+INFO:root:batch_idx: 280, NumBatches: 391, Loss: 0.104 | Acc: 96.422% (34681/35968)
+INFO:root:batch_idx: 320, NumBatches: 391, Loss: 0.103 | Acc: 96.483% (39643/41088)
+INFO:root:batch_idx: 360, NumBatches: 391, Loss: 0.101 | Acc: 96.557% (44617/46208)
+INFO:root:Accuracy of plane : 88.90 %
+INFO:root:Accuracy of   car : 95.80 %
+INFO:root:Accuracy of  bird : 84.20 %
+INFO:root:Accuracy of   cat : 78.50 %
+INFO:root:Accuracy of  deer : 88.60 %
+INFO:root:Accuracy of   dog : 82.90 %
+INFO:root:Accuracy of  frog : 91.90 %
+INFO:root:Accuracy of horse : 90.70 %
+INFO:root:Accuracy of  ship : 93.40 %
+INFO:root:Accuracy of truck : 91.60 %
+INFO:root:Total Accuracy : 88.65 %
+
+INFO:root:Accuracy of plane : 83.90 %
+INFO:root:Fake Accuracy of plane : 4.00 %
+INFO:root:Accuracy of   car : 91.80 %
+INFO:root:Fake Accuracy of   car : 0.40 %
+INFO:root:Accuracy of  bird : 64.70 %
+INFO:root:Fake Accuracy of  bird : 64.70 %
+INFO:root:Accuracy of   cat : 79.60 %
+INFO:root:Fake Accuracy of   cat : 3.40 %
+INFO:root:Accuracy of  deer : 65.20 %
+INFO:root:Fake Accuracy of  deer : 4.20 %
+INFO:root:Accuracy of   dog : 72.40 %
+INFO:root:Fake Accuracy of   dog : 1.50 %
+INFO:root:Accuracy of  frog : 72.90 %
+INFO:root:Fake Accuracy of  frog : 3.20 %
+INFO:root:Accuracy of horse : 81.00 %
+INFO:root:Fake Accuracy of horse : 0.80 %
+INFO:root:Accuracy of  ship : 89.10 %
+INFO:root:Fake Accuracy of  ship : 1.00 %
+INFO:root:Accuracy of truck : 87.20 %
+INFO:root:Fake Accuracy of truck : 0.30 %
+INFO:root:Total Accuracy : 78.78 %
+
+INFO:root:@@@@@@@@ Working on client: 3
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 391, Loss: 0.036 | Acc: 100.000% (128/128)
+INFO:root:batch_idx: 40, NumBatches: 391, Loss: 0.096 | Acc: 96.932% (5087/5248)
+INFO:root:batch_idx: 80, NumBatches: 391, Loss: 0.099 | Acc: 96.788% (10035/10368)
+INFO:root:batch_idx: 120, NumBatches: 391, Loss: 0.101 | Acc: 96.681% (14974/15488)
+INFO:root:batch_idx: 160, NumBatches: 391, Loss: 0.098 | Acc: 96.807% (19950/20608)
+INFO:root:batch_idx: 200, NumBatches: 391, Loss: 0.097 | Acc: 96.801% (24905/25728)
+INFO:root:batch_idx: 240, NumBatches: 391, Loss: 0.098 | Acc: 96.778% (29854/30848)
+INFO:root:batch_idx: 280, NumBatches: 391, Loss: 0.099 | Acc: 96.750% (34799/35968)
+INFO:root:batch_idx: 320, NumBatches: 391, Loss: 0.100 | Acc: 96.727% (39743/41088)
+INFO:root:batch_idx: 360, NumBatches: 391, Loss: 0.099 | Acc: 96.704% (44685/46208)
+INFO:root:Accuracy of plane : 89.40 %
+INFO:root:Accuracy of   car : 95.20 %
+INFO:root:Accuracy of  bird : 84.20 %
+INFO:root:Accuracy of   cat : 78.70 %
+INFO:root:Accuracy of  deer : 87.60 %
+INFO:root:Accuracy of   dog : 82.60 %
+INFO:root:Accuracy of  frog : 91.60 %
+INFO:root:Accuracy of horse : 90.90 %
+INFO:root:Accuracy of  ship : 93.70 %
+INFO:root:Accuracy of truck : 92.70 %
+INFO:root:Total Accuracy : 88.66 %
+
+INFO:root:Accuracy of plane : 84.30 %
+INFO:root:Fake Accuracy of plane : 3.80 %
+INFO:root:Accuracy of   car : 91.00 %
+INFO:root:Fake Accuracy of   car : 0.40 %
+INFO:root:Accuracy of  bird : 64.10 %
+INFO:root:Fake Accuracy of  bird : 64.10 %
+INFO:root:Accuracy of   cat : 79.90 %
+INFO:root:Fake Accuracy of   cat : 3.40 %
+INFO:root:Accuracy of  deer : 63.30 %
+INFO:root:Fake Accuracy of  deer : 4.10 %
+INFO:root:Accuracy of   dog : 71.80 %
+INFO:root:Fake Accuracy of   dog : 1.50 %
+INFO:root:Accuracy of  frog : 71.60 %
+INFO:root:Fake Accuracy of  frog : 3.50 %
+INFO:root:Accuracy of horse : 81.40 %
+INFO:root:Fake Accuracy of horse : 0.80 %
+INFO:root:Accuracy of  ship : 89.30 %
+INFO:root:Fake Accuracy of  ship : 0.80 %
+INFO:root:Accuracy of truck : 88.10 %
+INFO:root:Fake Accuracy of truck : 0.30 %
+INFO:root:Total Accuracy : 78.48 %
+
+INFO:root:@@@@@@@@ Working on client: 4
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 391, Loss: 0.106 | Acc: 96.094% (123/128)
+INFO:root:batch_idx: 40, NumBatches: 391, Loss: 0.101 | Acc: 96.551% (5067/5248)
+INFO:root:batch_idx: 80, NumBatches: 391, Loss: 0.101 | Acc: 96.547% (10010/10368)
+INFO:root:batch_idx: 120, NumBatches: 391, Loss: 0.099 | Acc: 96.578% (14958/15488)
+INFO:root:batch_idx: 160, NumBatches: 391, Loss: 0.102 | Acc: 96.550% (19897/20608)
+INFO:root:batch_idx: 200, NumBatches: 391, Loss: 0.102 | Acc: 96.580% (24848/25728)
+INFO:root:batch_idx: 240, NumBatches: 391, Loss: 0.102 | Acc: 96.570% (29790/30848)
+INFO:root:batch_idx: 280, NumBatches: 391, Loss: 0.101 | Acc: 96.564% (34732/35968)
+INFO:root:batch_idx: 320, NumBatches: 391, Loss: 0.101 | Acc: 96.561% (39675/41088)
+INFO:root:batch_idx: 360, NumBatches: 391, Loss: 0.100 | Acc: 96.555% (44616/46208)
+INFO:root:Accuracy of plane : 89.40 %
+INFO:root:Accuracy of   car : 95.30 %
+INFO:root:Accuracy of  bird : 84.50 %
+INFO:root:Accuracy of   cat : 78.10 %
+INFO:root:Accuracy of  deer : 87.70 %
+INFO:root:Accuracy of   dog : 82.60 %
+INFO:root:Accuracy of  frog : 91.40 %
+INFO:root:Accuracy of horse : 91.40 %
+INFO:root:Accuracy of  ship : 93.40 %
+INFO:root:Accuracy of truck : 91.70 %
+INFO:root:Total Accuracy : 88.55 %
+
+INFO:root:Accuracy of plane : 84.60 %
+INFO:root:Fake Accuracy of plane : 3.80 %
+INFO:root:Accuracy of   car : 91.20 %
+INFO:root:Fake Accuracy of   car : 0.40 %
+INFO:root:Accuracy of  bird : 65.00 %
+INFO:root:Fake Accuracy of  bird : 65.00 %
+INFO:root:Accuracy of   cat : 79.20 %
+INFO:root:Fake Accuracy of   cat : 3.80 %
+INFO:root:Accuracy of  deer : 63.70 %
+INFO:root:Fake Accuracy of  deer : 4.40 %
+INFO:root:Accuracy of   dog : 72.20 %
+INFO:root:Fake Accuracy of   dog : 1.50 %
+INFO:root:Accuracy of  frog : 71.40 %
+INFO:root:Fake Accuracy of  frog : 3.80 %
+INFO:root:Accuracy of horse : 81.60 %
+INFO:root:Fake Accuracy of horse : 0.70 %
+INFO:root:Accuracy of  ship : 89.30 %
+INFO:root:Fake Accuracy of  ship : 1.00 %
+INFO:root:Accuracy of truck : 87.20 %
+INFO:root:Fake Accuracy of truck : 0.30 %
+INFO:root:Total Accuracy : 78.54 %
+
+INFO:root:@@@@@@@@ Working on client: 5
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 391, Loss: 0.102 | Acc: 95.312% (122/128)
+INFO:root:batch_idx: 40, NumBatches: 391, Loss: 0.113 | Acc: 96.246% (5051/5248)
+INFO:root:batch_idx: 80, NumBatches: 391, Loss: 0.106 | Acc: 96.518% (10007/10368)
+INFO:root:batch_idx: 120, NumBatches: 391, Loss: 0.105 | Acc: 96.520% (14949/15488)
+INFO:root:batch_idx: 160, NumBatches: 391, Loss: 0.105 | Acc: 96.438% (19874/20608)
+INFO:root:batch_idx: 200, NumBatches: 391, Loss: 0.105 | Acc: 96.463% (24818/25728)
+INFO:root:batch_idx: 240, NumBatches: 391, Loss: 0.103 | Acc: 96.496% (29767/30848)
+INFO:root:batch_idx: 280, NumBatches: 391, Loss: 0.101 | Acc: 96.527% (34719/35968)
+INFO:root:batch_idx: 320, NumBatches: 391, Loss: 0.101 | Acc: 96.573% (39680/41088)
+INFO:root:batch_idx: 360, NumBatches: 391, Loss: 0.100 | Acc: 96.609% (44641/46208)
+INFO:root:Accuracy of plane : 89.20 %
+INFO:root:Accuracy of   car : 95.80 %
+INFO:root:Accuracy of  bird : 84.50 %
+INFO:root:Accuracy of   cat : 78.30 %
+INFO:root:Accuracy of  deer : 88.40 %
+INFO:root:Accuracy of   dog : 82.60 %
+INFO:root:Accuracy of  frog : 91.40 %
+INFO:root:Accuracy of horse : 91.10 %
+INFO:root:Accuracy of  ship : 93.70 %
+INFO:root:Accuracy of truck : 92.20 %
+INFO:root:Total Accuracy : 88.72 %
+
+INFO:root:Accuracy of plane : 83.90 %
+INFO:root:Fake Accuracy of plane : 3.90 %
+INFO:root:Accuracy of   car : 91.10 %
+INFO:root:Fake Accuracy of   car : 0.40 %
+INFO:root:Accuracy of  bird : 64.90 %
+INFO:root:Fake Accuracy of  bird : 64.90 %
+INFO:root:Accuracy of   cat : 78.60 %
+INFO:root:Fake Accuracy of   cat : 3.90 %
+INFO:root:Accuracy of  deer : 64.30 %
+INFO:root:Fake Accuracy of  deer : 4.80 %
+INFO:root:Accuracy of   dog : 71.50 %
+INFO:root:Fake Accuracy of   dog : 1.60 %
+INFO:root:Accuracy of  frog : 71.70 %
+INFO:root:Fake Accuracy of  frog : 3.80 %
+INFO:root:Accuracy of horse : 81.30 %
+INFO:root:Fake Accuracy of horse : 0.80 %
+INFO:root:Accuracy of  ship : 89.60 %
+INFO:root:Fake Accuracy of  ship : 1.00 %
+INFO:root:Accuracy of truck : 87.80 %
+INFO:root:Fake Accuracy of truck : 0.30 %
+INFO:root:Total Accuracy : 78.47 %
+
+INFO:root:@@@@@@@@ Working on client: 6
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 391, Loss: 0.050 | Acc: 99.219% (127/128)
+INFO:root:batch_idx: 40, NumBatches: 391, Loss: 0.114 | Acc: 96.189% (5048/5248)
+INFO:root:batch_idx: 80, NumBatches: 391, Loss: 0.105 | Acc: 96.364% (9991/10368)
+INFO:root:batch_idx: 120, NumBatches: 391, Loss: 0.103 | Acc: 96.455% (14939/15488)
+INFO:root:batch_idx: 160, NumBatches: 391, Loss: 0.104 | Acc: 96.458% (19878/20608)
+INFO:root:batch_idx: 200, NumBatches: 391, Loss: 0.105 | Acc: 96.451% (24815/25728)
+INFO:root:batch_idx: 240, NumBatches: 391, Loss: 0.105 | Acc: 96.457% (29755/30848)
+INFO:root:batch_idx: 280, NumBatches: 391, Loss: 0.103 | Acc: 96.544% (34725/35968)
+INFO:root:batch_idx: 320, NumBatches: 391, Loss: 0.102 | Acc: 96.583% (39684/41088)
+INFO:root:batch_idx: 360, NumBatches: 391, Loss: 0.102 | Acc: 96.591% (44633/46208)
+INFO:root:Accuracy of plane : 89.30 %
+INFO:root:Accuracy of   car : 95.50 %
+INFO:root:Accuracy of  bird : 84.50 %
+INFO:root:Accuracy of   cat : 77.80 %
+INFO:root:Accuracy of  deer : 88.10 %
+INFO:root:Accuracy of   dog : 83.20 %
+INFO:root:Accuracy of  frog : 91.40 %
+INFO:root:Accuracy of horse : 91.20 %
+INFO:root:Accuracy of  ship : 93.40 %
+INFO:root:Accuracy of truck : 91.70 %
+INFO:root:Total Accuracy : 88.61 %
+
+INFO:root:Accuracy of plane : 84.50 %
+INFO:root:Fake Accuracy of plane : 3.70 %
+INFO:root:Accuracy of   car : 91.00 %
+INFO:root:Fake Accuracy of   car : 0.40 %
+INFO:root:Accuracy of  bird : 65.20 %
+INFO:root:Fake Accuracy of  bird : 65.20 %
+INFO:root:Accuracy of   cat : 79.10 %
+INFO:root:Fake Accuracy of   cat : 3.90 %
+INFO:root:Accuracy of  deer : 63.20 %
+INFO:root:Fake Accuracy of  deer : 4.50 %
+INFO:root:Accuracy of   dog : 72.50 %
+INFO:root:Fake Accuracy of   dog : 1.70 %
+INFO:root:Accuracy of  frog : 71.30 %
+INFO:root:Fake Accuracy of  frog : 3.70 %
+INFO:root:Accuracy of horse : 81.30 %
+INFO:root:Fake Accuracy of horse : 0.80 %
+INFO:root:Accuracy of  ship : 89.40 %
+INFO:root:Fake Accuracy of  ship : 1.00 %
+INFO:root:Accuracy of truck : 87.60 %
+INFO:root:Fake Accuracy of truck : 0.30 %
+INFO:root:Total Accuracy : 78.51 %
+
+INFO:root:@@@@@@@@ Working on client: 7
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 391, Loss: 0.113 | Acc: 96.875% (124/128)
+INFO:root:batch_idx: 40, NumBatches: 391, Loss: 0.108 | Acc: 96.513% (5065/5248)
+INFO:root:batch_idx: 80, NumBatches: 391, Loss: 0.100 | Acc: 96.807% (10037/10368)
+INFO:root:batch_idx: 120, NumBatches: 391, Loss: 0.103 | Acc: 96.688% (14975/15488)
+INFO:root:batch_idx: 160, NumBatches: 391, Loss: 0.102 | Acc: 96.700% (19928/20608)
+INFO:root:batch_idx: 200, NumBatches: 391, Loss: 0.103 | Acc: 96.618% (24858/25728)
+INFO:root:batch_idx: 240, NumBatches: 391, Loss: 0.103 | Acc: 96.557% (29786/30848)
+INFO:root:batch_idx: 280, NumBatches: 391, Loss: 0.103 | Acc: 96.569% (34734/35968)
+INFO:root:batch_idx: 320, NumBatches: 391, Loss: 0.102 | Acc: 96.622% (39700/41088)
+INFO:root:batch_idx: 360, NumBatches: 391, Loss: 0.101 | Acc: 96.650% (44660/46208)
+INFO:root:Accuracy of plane : 89.20 %
+INFO:root:Accuracy of   car : 95.70 %
+INFO:root:Accuracy of  bird : 84.40 %
+INFO:root:Accuracy of   cat : 77.90 %
+INFO:root:Accuracy of  deer : 88.40 %
+INFO:root:Accuracy of   dog : 82.90 %
+INFO:root:Accuracy of  frog : 91.30 %
+INFO:root:Accuracy of horse : 91.00 %
+INFO:root:Accuracy of  ship : 93.10 %
+INFO:root:Accuracy of truck : 91.60 %
+INFO:root:Total Accuracy : 88.55 %
+
+INFO:root:Accuracy of plane : 84.50 %
+INFO:root:Fake Accuracy of plane : 3.80 %
+INFO:root:Accuracy of   car : 91.40 %
+INFO:root:Fake Accuracy of   car : 0.40 %
+INFO:root:Accuracy of  bird : 64.90 %
+INFO:root:Fake Accuracy of  bird : 64.90 %
+INFO:root:Accuracy of   cat : 78.90 %
+INFO:root:Fake Accuracy of   cat : 3.50 %
+INFO:root:Accuracy of  deer : 64.40 %
+INFO:root:Fake Accuracy of  deer : 4.40 %
+INFO:root:Accuracy of   dog : 72.20 %
+INFO:root:Fake Accuracy of   dog : 1.50 %
+INFO:root:Accuracy of  frog : 72.30 %
+INFO:root:Fake Accuracy of  frog : 3.60 %
+INFO:root:Accuracy of horse : 81.00 %
+INFO:root:Fake Accuracy of horse : 0.80 %
+INFO:root:Accuracy of  ship : 88.70 %
+INFO:root:Fake Accuracy of  ship : 1.00 %
+INFO:root:Accuracy of truck : 87.60 %
+INFO:root:Fake Accuracy of truck : 0.30 %
+INFO:root:Total Accuracy : 78.59 %
+
+INFO:root:@@@@@@@@ Working on client: 8
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 391, Loss: 0.061 | Acc: 97.656% (125/128)
+INFO:root:batch_idx: 40, NumBatches: 391, Loss: 0.093 | Acc: 96.704% (5075/5248)
+INFO:root:batch_idx: 80, NumBatches: 391, Loss: 0.097 | Acc: 96.615% (10017/10368)
+INFO:root:batch_idx: 120, NumBatches: 391, Loss: 0.099 | Acc: 96.501% (14946/15488)
+INFO:root:batch_idx: 160, NumBatches: 391, Loss: 0.097 | Acc: 96.598% (19907/20608)
+INFO:root:batch_idx: 200, NumBatches: 391, Loss: 0.098 | Acc: 96.529% (24835/25728)
+INFO:root:batch_idx: 240, NumBatches: 391, Loss: 0.099 | Acc: 96.525% (29776/30848)
+INFO:root:batch_idx: 280, NumBatches: 391, Loss: 0.099 | Acc: 96.566% (34733/35968)
+INFO:root:batch_idx: 320, NumBatches: 391, Loss: 0.098 | Acc: 96.581% (39683/41088)
+INFO:root:batch_idx: 360, NumBatches: 391, Loss: 0.098 | Acc: 96.607% (44640/46208)
+INFO:root:Accuracy of plane : 88.90 %
+INFO:root:Accuracy of   car : 95.50 %
+INFO:root:Accuracy of  bird : 84.90 %
+INFO:root:Accuracy of   cat : 78.60 %
+INFO:root:Accuracy of  deer : 88.60 %
+INFO:root:Accuracy of   dog : 82.60 %
+INFO:root:Accuracy of  frog : 91.30 %
+INFO:root:Accuracy of horse : 90.70 %
+INFO:root:Accuracy of  ship : 93.10 %
+INFO:root:Accuracy of truck : 92.30 %
+INFO:root:Total Accuracy : 88.65 %
+
+INFO:root:Accuracy of plane : 84.70 %
+INFO:root:Fake Accuracy of plane : 3.70 %
+INFO:root:Accuracy of   car : 91.40 %
+INFO:root:Fake Accuracy of   car : 0.40 %
+INFO:root:Accuracy of  bird : 64.80 %
+INFO:root:Fake Accuracy of  bird : 64.80 %
+INFO:root:Accuracy of   cat : 79.20 %
+INFO:root:Fake Accuracy of   cat : 3.50 %
+INFO:root:Accuracy of  deer : 63.90 %
+INFO:root:Fake Accuracy of  deer : 4.60 %
+INFO:root:Accuracy of   dog : 72.20 %
+INFO:root:Fake Accuracy of   dog : 1.60 %
+INFO:root:Accuracy of  frog : 72.40 %
+INFO:root:Fake Accuracy of  frog : 3.80 %
+INFO:root:Accuracy of horse : 81.10 %
+INFO:root:Fake Accuracy of horse : 0.80 %
+INFO:root:Accuracy of  ship : 88.80 %
+INFO:root:Fake Accuracy of  ship : 0.90 %
+INFO:root:Accuracy of truck : 88.00 %
+INFO:root:Fake Accuracy of truck : 0.30 %
+INFO:root:Total Accuracy : 78.65 %
+
+INFO:root:@@@@@@@@ Working on client: 9
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 391, Loss: 0.285 | Acc: 92.969% (119/128)
+INFO:root:batch_idx: 40, NumBatches: 391, Loss: 0.111 | Acc: 96.227% (5050/5248)
+INFO:root:batch_idx: 80, NumBatches: 391, Loss: 0.107 | Acc: 96.373% (9992/10368)
+INFO:root:batch_idx: 120, NumBatches: 391, Loss: 0.103 | Acc: 96.533% (14951/15488)
+INFO:root:batch_idx: 160, NumBatches: 391, Loss: 0.105 | Acc: 96.511% (19889/20608)
+INFO:root:batch_idx: 200, NumBatches: 391, Loss: 0.102 | Acc: 96.587% (24850/25728)
+INFO:root:batch_idx: 240, NumBatches: 391, Loss: 0.102 | Acc: 96.596% (29798/30848)
+INFO:root:batch_idx: 280, NumBatches: 391, Loss: 0.102 | Acc: 96.603% (34746/35968)
+INFO:root:batch_idx: 320, NumBatches: 391, Loss: 0.101 | Acc: 96.617% (39698/41088)
+INFO:root:batch_idx: 360, NumBatches: 391, Loss: 0.101 | Acc: 96.635% (44653/46208)
+INFO:root:Accuracy of plane : 89.10 %
+INFO:root:Accuracy of   car : 95.60 %
+INFO:root:Accuracy of  bird : 84.20 %
+INFO:root:Accuracy of   cat : 78.40 %
+INFO:root:Accuracy of  deer : 87.90 %
+INFO:root:Accuracy of   dog : 83.20 %
+INFO:root:Accuracy of  frog : 91.40 %
+INFO:root:Accuracy of horse : 90.60 %
+INFO:root:Accuracy of  ship : 93.20 %
+INFO:root:Accuracy of truck : 92.10 %
+INFO:root:Total Accuracy : 88.57 %
+
+INFO:root:Accuracy of plane : 83.90 %
+INFO:root:Fake Accuracy of plane : 3.90 %
+INFO:root:Accuracy of   car : 91.40 %
+INFO:root:Fake Accuracy of   car : 0.40 %
+INFO:root:Accuracy of  bird : 64.50 %
+INFO:root:Fake Accuracy of  bird : 64.50 %
+INFO:root:Accuracy of   cat : 79.20 %
+INFO:root:Fake Accuracy of   cat : 3.50 %
+INFO:root:Accuracy of  deer : 63.50 %
+INFO:root:Fake Accuracy of  deer : 4.20 %
+INFO:root:Accuracy of   dog : 72.20 %
+INFO:root:Fake Accuracy of   dog : 1.60 %
+INFO:root:Accuracy of  frog : 72.00 %
+INFO:root:Fake Accuracy of  frog : 3.70 %
+INFO:root:Accuracy of horse : 81.20 %
+INFO:root:Fake Accuracy of horse : 0.80 %
+INFO:root:Accuracy of  ship : 89.00 %
+INFO:root:Fake Accuracy of  ship : 1.00 %
+INFO:root:Accuracy of truck : 88.00 %
+INFO:root:Fake Accuracy of truck : 0.30 %
+INFO:root:Total Accuracy : 78.49 %
+
+Measuring the accuracy of the averaged global model ...
+INFO:root:Accuracy of plane : 88.30 %
+INFO:root:Accuracy of   car : 96.30 %
+INFO:root:Accuracy of  bird : 85.30 %
+INFO:root:Accuracy of   cat : 77.80 %
+INFO:root:Accuracy of  deer : 89.50 %
+INFO:root:Accuracy of   dog : 84.30 %
+INFO:root:Accuracy of  frog : 91.70 %
+INFO:root:Accuracy of horse : 91.50 %
+INFO:root:Accuracy of  ship : 94.50 %
+INFO:root:Accuracy of truck : 92.30 %
+INFO:root:Total Accuracy : 89.15 %
+
+INFO:root:Accuracy of plane : 77.50 %
+INFO:root:Fake Accuracy of plane : 11.70 %
+INFO:root:Accuracy of   car : 91.90 %
+INFO:root:Fake Accuracy of   car : 0.50 %
+INFO:root:Accuracy of  bird : 73.30 %
+INFO:root:Fake Accuracy of  bird : 73.30 %
+INFO:root:Accuracy of   cat : 80.90 %
+INFO:root:Fake Accuracy of   cat : 5.30 %
+INFO:root:Accuracy of  deer : 64.40 %
+INFO:root:Fake Accuracy of  deer : 7.40 %
+INFO:root:Accuracy of   dog : 74.50 %
+INFO:root:Fake Accuracy of   dog : 2.50 %
+INFO:root:Accuracy of  frog : 71.10 %
+INFO:root:Fake Accuracy of  frog : 6.00 %
+INFO:root:Accuracy of horse : 80.70 %
+INFO:root:Fake Accuracy of horse : 1.70 %
+INFO:root:Accuracy of  ship : 89.00 %
+INFO:root:Fake Accuracy of  ship : 1.40 %
+INFO:root:Accuracy of truck : 87.20 %
+INFO:root:Fake Accuracy of truck : 0.70 %
+INFO:root:Total Accuracy : 79.05 %
+
+INFO:root:################## Starting fl round: 2
+INFO:root:@@@@@@@@ Working on client: 0
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 430, Loss: 0.097 | Acc: 96.094% (123/128)
+INFO:root:batch_idx: 40, NumBatches: 430, Loss: 0.146 | Acc: 94.322% (4950/5248)
+INFO:root:batch_idx: 80, NumBatches: 430, Loss: 0.137 | Acc: 94.676% (9816/10368)
+INFO:root:batch_idx: 120, NumBatches: 430, Loss: 0.135 | Acc: 94.718% (14670/15488)
+INFO:root:batch_idx: 160, NumBatches: 430, Loss: 0.134 | Acc: 94.818% (19540/20608)
+INFO:root:batch_idx: 200, NumBatches: 430, Loss: 0.134 | Acc: 94.776% (24384/25728)
+INFO:root:batch_idx: 240, NumBatches: 430, Loss: 0.133 | Acc: 94.849% (29259/30848)
+INFO:root:batch_idx: 280, NumBatches: 430, Loss: 0.133 | Acc: 94.845% (34114/35968)
+INFO:root:batch_idx: 320, NumBatches: 430, Loss: 0.133 | Acc: 94.855% (38974/41088)
+INFO:root:batch_idx: 360, NumBatches: 430, Loss: 0.134 | Acc: 94.808% (43809/46208)
+INFO:root:batch_idx: 400, NumBatches: 430, Loss: 0.134 | Acc: 94.816% (48667/51328)
+INFO:root:Accuracy of plane : 75.10 %
+INFO:root:Accuracy of   car : 96.30 %
+INFO:root:Accuracy of  bird : 85.40 %
+INFO:root:Accuracy of   cat : 77.30 %
+INFO:root:Accuracy of  deer : 89.10 %
+INFO:root:Accuracy of   dog : 83.10 %
+INFO:root:Accuracy of  frog : 91.90 %
+INFO:root:Accuracy of horse : 91.30 %
+INFO:root:Accuracy of  ship : 93.60 %
+INFO:root:Accuracy of truck : 91.60 %
+INFO:root:Total Accuracy : 87.47 %
+
+INFO:root:Accuracy of plane : 11.10 %
+INFO:root:Fake Accuracy of plane : 85.80 %
+INFO:root:Accuracy of   car : 90.90 %
+INFO:root:Fake Accuracy of   car : 3.80 %
+INFO:root:Accuracy of  bird : 85.10 %
+INFO:root:Fake Accuracy of  bird : 85.10 %
+INFO:root:Accuracy of   cat : 76.10 %
+INFO:root:Fake Accuracy of   cat : 15.60 %
+INFO:root:Accuracy of  deer : 52.20 %
+INFO:root:Fake Accuracy of  deer : 28.10 %
+INFO:root:Accuracy of   dog : 70.80 %
+INFO:root:Fake Accuracy of   dog : 8.40 %
+INFO:root:Accuracy of  frog : 63.90 %
+INFO:root:Fake Accuracy of  frog : 17.40 %
+INFO:root:Accuracy of horse : 76.10 %
+INFO:root:Fake Accuracy of horse : 10.80 %
+INFO:root:Accuracy of  ship : 76.70 %
+INFO:root:Fake Accuracy of  ship : 19.10 %
+INFO:root:Accuracy of truck : 82.10 %
+INFO:root:Fake Accuracy of truck : 7.00 %
+INFO:root:Total Accuracy : 68.50 %
+
+
+Epoch: 2
+INFO:root:batch_idx: 0, NumBatches: 430, Loss: 0.130 | Acc: 93.750% (120/128)
+INFO:root:batch_idx: 40, NumBatches: 430, Loss: 0.137 | Acc: 94.455% (4957/5248)
+INFO:root:batch_idx: 80, NumBatches: 430, Loss: 0.132 | Acc: 94.850% (9834/10368)
+INFO:root:batch_idx: 120, NumBatches: 430, Loss: 0.132 | Acc: 94.841% (14689/15488)
+INFO:root:batch_idx: 160, NumBatches: 430, Loss: 0.132 | Acc: 94.900% (19557/20608)
+INFO:root:batch_idx: 200, NumBatches: 430, Loss: 0.132 | Acc: 94.978% (24436/25728)
+INFO:root:batch_idx: 240, NumBatches: 430, Loss: 0.131 | Acc: 94.936% (29286/30848)
+INFO:root:batch_idx: 280, NumBatches: 430, Loss: 0.129 | Acc: 95.034% (34182/35968)
+INFO:root:batch_idx: 320, NumBatches: 430, Loss: 0.131 | Acc: 94.935% (39007/41088)
+INFO:root:batch_idx: 360, NumBatches: 430, Loss: 0.131 | Acc: 94.964% (43881/46208)
+INFO:root:batch_idx: 400, NumBatches: 430, Loss: 0.130 | Acc: 94.985% (48754/51328)
+INFO:root:Accuracy of plane : 74.60 %
+INFO:root:Accuracy of   car : 96.50 %
+INFO:root:Accuracy of  bird : 85.50 %
+INFO:root:Accuracy of   cat : 77.70 %
+INFO:root:Accuracy of  deer : 89.10 %
+INFO:root:Accuracy of   dog : 83.80 %
+INFO:root:Accuracy of  frog : 91.40 %
+INFO:root:Accuracy of horse : 91.70 %
+INFO:root:Accuracy of  ship : 93.80 %
+INFO:root:Accuracy of truck : 91.40 %
+INFO:root:Total Accuracy : 87.55 %
+
+INFO:root:Accuracy of plane : 9.70 %
+INFO:root:Fake Accuracy of plane : 87.40 %
+INFO:root:Accuracy of   car : 90.70 %
+INFO:root:Fake Accuracy of   car : 4.00 %
+INFO:root:Accuracy of  bird : 85.20 %
+INFO:root:Fake Accuracy of  bird : 85.20 %
+INFO:root:Accuracy of   cat : 75.40 %
+INFO:root:Fake Accuracy of   cat : 16.00 %
+INFO:root:Accuracy of  deer : 51.80 %
+INFO:root:Fake Accuracy of  deer : 28.40 %
+INFO:root:Accuracy of   dog : 70.90 %
+INFO:root:Fake Accuracy of   dog : 8.50 %
+INFO:root:Accuracy of  frog : 62.60 %
+INFO:root:Fake Accuracy of  frog : 18.90 %
+INFO:root:Accuracy of horse : 75.70 %
+INFO:root:Fake Accuracy of horse : 11.40 %
+INFO:root:Accuracy of  ship : 77.70 %
+INFO:root:Fake Accuracy of  ship : 18.40 %
+INFO:root:Accuracy of truck : 81.70 %
+INFO:root:Fake Accuracy of truck : 7.10 %
+INFO:root:Total Accuracy : 68.14 %
+
+
+Epoch: 3
+INFO:root:batch_idx: 0, NumBatches: 430, Loss: 0.093 | Acc: 97.656% (125/128)
+INFO:root:batch_idx: 40, NumBatches: 430, Loss: 0.127 | Acc: 95.141% (4993/5248)
+INFO:root:batch_idx: 80, NumBatches: 430, Loss: 0.129 | Acc: 94.985% (9848/10368)
+INFO:root:batch_idx: 120, NumBatches: 430, Loss: 0.129 | Acc: 94.912% (14700/15488)
+INFO:root:batch_idx: 160, NumBatches: 430, Loss: 0.127 | Acc: 94.968% (19571/20608)
+INFO:root:batch_idx: 200, NumBatches: 430, Loss: 0.127 | Acc: 95.099% (24467/25728)
+INFO:root:batch_idx: 240, NumBatches: 430, Loss: 0.127 | Acc: 95.082% (29331/30848)
+INFO:root:batch_idx: 280, NumBatches: 430, Loss: 0.128 | Acc: 95.037% (34183/35968)
+INFO:root:batch_idx: 320, NumBatches: 430, Loss: 0.127 | Acc: 95.103% (39076/41088)
+INFO:root:batch_idx: 360, NumBatches: 430, Loss: 0.127 | Acc: 95.092% (43940/46208)
+INFO:root:batch_idx: 400, NumBatches: 430, Loss: 0.127 | Acc: 95.124% (48825/51328)
+INFO:root:Accuracy of plane : 73.80 %
+INFO:root:Accuracy of   car : 96.10 %
+INFO:root:Accuracy of  bird : 85.80 %
+INFO:root:Accuracy of   cat : 78.40 %
+INFO:root:Accuracy of  deer : 89.00 %
+INFO:root:Accuracy of   dog : 83.80 %
+INFO:root:Accuracy of  frog : 91.60 %
+INFO:root:Accuracy of horse : 91.70 %
+INFO:root:Accuracy of  ship : 94.10 %
+INFO:root:Accuracy of truck : 91.70 %
+INFO:root:Total Accuracy : 87.60 %
+
+INFO:root:Accuracy of plane : 8.30 %
+INFO:root:Fake Accuracy of plane : 88.40 %
+INFO:root:Accuracy of   car : 90.30 %
+INFO:root:Fake Accuracy of   car : 3.80 %
+INFO:root:Accuracy of  bird : 84.60 %
+INFO:root:Fake Accuracy of  bird : 84.60 %
+INFO:root:Accuracy of   cat : 76.20 %
+INFO:root:Fake Accuracy of   cat : 15.30 %
+INFO:root:Accuracy of  deer : 51.60 %
+INFO:root:Fake Accuracy of  deer : 27.70 %
+INFO:root:Accuracy of   dog : 71.00 %
+INFO:root:Fake Accuracy of   dog : 8.20 %
+INFO:root:Accuracy of  frog : 62.50 %
+INFO:root:Fake Accuracy of  frog : 18.50 %
+INFO:root:Accuracy of horse : 76.20 %
+INFO:root:Fake Accuracy of horse : 10.70 %
+INFO:root:Accuracy of  ship : 78.30 %
+INFO:root:Fake Accuracy of  ship : 17.90 %
+INFO:root:Accuracy of truck : 82.00 %
+INFO:root:Fake Accuracy of truck : 7.10 %
+INFO:root:Total Accuracy : 68.10 %
+
+
+Epoch: 4
+INFO:root:batch_idx: 0, NumBatches: 430, Loss: 0.142 | Acc: 93.750% (120/128)
+INFO:root:batch_idx: 40, NumBatches: 430, Loss: 0.124 | Acc: 94.931% (4982/5248)
+INFO:root:batch_idx: 80, NumBatches: 430, Loss: 0.120 | Acc: 95.303% (9881/10368)
+INFO:root:batch_idx: 120, NumBatches: 430, Loss: 0.121 | Acc: 95.377% (14772/15488)
+INFO:root:batch_idx: 160, NumBatches: 430, Loss: 0.124 | Acc: 95.279% (19635/20608)
+INFO:root:batch_idx: 200, NumBatches: 430, Loss: 0.125 | Acc: 95.246% (24505/25728)
+INFO:root:batch_idx: 240, NumBatches: 430, Loss: 0.125 | Acc: 95.261% (29386/30848)
+INFO:root:batch_idx: 280, NumBatches: 430, Loss: 0.124 | Acc: 95.285% (34272/35968)
+INFO:root:batch_idx: 320, NumBatches: 430, Loss: 0.124 | Acc: 95.281% (39149/41088)
+INFO:root:batch_idx: 360, NumBatches: 430, Loss: 0.123 | Acc: 95.310% (44041/46208)
+INFO:root:batch_idx: 400, NumBatches: 430, Loss: 0.123 | Acc: 95.285% (48908/51328)
+INFO:root:Accuracy of plane : 76.20 %
+INFO:root:Accuracy of   car : 96.20 %
+INFO:root:Accuracy of  bird : 85.70 %
+INFO:root:Accuracy of   cat : 77.20 %
+INFO:root:Accuracy of  deer : 89.20 %
+INFO:root:Accuracy of   dog : 84.20 %
+INFO:root:Accuracy of  frog : 91.80 %
+INFO:root:Accuracy of horse : 91.70 %
+INFO:root:Accuracy of  ship : 93.80 %
+INFO:root:Accuracy of truck : 91.50 %
+INFO:root:Total Accuracy : 87.75 %
+
+INFO:root:Accuracy of plane : 8.90 %
+INFO:root:Fake Accuracy of plane : 88.50 %
+INFO:root:Accuracy of   car : 90.10 %
+INFO:root:Fake Accuracy of   car : 4.10 %
+INFO:root:Accuracy of  bird : 85.40 %
+INFO:root:Fake Accuracy of  bird : 85.40 %
+INFO:root:Accuracy of   cat : 75.00 %
+INFO:root:Fake Accuracy of   cat : 16.30 %
+INFO:root:Accuracy of  deer : 50.70 %
+INFO:root:Fake Accuracy of  deer : 29.90 %
+INFO:root:Accuracy of   dog : 71.40 %
+INFO:root:Fake Accuracy of   dog : 8.50 %
+INFO:root:Accuracy of  frog : 62.60 %
+INFO:root:Fake Accuracy of  frog : 19.20 %
+INFO:root:Accuracy of horse : 76.00 %
+INFO:root:Fake Accuracy of horse : 11.50 %
+INFO:root:Accuracy of  ship : 76.30 %
+INFO:root:Fake Accuracy of  ship : 19.80 %
+INFO:root:Accuracy of truck : 81.80 %
+INFO:root:Fake Accuracy of truck : 7.50 %
+INFO:root:Total Accuracy : 67.82 %
+
+
+Epoch: 5
+INFO:root:batch_idx: 0, NumBatches: 430, Loss: 0.100 | Acc: 96.094% (123/128)
+INFO:root:batch_idx: 40, NumBatches: 430, Loss: 0.115 | Acc: 95.541% (5014/5248)
+INFO:root:batch_idx: 80, NumBatches: 430, Loss: 0.119 | Acc: 95.428% (9894/10368)
+INFO:root:batch_idx: 120, NumBatches: 430, Loss: 0.119 | Acc: 95.371% (14771/15488)
+INFO:root:batch_idx: 160, NumBatches: 430, Loss: 0.119 | Acc: 95.366% (19653/20608)
+INFO:root:batch_idx: 200, NumBatches: 430, Loss: 0.119 | Acc: 95.414% (24548/25728)
+INFO:root:batch_idx: 240, NumBatches: 430, Loss: 0.120 | Acc: 95.332% (29408/30848)
+INFO:root:batch_idx: 280, NumBatches: 430, Loss: 0.120 | Acc: 95.371% (34303/35968)
+INFO:root:batch_idx: 320, NumBatches: 430, Loss: 0.120 | Acc: 95.359% (39181/41088)
+INFO:root:batch_idx: 360, NumBatches: 430, Loss: 0.120 | Acc: 95.351% (44060/46208)
+INFO:root:batch_idx: 400, NumBatches: 430, Loss: 0.120 | Acc: 95.365% (48949/51328)
+INFO:root:Accuracy of plane : 77.10 %
+INFO:root:Accuracy of   car : 96.20 %
+INFO:root:Accuracy of  bird : 85.10 %
+INFO:root:Accuracy of   cat : 77.40 %
+INFO:root:Accuracy of  deer : 89.30 %
+INFO:root:Accuracy of   dog : 84.40 %
+INFO:root:Accuracy of  frog : 92.00 %
+INFO:root:Accuracy of horse : 91.90 %
+INFO:root:Accuracy of  ship : 93.80 %
+INFO:root:Accuracy of truck : 91.80 %
+INFO:root:Total Accuracy : 87.90 %
+
+INFO:root:Accuracy of plane : 8.80 %
+INFO:root:Fake Accuracy of plane : 88.50 %
+INFO:root:Accuracy of   car : 90.50 %
+INFO:root:Fake Accuracy of   car : 3.90 %
+INFO:root:Accuracy of  bird : 84.80 %
+INFO:root:Fake Accuracy of  bird : 84.80 %
+INFO:root:Accuracy of   cat : 75.30 %
+INFO:root:Fake Accuracy of   cat : 16.10 %
+INFO:root:Accuracy of  deer : 51.30 %
+INFO:root:Fake Accuracy of  deer : 28.70 %
+INFO:root:Accuracy of   dog : 71.30 %
+INFO:root:Fake Accuracy of   dog : 8.30 %
+INFO:root:Accuracy of  frog : 62.60 %
+INFO:root:Fake Accuracy of  frog : 18.60 %
+INFO:root:Accuracy of horse : 76.50 %
+INFO:root:Fake Accuracy of horse : 11.20 %
+INFO:root:Accuracy of  ship : 76.70 %
+INFO:root:Fake Accuracy of  ship : 18.90 %
+INFO:root:Accuracy of truck : 81.90 %
+INFO:root:Fake Accuracy of truck : 7.40 %
+INFO:root:Total Accuracy : 67.97 %
+
+INFO:root:@@@@@@@@ Working on client: 1
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 391, Loss: 0.074 | Acc: 98.438% (126/128)
+INFO:root:batch_idx: 40, NumBatches: 391, Loss: 0.097 | Acc: 96.704% (5075/5248)
+INFO:root:batch_idx: 80, NumBatches: 391, Loss: 0.091 | Acc: 97.106% (10068/10368)
+INFO:root:batch_idx: 120, NumBatches: 391, Loss: 0.093 | Acc: 96.914% (15010/15488)
+INFO:root:batch_idx: 160, NumBatches: 391, Loss: 0.094 | Acc: 96.875% (19964/20608)
+INFO:root:batch_idx: 200, NumBatches: 391, Loss: 0.093 | Acc: 96.906% (24932/25728)
+INFO:root:batch_idx: 240, NumBatches: 391, Loss: 0.094 | Acc: 96.891% (29889/30848)
+INFO:root:batch_idx: 280, NumBatches: 391, Loss: 0.093 | Acc: 96.945% (34869/35968)
+INFO:root:batch_idx: 320, NumBatches: 391, Loss: 0.093 | Acc: 96.931% (39827/41088)
+INFO:root:batch_idx: 360, NumBatches: 391, Loss: 0.092 | Acc: 96.949% (44798/46208)
+INFO:root:Accuracy of plane : 89.40 %
+INFO:root:Accuracy of   car : 96.00 %
+INFO:root:Accuracy of  bird : 84.90 %
+INFO:root:Accuracy of   cat : 78.40 %
+INFO:root:Accuracy of  deer : 88.00 %
+INFO:root:Accuracy of   dog : 82.80 %
+INFO:root:Accuracy of  frog : 91.50 %
+INFO:root:Accuracy of horse : 90.70 %
+INFO:root:Accuracy of  ship : 93.80 %
+INFO:root:Accuracy of truck : 91.60 %
+INFO:root:Total Accuracy : 88.71 %
+
+INFO:root:Accuracy of plane : 83.60 %
+INFO:root:Fake Accuracy of plane : 4.30 %
+INFO:root:Accuracy of   car : 91.60 %
+INFO:root:Fake Accuracy of   car : 0.40 %
+INFO:root:Accuracy of  bird : 66.00 %
+INFO:root:Fake Accuracy of  bird : 66.00 %
+INFO:root:Accuracy of   cat : 79.90 %
+INFO:root:Fake Accuracy of   cat : 3.60 %
+INFO:root:Accuracy of  deer : 64.00 %
+INFO:root:Fake Accuracy of  deer : 4.40 %
+INFO:root:Accuracy of   dog : 72.60 %
+INFO:root:Fake Accuracy of   dog : 1.70 %
+INFO:root:Accuracy of  frog : 72.30 %
+INFO:root:Fake Accuracy of  frog : 3.90 %
+INFO:root:Accuracy of horse : 81.30 %
+INFO:root:Fake Accuracy of horse : 0.70 %
+INFO:root:Accuracy of  ship : 89.60 %
+INFO:root:Fake Accuracy of  ship : 0.90 %
+INFO:root:Accuracy of truck : 86.80 %
+INFO:root:Fake Accuracy of truck : 0.30 %
+INFO:root:Total Accuracy : 78.77 %
+
+INFO:root:@@@@@@@@ Working on client: 2
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 391, Loss: 0.130 | Acc: 95.312% (122/128)
+INFO:root:batch_idx: 40, NumBatches: 391, Loss: 0.100 | Acc: 96.684% (5074/5248)
+INFO:root:batch_idx: 80, NumBatches: 391, Loss: 0.096 | Acc: 96.827% (10039/10368)
+INFO:root:batch_idx: 120, NumBatches: 391, Loss: 0.094 | Acc: 96.894% (15007/15488)
+INFO:root:batch_idx: 160, NumBatches: 391, Loss: 0.093 | Acc: 96.904% (19970/20608)
+INFO:root:batch_idx: 200, NumBatches: 391, Loss: 0.093 | Acc: 96.926% (24937/25728)
+INFO:root:batch_idx: 240, NumBatches: 391, Loss: 0.090 | Acc: 97.031% (29932/30848)
+INFO:root:batch_idx: 280, NumBatches: 391, Loss: 0.089 | Acc: 97.017% (34895/35968)
+INFO:root:batch_idx: 320, NumBatches: 391, Loss: 0.090 | Acc: 97.002% (39856/41088)
+INFO:root:batch_idx: 360, NumBatches: 391, Loss: 0.089 | Acc: 96.996% (44820/46208)
+INFO:root:Accuracy of plane : 89.40 %
+INFO:root:Accuracy of   car : 95.80 %
+INFO:root:Accuracy of  bird : 84.70 %
+INFO:root:Accuracy of   cat : 77.80 %
+INFO:root:Accuracy of  deer : 88.60 %
+INFO:root:Accuracy of   dog : 83.70 %
+INFO:root:Accuracy of  frog : 91.60 %
+INFO:root:Accuracy of horse : 90.70 %
+INFO:root:Accuracy of  ship : 93.10 %
+INFO:root:Accuracy of truck : 92.10 %
+INFO:root:Total Accuracy : 88.75 %
+
+INFO:root:Accuracy of plane : 84.10 %
+INFO:root:Fake Accuracy of plane : 4.10 %
+INFO:root:Accuracy of   car : 91.60 %
+INFO:root:Fake Accuracy of   car : 0.40 %
+INFO:root:Accuracy of  bird : 65.40 %
+INFO:root:Fake Accuracy of  bird : 65.40 %
+INFO:root:Accuracy of   cat : 80.00 %
+INFO:root:Fake Accuracy of   cat : 3.50 %
+INFO:root:Accuracy of  deer : 65.00 %
+INFO:root:Fake Accuracy of  deer : 4.30 %
+INFO:root:Accuracy of   dog : 73.50 %
+INFO:root:Fake Accuracy of   dog : 1.60 %
+INFO:root:Accuracy of  frog : 73.10 %
+INFO:root:Fake Accuracy of  frog : 3.50 %
+INFO:root:Accuracy of horse : 81.70 %
+INFO:root:Fake Accuracy of horse : 0.70 %
+INFO:root:Accuracy of  ship : 89.40 %
+INFO:root:Fake Accuracy of  ship : 0.80 %
+INFO:root:Accuracy of truck : 88.10 %
+INFO:root:Fake Accuracy of truck : 0.30 %
+INFO:root:Total Accuracy : 79.19 %
+
+INFO:root:@@@@@@@@ Working on client: 3
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 391, Loss: 0.105 | Acc: 95.312% (122/128)
+INFO:root:batch_idx: 40, NumBatches: 391, Loss: 0.095 | Acc: 96.608% (5070/5248)
+INFO:root:batch_idx: 80, NumBatches: 391, Loss: 0.093 | Acc: 96.836% (10040/10368)
+INFO:root:batch_idx: 120, NumBatches: 391, Loss: 0.090 | Acc: 96.927% (15012/15488)
+INFO:root:batch_idx: 160, NumBatches: 391, Loss: 0.090 | Acc: 96.919% (19973/20608)
+INFO:root:batch_idx: 200, NumBatches: 391, Loss: 0.090 | Acc: 96.891% (24928/25728)
+INFO:root:batch_idx: 240, NumBatches: 391, Loss: 0.089 | Acc: 96.959% (29910/30848)
+INFO:root:batch_idx: 280, NumBatches: 391, Loss: 0.089 | Acc: 96.922% (34861/35968)
+INFO:root:batch_idx: 320, NumBatches: 391, Loss: 0.087 | Acc: 96.975% (39845/41088)
+INFO:root:batch_idx: 360, NumBatches: 391, Loss: 0.088 | Acc: 97.001% (44822/46208)
+INFO:root:Accuracy of plane : 89.40 %
+INFO:root:Accuracy of   car : 95.90 %
+INFO:root:Accuracy of  bird : 84.60 %
+INFO:root:Accuracy of   cat : 77.90 %
+INFO:root:Accuracy of  deer : 88.20 %
+INFO:root:Accuracy of   dog : 83.60 %
+INFO:root:Accuracy of  frog : 91.20 %
+INFO:root:Accuracy of horse : 90.90 %
+INFO:root:Accuracy of  ship : 93.30 %
+INFO:root:Accuracy of truck : 91.60 %
+INFO:root:Total Accuracy : 88.66 %
+
+INFO:root:Accuracy of plane : 84.20 %
+INFO:root:Fake Accuracy of plane : 4.30 %
+INFO:root:Accuracy of   car : 91.70 %
+INFO:root:Fake Accuracy of   car : 0.40 %
+INFO:root:Accuracy of  bird : 65.10 %
+INFO:root:Fake Accuracy of  bird : 65.10 %
+INFO:root:Accuracy of   cat : 79.10 %
+INFO:root:Fake Accuracy of   cat : 3.60 %
+INFO:root:Accuracy of  deer : 64.60 %
+INFO:root:Fake Accuracy of  deer : 5.00 %
+INFO:root:Accuracy of   dog : 73.00 %
+INFO:root:Fake Accuracy of   dog : 1.80 %
+INFO:root:Accuracy of  frog : 71.50 %
+INFO:root:Fake Accuracy of  frog : 3.90 %
+INFO:root:Accuracy of horse : 81.50 %
+INFO:root:Fake Accuracy of horse : 0.70 %
+INFO:root:Accuracy of  ship : 89.40 %
+INFO:root:Fake Accuracy of  ship : 0.90 %
+INFO:root:Accuracy of truck : 87.40 %
+INFO:root:Fake Accuracy of truck : 0.30 %
+INFO:root:Total Accuracy : 78.75 %
+
+INFO:root:@@@@@@@@ Working on client: 4
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 391, Loss: 0.037 | Acc: 99.219% (127/128)
+INFO:root:batch_idx: 40, NumBatches: 391, Loss: 0.086 | Acc: 97.218% (5102/5248)
+INFO:root:batch_idx: 80, NumBatches: 391, Loss: 0.088 | Acc: 97.106% (10068/10368)
+INFO:root:batch_idx: 120, NumBatches: 391, Loss: 0.090 | Acc: 96.978% (15020/15488)
+INFO:root:batch_idx: 160, NumBatches: 391, Loss: 0.089 | Acc: 96.982% (19986/20608)
+INFO:root:batch_idx: 200, NumBatches: 391, Loss: 0.089 | Acc: 96.953% (24944/25728)
+INFO:root:batch_idx: 240, NumBatches: 391, Loss: 0.090 | Acc: 96.959% (29910/30848)
+INFO:root:batch_idx: 280, NumBatches: 391, Loss: 0.089 | Acc: 97.000% (34889/35968)
+INFO:root:batch_idx: 320, NumBatches: 391, Loss: 0.090 | Acc: 96.977% (39846/41088)
+INFO:root:batch_idx: 360, NumBatches: 391, Loss: 0.089 | Acc: 96.988% (44816/46208)
+INFO:root:Accuracy of plane : 89.20 %
+INFO:root:Accuracy of   car : 95.90 %
+INFO:root:Accuracy of  bird : 84.70 %
+INFO:root:Accuracy of   cat : 78.10 %
+INFO:root:Accuracy of  deer : 88.70 %
+INFO:root:Accuracy of   dog : 83.80 %
+INFO:root:Accuracy of  frog : 91.30 %
+INFO:root:Accuracy of horse : 90.70 %
+INFO:root:Accuracy of  ship : 93.60 %
+INFO:root:Accuracy of truck : 91.80 %
+INFO:root:Total Accuracy : 88.78 %
+
+INFO:root:Accuracy of plane : 84.30 %
+INFO:root:Fake Accuracy of plane : 4.20 %
+INFO:root:Accuracy of   car : 91.30 %
+INFO:root:Fake Accuracy of   car : 0.40 %
+INFO:root:Accuracy of  bird : 65.30 %
+INFO:root:Fake Accuracy of  bird : 65.30 %
+INFO:root:Accuracy of   cat : 79.60 %
+INFO:root:Fake Accuracy of   cat : 3.80 %
+INFO:root:Accuracy of  deer : 64.70 %
+INFO:root:Fake Accuracy of  deer : 4.40 %
+INFO:root:Accuracy of   dog : 73.20 %
+INFO:root:Fake Accuracy of   dog : 1.60 %
+INFO:root:Accuracy of  frog : 72.00 %
+INFO:root:Fake Accuracy of  frog : 4.00 %
+INFO:root:Accuracy of horse : 81.10 %
+INFO:root:Fake Accuracy of horse : 0.70 %
+INFO:root:Accuracy of  ship : 89.20 %
+INFO:root:Fake Accuracy of  ship : 0.90 %
+INFO:root:Accuracy of truck : 87.70 %
+INFO:root:Fake Accuracy of truck : 0.30 %
+INFO:root:Total Accuracy : 78.84 %
+
+INFO:root:@@@@@@@@ Working on client: 5
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 391, Loss: 0.155 | Acc: 94.531% (121/128)
+INFO:root:batch_idx: 40, NumBatches: 391, Loss: 0.092 | Acc: 97.046% (5093/5248)
+INFO:root:batch_idx: 80, NumBatches: 391, Loss: 0.089 | Acc: 97.155% (10073/10368)
+INFO:root:batch_idx: 120, NumBatches: 391, Loss: 0.087 | Acc: 97.198% (15054/15488)
+INFO:root:batch_idx: 160, NumBatches: 391, Loss: 0.087 | Acc: 97.186% (20028/20608)
+INFO:root:batch_idx: 200, NumBatches: 391, Loss: 0.086 | Acc: 97.155% (24996/25728)
+INFO:root:batch_idx: 240, NumBatches: 391, Loss: 0.087 | Acc: 97.112% (29957/30848)
+INFO:root:batch_idx: 280, NumBatches: 391, Loss: 0.087 | Acc: 97.117% (34931/35968)
+INFO:root:batch_idx: 320, NumBatches: 391, Loss: 0.087 | Acc: 97.131% (39909/41088)
+INFO:root:batch_idx: 360, NumBatches: 391, Loss: 0.086 | Acc: 97.159% (44895/46208)
+INFO:root:Accuracy of plane : 89.30 %
+INFO:root:Accuracy of   car : 96.10 %
+INFO:root:Accuracy of  bird : 84.90 %
+INFO:root:Accuracy of   cat : 77.60 %
+INFO:root:Accuracy of  deer : 88.40 %
+INFO:root:Accuracy of   dog : 83.20 %
+INFO:root:Accuracy of  frog : 91.60 %
+INFO:root:Accuracy of horse : 91.20 %
+INFO:root:Accuracy of  ship : 93.40 %
+INFO:root:Accuracy of truck : 91.70 %
+INFO:root:Total Accuracy : 88.74 %
+
+INFO:root:Accuracy of plane : 84.10 %
+INFO:root:Fake Accuracy of plane : 4.30 %
+INFO:root:Accuracy of   car : 91.90 %
+INFO:root:Fake Accuracy of   car : 0.40 %
+INFO:root:Accuracy of  bird : 66.10 %
+INFO:root:Fake Accuracy of  bird : 66.10 %
+INFO:root:Accuracy of   cat : 79.60 %
+INFO:root:Fake Accuracy of   cat : 3.60 %
+INFO:root:Accuracy of  deer : 64.60 %
+INFO:root:Fake Accuracy of  deer : 5.20 %
+INFO:root:Accuracy of   dog : 73.00 %
+INFO:root:Fake Accuracy of   dog : 1.60 %
+INFO:root:Accuracy of  frog : 72.60 %
+INFO:root:Fake Accuracy of  frog : 3.90 %
+INFO:root:Accuracy of horse : 81.90 %
+INFO:root:Fake Accuracy of horse : 0.60 %
+INFO:root:Accuracy of  ship : 89.30 %
+INFO:root:Fake Accuracy of  ship : 1.00 %
+INFO:root:Accuracy of truck : 87.40 %
+INFO:root:Fake Accuracy of truck : 0.30 %
+INFO:root:Total Accuracy : 79.05 %
+
+INFO:root:@@@@@@@@ Working on client: 6
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 391, Loss: 0.080 | Acc: 96.875% (124/128)
+INFO:root:batch_idx: 40, NumBatches: 391, Loss: 0.094 | Acc: 96.970% (5089/5248)
+INFO:root:batch_idx: 80, NumBatches: 391, Loss: 0.088 | Acc: 97.068% (10064/10368)
+INFO:root:batch_idx: 120, NumBatches: 391, Loss: 0.089 | Acc: 97.049% (15031/15488)
+INFO:root:batch_idx: 160, NumBatches: 391, Loss: 0.091 | Acc: 96.977% (19985/20608)
+INFO:root:batch_idx: 200, NumBatches: 391, Loss: 0.090 | Acc: 97.030% (24964/25728)
+INFO:root:batch_idx: 240, NumBatches: 391, Loss: 0.090 | Acc: 97.001% (29923/30848)
+INFO:root:batch_idx: 280, NumBatches: 391, Loss: 0.090 | Acc: 96.956% (34873/35968)
+INFO:root:batch_idx: 320, NumBatches: 391, Loss: 0.090 | Acc: 97.009% (39859/41088)
+INFO:root:batch_idx: 360, NumBatches: 391, Loss: 0.088 | Acc: 97.031% (44836/46208)
+INFO:root:Accuracy of plane : 89.30 %
+INFO:root:Accuracy of   car : 95.80 %
+INFO:root:Accuracy of  bird : 84.90 %
+INFO:root:Accuracy of   cat : 77.90 %
+INFO:root:Accuracy of  deer : 88.50 %
+INFO:root:Accuracy of   dog : 83.10 %
+INFO:root:Accuracy of  frog : 91.90 %
+INFO:root:Accuracy of horse : 91.00 %
+INFO:root:Accuracy of  ship : 93.50 %
+INFO:root:Accuracy of truck : 92.30 %
+INFO:root:Total Accuracy : 88.82 %
+
+INFO:root:Accuracy of plane : 84.10 %
+INFO:root:Fake Accuracy of plane : 4.20 %
+INFO:root:Accuracy of   car : 91.40 %
+INFO:root:Fake Accuracy of   car : 0.40 %
+INFO:root:Accuracy of  bird : 65.70 %
+INFO:root:Fake Accuracy of  bird : 65.70 %
+INFO:root:Accuracy of   cat : 79.80 %
+INFO:root:Fake Accuracy of   cat : 3.60 %
+INFO:root:Accuracy of  deer : 64.70 %
+INFO:root:Fake Accuracy of  deer : 4.80 %
+INFO:root:Accuracy of   dog : 72.70 %
+INFO:root:Fake Accuracy of   dog : 1.90 %
+INFO:root:Accuracy of  frog : 72.10 %
+INFO:root:Fake Accuracy of  frog : 4.00 %
+INFO:root:Accuracy of horse : 81.80 %
+INFO:root:Fake Accuracy of horse : 0.70 %
+INFO:root:Accuracy of  ship : 89.50 %
+INFO:root:Fake Accuracy of  ship : 0.90 %
+INFO:root:Accuracy of truck : 88.30 %
+INFO:root:Fake Accuracy of truck : 0.30 %
+INFO:root:Total Accuracy : 79.01 %
+
+INFO:root:@@@@@@@@ Working on client: 7
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 391, Loss: 0.071 | Acc: 98.438% (126/128)
+INFO:root:batch_idx: 40, NumBatches: 391, Loss: 0.102 | Acc: 96.704% (5075/5248)
+INFO:root:batch_idx: 80, NumBatches: 391, Loss: 0.096 | Acc: 96.817% (10038/10368)
+INFO:root:batch_idx: 120, NumBatches: 391, Loss: 0.092 | Acc: 96.888% (15006/15488)
+INFO:root:batch_idx: 160, NumBatches: 391, Loss: 0.094 | Acc: 96.865% (19962/20608)
+INFO:root:batch_idx: 200, NumBatches: 391, Loss: 0.093 | Acc: 96.875% (24924/25728)
+INFO:root:batch_idx: 240, NumBatches: 391, Loss: 0.093 | Acc: 96.888% (29888/30848)
+INFO:root:batch_idx: 280, NumBatches: 391, Loss: 0.092 | Acc: 96.928% (34863/35968)
+INFO:root:batch_idx: 320, NumBatches: 391, Loss: 0.091 | Acc: 96.912% (39819/41088)
+INFO:root:batch_idx: 360, NumBatches: 391, Loss: 0.091 | Acc: 96.951% (44799/46208)
+INFO:root:Accuracy of plane : 88.90 %
+INFO:root:Accuracy of   car : 95.90 %
+INFO:root:Accuracy of  bird : 84.80 %
+INFO:root:Accuracy of   cat : 77.40 %
+INFO:root:Accuracy of  deer : 88.40 %
+INFO:root:Accuracy of   dog : 82.70 %
+INFO:root:Accuracy of  frog : 91.70 %
+INFO:root:Accuracy of horse : 91.60 %
+INFO:root:Accuracy of  ship : 93.90 %
+INFO:root:Accuracy of truck : 92.30 %
+INFO:root:Total Accuracy : 88.76 %
+
+INFO:root:Accuracy of plane : 83.90 %
+INFO:root:Fake Accuracy of plane : 4.00 %
+INFO:root:Accuracy of   car : 91.20 %
+INFO:root:Fake Accuracy of   car : 0.40 %
+INFO:root:Accuracy of  bird : 65.10 %
+INFO:root:Fake Accuracy of  bird : 65.10 %
+INFO:root:Accuracy of   cat : 79.20 %
+INFO:root:Fake Accuracy of   cat : 3.50 %
+INFO:root:Accuracy of  deer : 64.70 %
+INFO:root:Fake Accuracy of  deer : 4.60 %
+INFO:root:Accuracy of   dog : 72.90 %
+INFO:root:Fake Accuracy of   dog : 1.50 %
+INFO:root:Accuracy of  frog : 72.90 %
+INFO:root:Fake Accuracy of  frog : 3.80 %
+INFO:root:Accuracy of horse : 82.60 %
+INFO:root:Fake Accuracy of horse : 0.60 %
+INFO:root:Accuracy of  ship : 89.80 %
+INFO:root:Fake Accuracy of  ship : 0.80 %
+INFO:root:Accuracy of truck : 88.00 %
+INFO:root:Fake Accuracy of truck : 0.30 %
+INFO:root:Total Accuracy : 79.03 %
+
+INFO:root:@@@@@@@@ Working on client: 8
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 391, Loss: 0.078 | Acc: 96.094% (123/128)
+INFO:root:batch_idx: 40, NumBatches: 391, Loss: 0.091 | Acc: 97.027% (5092/5248)
+INFO:root:batch_idx: 80, NumBatches: 391, Loss: 0.097 | Acc: 96.827% (10039/10368)
+INFO:root:batch_idx: 120, NumBatches: 391, Loss: 0.100 | Acc: 96.707% (14978/15488)
+INFO:root:batch_idx: 160, NumBatches: 391, Loss: 0.096 | Acc: 96.826% (19954/20608)
+INFO:root:batch_idx: 200, NumBatches: 391, Loss: 0.095 | Acc: 96.844% (24916/25728)
+INFO:root:batch_idx: 240, NumBatches: 391, Loss: 0.095 | Acc: 96.875% (29884/30848)
+INFO:root:batch_idx: 280, NumBatches: 391, Loss: 0.093 | Acc: 96.900% (34853/35968)
+INFO:root:batch_idx: 320, NumBatches: 391, Loss: 0.092 | Acc: 96.955% (39837/41088)
+INFO:root:batch_idx: 360, NumBatches: 391, Loss: 0.092 | Acc: 96.929% (44789/46208)
+INFO:root:Accuracy of plane : 89.30 %
+INFO:root:Accuracy of   car : 96.00 %
+INFO:root:Accuracy of  bird : 84.80 %
+INFO:root:Accuracy of   cat : 78.00 %
+INFO:root:Accuracy of  deer : 89.10 %
+INFO:root:Accuracy of   dog : 82.30 %
+INFO:root:Accuracy of  frog : 91.80 %
+INFO:root:Accuracy of horse : 90.80 %
+INFO:root:Accuracy of  ship : 93.30 %
+INFO:root:Accuracy of truck : 91.80 %
+INFO:root:Total Accuracy : 88.72 %
+
+INFO:root:Accuracy of plane : 84.40 %
+INFO:root:Fake Accuracy of plane : 4.10 %
+INFO:root:Accuracy of   car : 91.60 %
+INFO:root:Fake Accuracy of   car : 0.40 %
+INFO:root:Accuracy of  bird : 65.40 %
+INFO:root:Fake Accuracy of  bird : 65.40 %
+INFO:root:Accuracy of   cat : 79.70 %
+INFO:root:Fake Accuracy of   cat : 3.40 %
+INFO:root:Accuracy of  deer : 65.30 %
+INFO:root:Fake Accuracy of  deer : 4.50 %
+INFO:root:Accuracy of   dog : 72.40 %
+INFO:root:Fake Accuracy of   dog : 1.70 %
+INFO:root:Accuracy of  frog : 72.80 %
+INFO:root:Fake Accuracy of  frog : 3.80 %
+INFO:root:Accuracy of horse : 81.40 %
+INFO:root:Fake Accuracy of horse : 0.70 %
+INFO:root:Accuracy of  ship : 89.40 %
+INFO:root:Fake Accuracy of  ship : 0.80 %
+INFO:root:Accuracy of truck : 87.60 %
+INFO:root:Fake Accuracy of truck : 0.30 %
+INFO:root:Total Accuracy : 79.00 %
+
+INFO:root:@@@@@@@@ Working on client: 9
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 391, Loss: 0.078 | Acc: 98.438% (126/128)
+INFO:root:batch_idx: 40, NumBatches: 391, Loss: 0.089 | Acc: 97.123% (5097/5248)
+INFO:root:batch_idx: 80, NumBatches: 391, Loss: 0.091 | Acc: 96.971% (10054/10368)
+INFO:root:batch_idx: 120, NumBatches: 391, Loss: 0.091 | Acc: 97.011% (15025/15488)
+INFO:root:batch_idx: 160, NumBatches: 391, Loss: 0.089 | Acc: 97.064% (20003/20608)
+INFO:root:batch_idx: 200, NumBatches: 391, Loss: 0.089 | Acc: 97.065% (24973/25728)
+INFO:root:batch_idx: 240, NumBatches: 391, Loss: 0.088 | Acc: 97.053% (29939/30848)
+INFO:root:batch_idx: 280, NumBatches: 391, Loss: 0.090 | Acc: 96.983% (34883/35968)
+INFO:root:batch_idx: 320, NumBatches: 391, Loss: 0.090 | Acc: 96.977% (39846/41088)
+INFO:root:batch_idx: 360, NumBatches: 391, Loss: 0.090 | Acc: 96.975% (44810/46208)
+INFO:root:Accuracy of plane : 89.70 %
+INFO:root:Accuracy of   car : 95.80 %
+INFO:root:Accuracy of  bird : 84.50 %
+INFO:root:Accuracy of   cat : 77.80 %
+INFO:root:Accuracy of  deer : 88.60 %
+INFO:root:Accuracy of   dog : 83.30 %
+INFO:root:Accuracy of  frog : 91.20 %
+INFO:root:Accuracy of horse : 91.10 %
+INFO:root:Accuracy of  ship : 93.70 %
+INFO:root:Accuracy of truck : 91.60 %
+INFO:root:Total Accuracy : 88.73 %
+
+INFO:root:Accuracy of plane : 84.50 %
+INFO:root:Fake Accuracy of plane : 3.80 %
+INFO:root:Accuracy of   car : 91.70 %
+INFO:root:Fake Accuracy of   car : 0.40 %
+INFO:root:Accuracy of  bird : 64.10 %
+INFO:root:Fake Accuracy of  bird : 64.10 %
+INFO:root:Accuracy of   cat : 79.10 %
+INFO:root:Fake Accuracy of   cat : 3.50 %
+INFO:root:Accuracy of  deer : 64.60 %
+INFO:root:Fake Accuracy of  deer : 4.30 %
+INFO:root:Accuracy of   dog : 73.00 %
+INFO:root:Fake Accuracy of   dog : 1.60 %
+INFO:root:Accuracy of  frog : 72.60 %
+INFO:root:Fake Accuracy of  frog : 3.60 %
+INFO:root:Accuracy of horse : 81.70 %
+INFO:root:Fake Accuracy of horse : 0.70 %
+INFO:root:Accuracy of  ship : 89.50 %
+INFO:root:Fake Accuracy of  ship : 0.80 %
+INFO:root:Accuracy of truck : 87.70 %
+INFO:root:Fake Accuracy of truck : 0.30 %
+INFO:root:Total Accuracy : 78.85 %
+
+Measuring the accuracy of the averaged global model ...
+INFO:root:Accuracy of plane : 89.40 %
+INFO:root:Accuracy of   car : 96.50 %
+INFO:root:Accuracy of  bird : 85.10 %
+INFO:root:Accuracy of   cat : 78.50 %
+INFO:root:Accuracy of  deer : 89.60 %
+INFO:root:Accuracy of   dog : 84.30 %
+INFO:root:Accuracy of  frog : 91.80 %
+INFO:root:Accuracy of horse : 91.60 %
+INFO:root:Accuracy of  ship : 94.50 %
+INFO:root:Accuracy of truck : 92.10 %
+INFO:root:Total Accuracy : 89.34 %
+
+INFO:root:Accuracy of plane : 78.30 %
+INFO:root:Fake Accuracy of plane : 10.70 %
+INFO:root:Accuracy of   car : 92.00 %
+INFO:root:Fake Accuracy of   car : 0.40 %
+INFO:root:Accuracy of  bird : 72.40 %
+INFO:root:Fake Accuracy of  bird : 72.40 %
+INFO:root:Accuracy of   cat : 81.50 %
+INFO:root:Fake Accuracy of   cat : 4.90 %
+INFO:root:Accuracy of  deer : 64.40 %
+INFO:root:Fake Accuracy of  deer : 7.40 %
+INFO:root:Accuracy of   dog : 74.20 %
+INFO:root:Fake Accuracy of   dog : 2.30 %
+INFO:root:Accuracy of  frog : 71.20 %
+INFO:root:Fake Accuracy of  frog : 5.80 %
+INFO:root:Accuracy of horse : 80.80 %
+INFO:root:Fake Accuracy of horse : 1.50 %
+INFO:root:Accuracy of  ship : 89.30 %
+INFO:root:Fake Accuracy of  ship : 1.20 %
+INFO:root:Accuracy of truck : 87.30 %
+INFO:root:Fake Accuracy of truck : 0.70 %
+INFO:root:Total Accuracy : 79.14 %
+
+INFO:root:################## Starting fl round: 3
+INFO:root:@@@@@@@@ Working on client: 0
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 430, Loss: 0.067 | Acc: 99.219% (127/128)
+INFO:root:batch_idx: 40, NumBatches: 430, Loss: 0.113 | Acc: 95.236% (4998/5248)
+INFO:root:batch_idx: 80, NumBatches: 430, Loss: 0.120 | Acc: 95.177% (9868/10368)
+INFO:root:batch_idx: 120, NumBatches: 430, Loss: 0.119 | Acc: 95.371% (14771/15488)
+INFO:root:batch_idx: 160, NumBatches: 430, Loss: 0.117 | Acc: 95.531% (19687/20608)
+INFO:root:batch_idx: 200, NumBatches: 430, Loss: 0.117 | Acc: 95.561% (24586/25728)
+INFO:root:batch_idx: 240, NumBatches: 430, Loss: 0.116 | Acc: 95.575% (29483/30848)
+INFO:root:batch_idx: 280, NumBatches: 430, Loss: 0.117 | Acc: 95.566% (34373/35968)
+INFO:root:batch_idx: 320, NumBatches: 430, Loss: 0.116 | Acc: 95.595% (39278/41088)
+INFO:root:batch_idx: 360, NumBatches: 430, Loss: 0.117 | Acc: 95.551% (44152/46208)
+INFO:root:batch_idx: 400, NumBatches: 430, Loss: 0.116 | Acc: 95.566% (49052/51328)
+INFO:root:Accuracy of plane : 78.10 %
+INFO:root:Accuracy of   car : 96.20 %
+INFO:root:Accuracy of  bird : 84.90 %
+INFO:root:Accuracy of   cat : 77.70 %
+INFO:root:Accuracy of  deer : 89.60 %
+INFO:root:Accuracy of   dog : 84.40 %
+INFO:root:Accuracy of  frog : 91.90 %
+INFO:root:Accuracy of horse : 91.60 %
+INFO:root:Accuracy of  ship : 94.30 %
+INFO:root:Accuracy of truck : 91.80 %
+INFO:root:Total Accuracy : 88.05 %
+
+INFO:root:Accuracy of plane : 10.00 %
+INFO:root:Fake Accuracy of plane : 87.30 %
+INFO:root:Accuracy of   car : 90.20 %
+INFO:root:Fake Accuracy of   car : 4.30 %
+INFO:root:Accuracy of  bird : 84.50 %
+INFO:root:Fake Accuracy of  bird : 84.50 %
+INFO:root:Accuracy of   cat : 75.70 %
+INFO:root:Fake Accuracy of   cat : 16.40 %
+INFO:root:Accuracy of  deer : 50.90 %
+INFO:root:Fake Accuracy of  deer : 29.70 %
+INFO:root:Accuracy of   dog : 71.10 %
+INFO:root:Fake Accuracy of   dog : 8.40 %
+INFO:root:Accuracy of  frog : 61.70 %
+INFO:root:Fake Accuracy of  frog : 19.40 %
+INFO:root:Accuracy of horse : 75.80 %
+INFO:root:Fake Accuracy of horse : 11.60 %
+INFO:root:Accuracy of  ship : 77.30 %
+INFO:root:Fake Accuracy of  ship : 18.90 %
+INFO:root:Accuracy of truck : 81.70 %
+INFO:root:Fake Accuracy of truck : 7.50 %
+INFO:root:Total Accuracy : 67.89 %
+
+
+Epoch: 2
+INFO:root:batch_idx: 0, NumBatches: 430, Loss: 0.056 | Acc: 99.219% (127/128)
+INFO:root:batch_idx: 40, NumBatches: 430, Loss: 0.108 | Acc: 95.713% (5023/5248)
+INFO:root:batch_idx: 80, NumBatches: 430, Loss: 0.114 | Acc: 95.515% (9903/10368)
+INFO:root:batch_idx: 120, NumBatches: 430, Loss: 0.110 | Acc: 95.732% (14827/15488)
+INFO:root:batch_idx: 160, NumBatches: 430, Loss: 0.113 | Acc: 95.604% (19702/20608)
+INFO:root:batch_idx: 200, NumBatches: 430, Loss: 0.112 | Acc: 95.553% (24584/25728)
+INFO:root:batch_idx: 240, NumBatches: 430, Loss: 0.112 | Acc: 95.607% (29493/30848)
+INFO:root:batch_idx: 280, NumBatches: 430, Loss: 0.112 | Acc: 95.568% (34374/35968)
+INFO:root:batch_idx: 320, NumBatches: 430, Loss: 0.111 | Acc: 95.619% (39288/41088)
+INFO:root:batch_idx: 360, NumBatches: 430, Loss: 0.112 | Acc: 95.615% (44182/46208)
+INFO:root:batch_idx: 400, NumBatches: 430, Loss: 0.112 | Acc: 95.638% (49089/51328)
+INFO:root:Accuracy of plane : 77.20 %
+INFO:root:Accuracy of   car : 96.30 %
+INFO:root:Accuracy of  bird : 85.40 %
+INFO:root:Accuracy of   cat : 78.00 %
+INFO:root:Accuracy of  deer : 89.30 %
+INFO:root:Accuracy of   dog : 84.50 %
+INFO:root:Accuracy of  frog : 91.60 %
+INFO:root:Accuracy of horse : 91.80 %
+INFO:root:Accuracy of  ship : 93.80 %
+INFO:root:Accuracy of truck : 91.80 %
+INFO:root:Total Accuracy : 87.97 %
+
+INFO:root:Accuracy of plane : 7.70 %
+INFO:root:Fake Accuracy of plane : 89.70 %
+INFO:root:Accuracy of   car : 90.50 %
+INFO:root:Fake Accuracy of   car : 4.30 %
+INFO:root:Accuracy of  bird : 86.00 %
+INFO:root:Fake Accuracy of  bird : 86.00 %
+INFO:root:Accuracy of   cat : 75.40 %
+INFO:root:Fake Accuracy of   cat : 17.10 %
+INFO:root:Accuracy of  deer : 48.70 %
+INFO:root:Fake Accuracy of  deer : 32.10 %
+INFO:root:Accuracy of   dog : 70.70 %
+INFO:root:Fake Accuracy of   dog : 9.00 %
+INFO:root:Accuracy of  frog : 60.90 %
+INFO:root:Fake Accuracy of  frog : 20.90 %
+INFO:root:Accuracy of horse : 75.20 %
+INFO:root:Fake Accuracy of horse : 12.50 %
+INFO:root:Accuracy of  ship : 75.70 %
+INFO:root:Fake Accuracy of  ship : 20.50 %
+INFO:root:Accuracy of truck : 81.20 %
+INFO:root:Fake Accuracy of truck : 7.60 %
+INFO:root:Total Accuracy : 67.20 %
+
+
+Epoch: 3
+INFO:root:batch_idx: 0, NumBatches: 430, Loss: 0.171 | Acc: 92.969% (119/128)
+INFO:root:batch_idx: 40, NumBatches: 430, Loss: 0.121 | Acc: 95.560% (5015/5248)
+INFO:root:batch_idx: 80, NumBatches: 430, Loss: 0.116 | Acc: 95.718% (9924/10368)
+INFO:root:batch_idx: 120, NumBatches: 430, Loss: 0.117 | Acc: 95.681% (14819/15488)
+INFO:root:batch_idx: 160, NumBatches: 430, Loss: 0.115 | Acc: 95.740% (19730/20608)
+INFO:root:batch_idx: 200, NumBatches: 430, Loss: 0.112 | Acc: 95.822% (24653/25728)
+INFO:root:batch_idx: 240, NumBatches: 430, Loss: 0.111 | Acc: 95.864% (29572/30848)
+INFO:root:batch_idx: 280, NumBatches: 430, Loss: 0.110 | Acc: 95.880% (34486/35968)
+INFO:root:batch_idx: 320, NumBatches: 430, Loss: 0.110 | Acc: 95.863% (39388/41088)
+INFO:root:batch_idx: 360, NumBatches: 430, Loss: 0.110 | Acc: 95.828% (44280/46208)
+INFO:root:batch_idx: 400, NumBatches: 430, Loss: 0.111 | Acc: 95.819% (49182/51328)
+INFO:root:Accuracy of plane : 77.50 %
+INFO:root:Accuracy of   car : 96.30 %
+INFO:root:Accuracy of  bird : 85.70 %
+INFO:root:Accuracy of   cat : 77.70 %
+INFO:root:Accuracy of  deer : 89.00 %
+INFO:root:Accuracy of   dog : 84.60 %
+INFO:root:Accuracy of  frog : 91.60 %
+INFO:root:Accuracy of horse : 91.70 %
+INFO:root:Accuracy of  ship : 93.90 %
+INFO:root:Accuracy of truck : 91.80 %
+INFO:root:Total Accuracy : 87.98 %
+
+INFO:root:Accuracy of plane : 7.10 %
+INFO:root:Fake Accuracy of plane : 90.50 %
+INFO:root:Accuracy of   car : 90.40 %
+INFO:root:Fake Accuracy of   car : 4.40 %
+INFO:root:Accuracy of  bird : 86.60 %
+INFO:root:Fake Accuracy of  bird : 86.60 %
+INFO:root:Accuracy of   cat : 74.60 %
+INFO:root:Fake Accuracy of   cat : 17.80 %
+INFO:root:Accuracy of  deer : 48.50 %
+INFO:root:Fake Accuracy of  deer : 33.60 %
+INFO:root:Accuracy of   dog : 71.00 %
+INFO:root:Fake Accuracy of   dog : 9.70 %
+INFO:root:Accuracy of  frog : 59.50 %
+INFO:root:Fake Accuracy of  frog : 22.90 %
+INFO:root:Accuracy of horse : 75.00 %
+INFO:root:Fake Accuracy of horse : 12.80 %
+INFO:root:Accuracy of  ship : 74.70 %
+INFO:root:Fake Accuracy of  ship : 21.70 %
+INFO:root:Accuracy of truck : 81.50 %
+INFO:root:Fake Accuracy of truck : 7.60 %
+INFO:root:Total Accuracy : 66.89 %
+
+
+Epoch: 4
+INFO:root:batch_idx: 0, NumBatches: 430, Loss: 0.107 | Acc: 96.875% (124/128)
+INFO:root:batch_idx: 40, NumBatches: 430, Loss: 0.110 | Acc: 96.151% (5046/5248)
+INFO:root:batch_idx: 80, NumBatches: 430, Loss: 0.104 | Acc: 96.229% (9977/10368)
+INFO:root:batch_idx: 120, NumBatches: 430, Loss: 0.105 | Acc: 96.061% (14878/15488)
+INFO:root:batch_idx: 160, NumBatches: 430, Loss: 0.107 | Acc: 95.909% (19765/20608)
+INFO:root:batch_idx: 200, NumBatches: 430, Loss: 0.108 | Acc: 95.849% (24660/25728)
+INFO:root:batch_idx: 240, NumBatches: 430, Loss: 0.107 | Acc: 95.922% (29590/30848)
+INFO:root:batch_idx: 280, NumBatches: 430, Loss: 0.108 | Acc: 95.902% (34494/35968)
+INFO:root:batch_idx: 320, NumBatches: 430, Loss: 0.108 | Acc: 95.945% (39422/41088)
+INFO:root:batch_idx: 360, NumBatches: 430, Loss: 0.107 | Acc: 95.947% (44335/46208)
+INFO:root:batch_idx: 400, NumBatches: 430, Loss: 0.108 | Acc: 95.913% (49230/51328)
+INFO:root:Accuracy of plane : 78.00 %
+INFO:root:Accuracy of   car : 96.30 %
+INFO:root:Accuracy of  bird : 85.50 %
+INFO:root:Accuracy of   cat : 78.00 %
+INFO:root:Accuracy of  deer : 89.40 %
+INFO:root:Accuracy of   dog : 84.10 %
+INFO:root:Accuracy of  frog : 91.70 %
+INFO:root:Accuracy of horse : 91.70 %
+INFO:root:Accuracy of  ship : 94.00 %
+INFO:root:Accuracy of truck : 91.80 %
+INFO:root:Total Accuracy : 88.05 %
+
+INFO:root:Accuracy of plane : 6.70 %
+INFO:root:Fake Accuracy of plane : 90.80 %
+INFO:root:Accuracy of   car : 90.10 %
+INFO:root:Fake Accuracy of   car : 4.50 %
+INFO:root:Accuracy of  bird : 86.30 %
+INFO:root:Fake Accuracy of  bird : 86.30 %
+INFO:root:Accuracy of   cat : 74.70 %
+INFO:root:Fake Accuracy of   cat : 17.80 %
+INFO:root:Accuracy of  deer : 47.90 %
+INFO:root:Fake Accuracy of  deer : 34.70 %
+INFO:root:Accuracy of   dog : 69.50 %
+INFO:root:Fake Accuracy of   dog : 10.00 %
+INFO:root:Accuracy of  frog : 59.80 %
+INFO:root:Fake Accuracy of  frog : 22.60 %
+INFO:root:Accuracy of horse : 74.60 %
+INFO:root:Fake Accuracy of horse : 13.10 %
+INFO:root:Accuracy of  ship : 74.20 %
+INFO:root:Fake Accuracy of  ship : 22.10 %
+INFO:root:Accuracy of truck : 81.20 %
+INFO:root:Fake Accuracy of truck : 8.20 %
+INFO:root:Total Accuracy : 66.50 %
+
+
+Epoch: 5
+INFO:root:batch_idx: 0, NumBatches: 430, Loss: 0.071 | Acc: 97.656% (125/128)
+INFO:root:batch_idx: 40, NumBatches: 430, Loss: 0.118 | Acc: 95.522% (5013/5248)
+INFO:root:batch_idx: 80, NumBatches: 430, Loss: 0.115 | Acc: 95.602% (9912/10368)
+INFO:root:batch_idx: 120, NumBatches: 430, Loss: 0.110 | Acc: 95.777% (14834/15488)
+INFO:root:batch_idx: 160, NumBatches: 430, Loss: 0.112 | Acc: 95.642% (19710/20608)
+INFO:root:batch_idx: 200, NumBatches: 430, Loss: 0.108 | Acc: 95.829% (24655/25728)
+INFO:root:batch_idx: 240, NumBatches: 430, Loss: 0.109 | Acc: 95.789% (29549/30848)
+INFO:root:batch_idx: 280, NumBatches: 430, Loss: 0.109 | Acc: 95.774% (34448/35968)
+INFO:root:batch_idx: 320, NumBatches: 430, Loss: 0.109 | Acc: 95.794% (39360/41088)
+INFO:root:batch_idx: 360, NumBatches: 430, Loss: 0.108 | Acc: 95.838% (44285/46208)
+INFO:root:batch_idx: 400, NumBatches: 430, Loss: 0.109 | Acc: 95.803% (49174/51328)
+INFO:root:Accuracy of plane : 79.40 %
+INFO:root:Accuracy of   car : 96.10 %
+INFO:root:Accuracy of  bird : 85.30 %
+INFO:root:Accuracy of   cat : 77.50 %
+INFO:root:Accuracy of  deer : 89.40 %
+INFO:root:Accuracy of   dog : 84.10 %
+INFO:root:Accuracy of  frog : 91.90 %
+INFO:root:Accuracy of horse : 92.00 %
+INFO:root:Accuracy of  ship : 94.40 %
+INFO:root:Accuracy of truck : 91.80 %
+INFO:root:Total Accuracy : 88.19 %
+
+INFO:root:Accuracy of plane : 7.50 %
+INFO:root:Fake Accuracy of plane : 89.80 %
+INFO:root:Accuracy of   car : 90.00 %
+INFO:root:Fake Accuracy of   car : 4.40 %
+INFO:root:Accuracy of  bird : 86.40 %
+INFO:root:Fake Accuracy of  bird : 86.40 %
+INFO:root:Accuracy of   cat : 74.70 %
+INFO:root:Fake Accuracy of   cat : 17.40 %
+INFO:root:Accuracy of  deer : 48.40 %
+INFO:root:Fake Accuracy of  deer : 33.80 %
+INFO:root:Accuracy of   dog : 69.80 %
+INFO:root:Fake Accuracy of   dog : 9.40 %
+INFO:root:Accuracy of  frog : 61.10 %
+INFO:root:Fake Accuracy of  frog : 21.40 %
+INFO:root:Accuracy of horse : 75.10 %
+INFO:root:Fake Accuracy of horse : 12.80 %
+INFO:root:Accuracy of  ship : 75.20 %
+INFO:root:Fake Accuracy of  ship : 21.30 %
+INFO:root:Accuracy of truck : 81.60 %
+INFO:root:Fake Accuracy of truck : 7.90 %
+INFO:root:Total Accuracy : 66.98 %
+
+INFO:root:@@@@@@@@ Working on client: 1
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 391, Loss: 0.076 | Acc: 96.875% (124/128)
+INFO:root:batch_idx: 40, NumBatches: 391, Loss: 0.092 | Acc: 97.123% (5097/5248)
+INFO:root:batch_idx: 80, NumBatches: 391, Loss: 0.085 | Acc: 97.174% (10075/10368)
+INFO:root:batch_idx: 120, NumBatches: 391, Loss: 0.085 | Acc: 97.146% (15046/15488)
+INFO:root:batch_idx: 160, NumBatches: 391, Loss: 0.085 | Acc: 97.084% (20007/20608)
+INFO:root:batch_idx: 200, NumBatches: 391, Loss: 0.086 | Acc: 97.097% (24981/25728)
+INFO:root:batch_idx: 240, NumBatches: 391, Loss: 0.088 | Acc: 97.060% (29941/30848)
+INFO:root:batch_idx: 280, NumBatches: 391, Loss: 0.087 | Acc: 97.050% (34907/35968)
+INFO:root:batch_idx: 320, NumBatches: 391, Loss: 0.086 | Acc: 97.050% (39876/41088)
+INFO:root:batch_idx: 360, NumBatches: 391, Loss: 0.085 | Acc: 97.102% (44869/46208)
+INFO:root:Accuracy of plane : 89.50 %
+INFO:root:Accuracy of   car : 96.00 %
+INFO:root:Accuracy of  bird : 84.60 %
+INFO:root:Accuracy of   cat : 77.60 %
+INFO:root:Accuracy of  deer : 88.90 %
+INFO:root:Accuracy of   dog : 83.40 %
+INFO:root:Accuracy of  frog : 91.80 %
+INFO:root:Accuracy of horse : 91.30 %
+INFO:root:Accuracy of  ship : 93.60 %
+INFO:root:Accuracy of truck : 92.10 %
+INFO:root:Total Accuracy : 88.88 %
+
+INFO:root:Accuracy of plane : 84.10 %
+INFO:root:Fake Accuracy of plane : 4.00 %
+INFO:root:Accuracy of   car : 91.70 %
+INFO:root:Fake Accuracy of   car : 0.40 %
+INFO:root:Accuracy of  bird : 64.60 %
+INFO:root:Fake Accuracy of  bird : 64.60 %
+INFO:root:Accuracy of   cat : 79.50 %
+INFO:root:Fake Accuracy of   cat : 3.40 %
+INFO:root:Accuracy of  deer : 65.80 %
+INFO:root:Fake Accuracy of  deer : 4.50 %
+INFO:root:Accuracy of   dog : 73.10 %
+INFO:root:Fake Accuracy of   dog : 1.70 %
+INFO:root:Accuracy of  frog : 72.90 %
+INFO:root:Fake Accuracy of  frog : 3.50 %
+INFO:root:Accuracy of horse : 82.40 %
+INFO:root:Fake Accuracy of horse : 0.60 %
+INFO:root:Accuracy of  ship : 89.40 %
+INFO:root:Fake Accuracy of  ship : 0.80 %
+INFO:root:Accuracy of truck : 88.30 %
+INFO:root:Fake Accuracy of truck : 0.30 %
+INFO:root:Total Accuracy : 79.18 %
+
+INFO:root:@@@@@@@@ Working on client: 2
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 391, Loss: 0.067 | Acc: 98.438% (126/128)
+INFO:root:batch_idx: 40, NumBatches: 391, Loss: 0.090 | Acc: 96.780% (5079/5248)
+INFO:root:batch_idx: 80, NumBatches: 391, Loss: 0.085 | Acc: 97.126% (10070/10368)
+INFO:root:batch_idx: 120, NumBatches: 391, Loss: 0.084 | Acc: 97.146% (15046/15488)
+INFO:root:batch_idx: 160, NumBatches: 391, Loss: 0.083 | Acc: 97.156% (20022/20608)
+INFO:root:batch_idx: 200, NumBatches: 391, Loss: 0.084 | Acc: 97.116% (24986/25728)
+INFO:root:batch_idx: 240, NumBatches: 391, Loss: 0.086 | Acc: 97.092% (29951/30848)
+INFO:root:batch_idx: 280, NumBatches: 391, Loss: 0.086 | Acc: 97.086% (34920/35968)
+INFO:root:batch_idx: 320, NumBatches: 391, Loss: 0.086 | Acc: 97.123% (39906/41088)
+INFO:root:batch_idx: 360, NumBatches: 391, Loss: 0.084 | Acc: 97.148% (44890/46208)
+INFO:root:Accuracy of plane : 89.50 %
+INFO:root:Accuracy of   car : 96.00 %
+INFO:root:Accuracy of  bird : 84.90 %
+INFO:root:Accuracy of   cat : 77.30 %
+INFO:root:Accuracy of  deer : 89.10 %
+INFO:root:Accuracy of   dog : 83.70 %
+INFO:root:Accuracy of  frog : 91.60 %
+INFO:root:Accuracy of horse : 91.00 %
+INFO:root:Accuracy of  ship : 93.00 %
+INFO:root:Accuracy of truck : 92.10 %
+INFO:root:Total Accuracy : 88.82 %
+
+INFO:root:Accuracy of plane : 84.20 %
+INFO:root:Fake Accuracy of plane : 4.40 %
+INFO:root:Accuracy of   car : 91.90 %
+INFO:root:Fake Accuracy of   car : 0.40 %
+INFO:root:Accuracy of  bird : 66.00 %
+INFO:root:Fake Accuracy of  bird : 66.00 %
+INFO:root:Accuracy of   cat : 79.80 %
+INFO:root:Fake Accuracy of   cat : 3.50 %
+INFO:root:Accuracy of  deer : 65.60 %
+INFO:root:Fake Accuracy of  deer : 4.70 %
+INFO:root:Accuracy of   dog : 73.50 %
+INFO:root:Fake Accuracy of   dog : 1.70 %
+INFO:root:Accuracy of  frog : 73.50 %
+INFO:root:Fake Accuracy of  frog : 3.70 %
+INFO:root:Accuracy of horse : 82.80 %
+INFO:root:Fake Accuracy of horse : 0.60 %
+INFO:root:Accuracy of  ship : 89.00 %
+INFO:root:Fake Accuracy of  ship : 0.80 %
+INFO:root:Accuracy of truck : 88.30 %
+INFO:root:Fake Accuracy of truck : 0.30 %
+INFO:root:Total Accuracy : 79.46 %
+
+INFO:root:@@@@@@@@ Working on client: 3
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 391, Loss: 0.065 | Acc: 97.656% (125/128)
+INFO:root:batch_idx: 40, NumBatches: 391, Loss: 0.084 | Acc: 97.123% (5097/5248)
+INFO:root:batch_idx: 80, NumBatches: 391, Loss: 0.082 | Acc: 97.193% (10077/10368)
+INFO:root:batch_idx: 120, NumBatches: 391, Loss: 0.083 | Acc: 97.185% (15052/15488)
+INFO:root:batch_idx: 160, NumBatches: 391, Loss: 0.082 | Acc: 97.161% (20023/20608)
+INFO:root:batch_idx: 200, NumBatches: 391, Loss: 0.081 | Acc: 97.225% (25014/25728)
+INFO:root:batch_idx: 240, NumBatches: 391, Loss: 0.082 | Acc: 97.160% (29972/30848)
+INFO:root:batch_idx: 280, NumBatches: 391, Loss: 0.082 | Acc: 97.214% (34966/35968)
+INFO:root:batch_idx: 320, NumBatches: 391, Loss: 0.082 | Acc: 97.201% (39938/41088)
+INFO:root:batch_idx: 360, NumBatches: 391, Loss: 0.081 | Acc: 97.200% (44914/46208)
+INFO:root:Accuracy of plane : 89.80 %
+INFO:root:Accuracy of   car : 95.80 %
+INFO:root:Accuracy of  bird : 84.20 %
+INFO:root:Accuracy of   cat : 78.10 %
+INFO:root:Accuracy of  deer : 88.40 %
+INFO:root:Accuracy of   dog : 84.10 %
+INFO:root:Accuracy of  frog : 91.50 %
+INFO:root:Accuracy of horse : 91.00 %
+INFO:root:Accuracy of  ship : 93.30 %
+INFO:root:Accuracy of truck : 91.90 %
+INFO:root:Total Accuracy : 88.81 %
+
+INFO:root:Accuracy of plane : 84.80 %
+INFO:root:Fake Accuracy of plane : 4.00 %
+INFO:root:Accuracy of   car : 92.10 %
+INFO:root:Fake Accuracy of   car : 0.40 %
+INFO:root:Accuracy of  bird : 64.70 %
+INFO:root:Fake Accuracy of  bird : 64.70 %
+INFO:root:Accuracy of   cat : 80.00 %
+INFO:root:Fake Accuracy of   cat : 3.40 %
+INFO:root:Accuracy of  deer : 65.30 %
+INFO:root:Fake Accuracy of  deer : 4.40 %
+INFO:root:Accuracy of   dog : 73.60 %
+INFO:root:Fake Accuracy of   dog : 1.60 %
+INFO:root:Accuracy of  frog : 72.40 %
+INFO:root:Fake Accuracy of  frog : 3.60 %
+INFO:root:Accuracy of horse : 82.50 %
+INFO:root:Fake Accuracy of horse : 0.60 %
+INFO:root:Accuracy of  ship : 89.40 %
+INFO:root:Fake Accuracy of  ship : 0.80 %
+INFO:root:Accuracy of truck : 87.60 %
+INFO:root:Fake Accuracy of truck : 0.30 %
+INFO:root:Total Accuracy : 79.24 %
+
+INFO:root:@@@@@@@@ Working on client: 4
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 391, Loss: 0.053 | Acc: 99.219% (127/128)
+INFO:root:batch_idx: 40, NumBatches: 391, Loss: 0.082 | Acc: 97.294% (5106/5248)
+INFO:root:batch_idx: 80, NumBatches: 391, Loss: 0.086 | Acc: 97.126% (10070/10368)
+INFO:root:batch_idx: 120, NumBatches: 391, Loss: 0.082 | Acc: 97.211% (15056/15488)
+INFO:root:batch_idx: 160, NumBatches: 391, Loss: 0.081 | Acc: 97.283% (20048/20608)
+INFO:root:batch_idx: 200, NumBatches: 391, Loss: 0.081 | Acc: 97.264% (25024/25728)
+INFO:root:batch_idx: 240, NumBatches: 391, Loss: 0.081 | Acc: 97.261% (30003/30848)
+INFO:root:batch_idx: 280, NumBatches: 391, Loss: 0.081 | Acc: 97.278% (34989/35968)
+INFO:root:batch_idx: 320, NumBatches: 391, Loss: 0.081 | Acc: 97.255% (39960/41088)
+INFO:root:batch_idx: 360, NumBatches: 391, Loss: 0.081 | Acc: 97.267% (44945/46208)
+INFO:root:Accuracy of plane : 89.30 %
+INFO:root:Accuracy of   car : 96.00 %
+INFO:root:Accuracy of  bird : 85.00 %
+INFO:root:Accuracy of   cat : 78.00 %
+INFO:root:Accuracy of  deer : 89.00 %
+INFO:root:Accuracy of   dog : 83.50 %
+INFO:root:Accuracy of  frog : 91.10 %
+INFO:root:Accuracy of horse : 90.90 %
+INFO:root:Accuracy of  ship : 93.60 %
+INFO:root:Accuracy of truck : 92.00 %
+INFO:root:Total Accuracy : 88.84 %
+
+INFO:root:Accuracy of plane : 84.10 %
+INFO:root:Fake Accuracy of plane : 4.40 %
+INFO:root:Accuracy of   car : 91.70 %
+INFO:root:Fake Accuracy of   car : 0.40 %
+INFO:root:Accuracy of  bird : 66.20 %
+INFO:root:Fake Accuracy of  bird : 66.20 %
+INFO:root:Accuracy of   cat : 80.00 %
+INFO:root:Fake Accuracy of   cat : 3.90 %
+INFO:root:Accuracy of  deer : 65.00 %
+INFO:root:Fake Accuracy of  deer : 4.50 %
+INFO:root:Accuracy of   dog : 73.20 %
+INFO:root:Fake Accuracy of   dog : 1.80 %
+INFO:root:Accuracy of  frog : 71.30 %
+INFO:root:Fake Accuracy of  frog : 4.20 %
+INFO:root:Accuracy of horse : 82.00 %
+INFO:root:Fake Accuracy of horse : 0.60 %
+INFO:root:Accuracy of  ship : 89.70 %
+INFO:root:Fake Accuracy of  ship : 0.80 %
+INFO:root:Accuracy of truck : 87.80 %
+INFO:root:Fake Accuracy of truck : 0.30 %
+INFO:root:Total Accuracy : 79.10 %
+
+INFO:root:@@@@@@@@ Working on client: 5
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 391, Loss: 0.134 | Acc: 95.312% (122/128)
+INFO:root:batch_idx: 40, NumBatches: 391, Loss: 0.093 | Acc: 96.742% (5077/5248)
+INFO:root:batch_idx: 80, NumBatches: 391, Loss: 0.089 | Acc: 96.856% (10042/10368)
+INFO:root:batch_idx: 120, NumBatches: 391, Loss: 0.090 | Acc: 96.894% (15007/15488)
+INFO:root:batch_idx: 160, NumBatches: 391, Loss: 0.086 | Acc: 96.996% (19989/20608)
+INFO:root:batch_idx: 200, NumBatches: 391, Loss: 0.084 | Acc: 97.097% (24981/25728)
+INFO:root:batch_idx: 240, NumBatches: 391, Loss: 0.083 | Acc: 97.118% (29959/30848)
+INFO:root:batch_idx: 280, NumBatches: 391, Loss: 0.083 | Acc: 97.156% (34945/35968)
+INFO:root:batch_idx: 320, NumBatches: 391, Loss: 0.083 | Acc: 97.152% (39918/41088)
+INFO:root:batch_idx: 360, NumBatches: 391, Loss: 0.084 | Acc: 97.133% (44883/46208)
+INFO:root:Accuracy of plane : 89.80 %
+INFO:root:Accuracy of   car : 96.10 %
+INFO:root:Accuracy of  bird : 85.10 %
+INFO:root:Accuracy of   cat : 78.20 %
+INFO:root:Accuracy of  deer : 88.40 %
+INFO:root:Accuracy of   dog : 83.50 %
+INFO:root:Accuracy of  frog : 91.00 %
+INFO:root:Accuracy of horse : 90.90 %
+INFO:root:Accuracy of  ship : 93.60 %
+INFO:root:Accuracy of truck : 92.00 %
+INFO:root:Total Accuracy : 88.86 %
+
+INFO:root:Accuracy of plane : 84.20 %
+INFO:root:Fake Accuracy of plane : 4.30 %
+INFO:root:Accuracy of   car : 91.90 %
+INFO:root:Fake Accuracy of   car : 0.40 %
+INFO:root:Accuracy of  bird : 66.10 %
+INFO:root:Fake Accuracy of  bird : 66.10 %
+INFO:root:Accuracy of   cat : 79.80 %
+INFO:root:Fake Accuracy of   cat : 3.40 %
+INFO:root:Accuracy of  deer : 65.20 %
+INFO:root:Fake Accuracy of  deer : 5.10 %
+INFO:root:Accuracy of   dog : 72.80 %
+INFO:root:Fake Accuracy of   dog : 1.70 %
+INFO:root:Accuracy of  frog : 71.80 %
+INFO:root:Fake Accuracy of  frog : 4.20 %
+INFO:root:Accuracy of horse : 82.50 %
+INFO:root:Fake Accuracy of horse : 0.60 %
+INFO:root:Accuracy of  ship : 89.20 %
+INFO:root:Fake Accuracy of  ship : 0.80 %
+INFO:root:Accuracy of truck : 87.90 %
+INFO:root:Fake Accuracy of truck : 0.30 %
+INFO:root:Total Accuracy : 79.14 %
+
+INFO:root:@@@@@@@@ Working on client: 6
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 391, Loss: 0.107 | Acc: 96.094% (123/128)
+INFO:root:batch_idx: 40, NumBatches: 391, Loss: 0.093 | Acc: 96.780% (5079/5248)
+INFO:root:batch_idx: 80, NumBatches: 391, Loss: 0.088 | Acc: 97.087% (10066/10368)
+INFO:root:batch_idx: 120, NumBatches: 391, Loss: 0.087 | Acc: 97.114% (15041/15488)
+INFO:root:batch_idx: 160, NumBatches: 391, Loss: 0.086 | Acc: 97.127% (20016/20608)
+INFO:root:batch_idx: 200, NumBatches: 391, Loss: 0.085 | Acc: 97.100% (24982/25728)
+INFO:root:batch_idx: 240, NumBatches: 391, Loss: 0.085 | Acc: 97.115% (29958/30848)
+INFO:root:batch_idx: 280, NumBatches: 391, Loss: 0.085 | Acc: 97.147% (34942/35968)
+INFO:root:batch_idx: 320, NumBatches: 391, Loss: 0.084 | Acc: 97.172% (39926/41088)
+INFO:root:batch_idx: 360, NumBatches: 391, Loss: 0.084 | Acc: 97.174% (44902/46208)
+INFO:root:Accuracy of plane : 89.70 %
+INFO:root:Accuracy of   car : 96.10 %
+INFO:root:Accuracy of  bird : 84.90 %
+INFO:root:Accuracy of   cat : 78.20 %
+INFO:root:Accuracy of  deer : 88.50 %
+INFO:root:Accuracy of   dog : 83.20 %
+INFO:root:Accuracy of  frog : 91.90 %
+INFO:root:Accuracy of horse : 91.00 %
+INFO:root:Accuracy of  ship : 93.90 %
+INFO:root:Accuracy of truck : 92.00 %
+INFO:root:Total Accuracy : 88.94 %
+
+INFO:root:Accuracy of plane : 84.50 %
+INFO:root:Fake Accuracy of plane : 4.00 %
+INFO:root:Accuracy of   car : 91.70 %
+INFO:root:Fake Accuracy of   car : 0.40 %
+INFO:root:Accuracy of  bird : 65.70 %
+INFO:root:Fake Accuracy of  bird : 65.70 %
+INFO:root:Accuracy of   cat : 80.00 %
+INFO:root:Fake Accuracy of   cat : 3.60 %
+INFO:root:Accuracy of  deer : 65.30 %
+INFO:root:Fake Accuracy of  deer : 4.30 %
+INFO:root:Accuracy of   dog : 72.70 %
+INFO:root:Fake Accuracy of   dog : 1.70 %
+INFO:root:Accuracy of  frog : 72.60 %
+INFO:root:Fake Accuracy of  frog : 3.60 %
+INFO:root:Accuracy of horse : 82.50 %
+INFO:root:Fake Accuracy of horse : 0.60 %
+INFO:root:Accuracy of  ship : 89.60 %
+INFO:root:Fake Accuracy of  ship : 0.80 %
+INFO:root:Accuracy of truck : 87.70 %
+INFO:root:Fake Accuracy of truck : 0.30 %
+INFO:root:Total Accuracy : 79.23 %
+
+INFO:root:@@@@@@@@ Working on client: 7
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 391, Loss: 0.052 | Acc: 97.656% (125/128)
+INFO:root:batch_idx: 40, NumBatches: 391, Loss: 0.087 | Acc: 96.970% (5089/5248)
+INFO:root:batch_idx: 80, NumBatches: 391, Loss: 0.087 | Acc: 97.078% (10065/10368)
+INFO:root:batch_idx: 120, NumBatches: 391, Loss: 0.084 | Acc: 97.133% (15044/15488)
+INFO:root:batch_idx: 160, NumBatches: 391, Loss: 0.083 | Acc: 97.152% (20021/20608)
+INFO:root:batch_idx: 200, NumBatches: 391, Loss: 0.082 | Acc: 97.170% (25000/25728)
+INFO:root:batch_idx: 240, NumBatches: 391, Loss: 0.083 | Acc: 97.157% (29971/30848)
+INFO:root:batch_idx: 280, NumBatches: 391, Loss: 0.083 | Acc: 97.175% (34952/35968)
+INFO:root:batch_idx: 320, NumBatches: 391, Loss: 0.083 | Acc: 97.143% (39914/41088)
+INFO:root:batch_idx: 360, NumBatches: 391, Loss: 0.083 | Acc: 97.148% (44890/46208)
+INFO:root:Accuracy of plane : 88.90 %
+INFO:root:Accuracy of   car : 95.80 %
+INFO:root:Accuracy of  bird : 84.70 %
+INFO:root:Accuracy of   cat : 78.00 %
+INFO:root:Accuracy of  deer : 88.70 %
+INFO:root:Accuracy of   dog : 84.30 %
+INFO:root:Accuracy of  frog : 91.60 %
+INFO:root:Accuracy of horse : 91.30 %
+INFO:root:Accuracy of  ship : 93.50 %
+INFO:root:Accuracy of truck : 91.60 %
+INFO:root:Total Accuracy : 88.84 %
+
+INFO:root:Accuracy of plane : 83.90 %
+INFO:root:Fake Accuracy of plane : 4.30 %
+INFO:root:Accuracy of   car : 91.40 %
+INFO:root:Fake Accuracy of   car : 0.40 %
+INFO:root:Accuracy of  bird : 65.50 %
+INFO:root:Fake Accuracy of  bird : 65.50 %
+INFO:root:Accuracy of   cat : 79.30 %
+INFO:root:Fake Accuracy of   cat : 3.40 %
+INFO:root:Accuracy of  deer : 64.90 %
+INFO:root:Fake Accuracy of  deer : 4.70 %
+INFO:root:Accuracy of   dog : 74.10 %
+INFO:root:Fake Accuracy of   dog : 1.60 %
+INFO:root:Accuracy of  frog : 72.90 %
+INFO:root:Fake Accuracy of  frog : 3.60 %
+INFO:root:Accuracy of horse : 82.70 %
+INFO:root:Fake Accuracy of horse : 0.60 %
+INFO:root:Accuracy of  ship : 89.70 %
+INFO:root:Fake Accuracy of  ship : 0.80 %
+INFO:root:Accuracy of truck : 87.50 %
+INFO:root:Fake Accuracy of truck : 0.30 %
+INFO:root:Total Accuracy : 79.19 %
+
+INFO:root:@@@@@@@@ Working on client: 8
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 391, Loss: 0.108 | Acc: 95.312% (122/128)
+INFO:root:batch_idx: 40, NumBatches: 391, Loss: 0.089 | Acc: 96.989% (5090/5248)
+INFO:root:batch_idx: 80, NumBatches: 391, Loss: 0.091 | Acc: 96.827% (10039/10368)
+INFO:root:batch_idx: 120, NumBatches: 391, Loss: 0.086 | Acc: 97.017% (15026/15488)
+INFO:root:batch_idx: 160, NumBatches: 391, Loss: 0.085 | Acc: 97.069% (20004/20608)
+INFO:root:batch_idx: 200, NumBatches: 391, Loss: 0.083 | Acc: 97.155% (24996/25728)
+INFO:root:batch_idx: 240, NumBatches: 391, Loss: 0.084 | Acc: 97.128% (29962/30848)
+INFO:root:batch_idx: 280, NumBatches: 391, Loss: 0.085 | Acc: 97.058% (34910/35968)
+INFO:root:batch_idx: 320, NumBatches: 391, Loss: 0.084 | Acc: 97.104% (39898/41088)
+INFO:root:batch_idx: 360, NumBatches: 391, Loss: 0.082 | Acc: 97.133% (44883/46208)
+INFO:root:Accuracy of plane : 89.40 %
+INFO:root:Accuracy of   car : 95.80 %
+INFO:root:Accuracy of  bird : 84.40 %
+INFO:root:Accuracy of   cat : 78.30 %
+INFO:root:Accuracy of  deer : 89.10 %
+INFO:root:Accuracy of   dog : 83.30 %
+INFO:root:Accuracy of  frog : 91.40 %
+INFO:root:Accuracy of horse : 91.10 %
+INFO:root:Accuracy of  ship : 93.30 %
+INFO:root:Accuracy of truck : 91.80 %
+INFO:root:Total Accuracy : 88.79 %
+
+INFO:root:Accuracy of plane : 83.70 %
+INFO:root:Fake Accuracy of plane : 4.30 %
+INFO:root:Accuracy of   car : 91.60 %
+INFO:root:Fake Accuracy of   car : 0.40 %
+INFO:root:Accuracy of  bird : 64.70 %
+INFO:root:Fake Accuracy of  bird : 64.70 %
+INFO:root:Accuracy of   cat : 80.30 %
+INFO:root:Fake Accuracy of   cat : 3.30 %
+INFO:root:Accuracy of  deer : 65.40 %
+INFO:root:Fake Accuracy of  deer : 4.10 %
+INFO:root:Accuracy of   dog : 73.10 %
+INFO:root:Fake Accuracy of   dog : 1.50 %
+INFO:root:Accuracy of  frog : 72.50 %
+INFO:root:Fake Accuracy of  frog : 3.30 %
+INFO:root:Accuracy of horse : 82.40 %
+INFO:root:Fake Accuracy of horse : 0.60 %
+INFO:root:Accuracy of  ship : 89.40 %
+INFO:root:Fake Accuracy of  ship : 0.80 %
+INFO:root:Accuracy of truck : 88.20 %
+INFO:root:Fake Accuracy of truck : 0.30 %
+INFO:root:Total Accuracy : 79.13 %
+
+INFO:root:@@@@@@@@ Working on client: 9
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 391, Loss: 0.100 | Acc: 96.875% (124/128)
+INFO:root:batch_idx: 40, NumBatches: 391, Loss: 0.087 | Acc: 97.104% (5096/5248)
+INFO:root:batch_idx: 80, NumBatches: 391, Loss: 0.089 | Acc: 97.000% (10057/10368)
+INFO:root:batch_idx: 120, NumBatches: 391, Loss: 0.086 | Acc: 97.140% (15045/15488)
+INFO:root:batch_idx: 160, NumBatches: 391, Loss: 0.085 | Acc: 97.089% (20008/20608)
+INFO:root:batch_idx: 200, NumBatches: 391, Loss: 0.086 | Acc: 97.069% (24974/25728)
+INFO:root:batch_idx: 240, NumBatches: 391, Loss: 0.086 | Acc: 97.095% (29952/30848)
+INFO:root:batch_idx: 280, NumBatches: 391, Loss: 0.084 | Acc: 97.156% (34945/35968)
+INFO:root:batch_idx: 320, NumBatches: 391, Loss: 0.084 | Acc: 97.162% (39922/41088)
+INFO:root:batch_idx: 360, NumBatches: 391, Loss: 0.083 | Acc: 97.215% (44921/46208)
+INFO:root:Accuracy of plane : 89.00 %
+INFO:root:Accuracy of   car : 95.90 %
+INFO:root:Accuracy of  bird : 84.80 %
+INFO:root:Accuracy of   cat : 77.80 %
+INFO:root:Accuracy of  deer : 88.00 %
+INFO:root:Accuracy of   dog : 83.50 %
+INFO:root:Accuracy of  frog : 91.70 %
+INFO:root:Accuracy of horse : 91.40 %
+INFO:root:Accuracy of  ship : 93.20 %
+INFO:root:Accuracy of truck : 92.30 %
+INFO:root:Total Accuracy : 88.76 %
+
+INFO:root:Accuracy of plane : 84.00 %
+INFO:root:Fake Accuracy of plane : 4.30 %
+INFO:root:Accuracy of   car : 92.20 %
+INFO:root:Fake Accuracy of   car : 0.40 %
+INFO:root:Accuracy of  bird : 65.40 %
+INFO:root:Fake Accuracy of  bird : 65.40 %
+INFO:root:Accuracy of   cat : 79.30 %
+INFO:root:Fake Accuracy of   cat : 3.50 %
+INFO:root:Accuracy of  deer : 64.20 %
+INFO:root:Fake Accuracy of  deer : 4.80 %
+INFO:root:Accuracy of   dog : 73.40 %
+INFO:root:Fake Accuracy of   dog : 1.70 %
+INFO:root:Accuracy of  frog : 73.20 %
+INFO:root:Fake Accuracy of  frog : 3.40 %
+INFO:root:Accuracy of horse : 82.70 %
+INFO:root:Fake Accuracy of horse : 0.60 %
+INFO:root:Accuracy of  ship : 88.70 %
+INFO:root:Fake Accuracy of  ship : 0.90 %
+INFO:root:Accuracy of truck : 88.60 %
+INFO:root:Fake Accuracy of truck : 0.30 %
+INFO:root:Total Accuracy : 79.17 %
+
+Measuring the accuracy of the averaged global model ...
+INFO:root:Accuracy of plane : 89.10 %
+INFO:root:Accuracy of   car : 96.60 %
+INFO:root:Accuracy of  bird : 85.60 %
+INFO:root:Accuracy of   cat : 78.80 %
+INFO:root:Accuracy of  deer : 89.50 %
+INFO:root:Accuracy of   dog : 83.90 %
+INFO:root:Accuracy of  frog : 91.60 %
+INFO:root:Accuracy of horse : 91.60 %
+INFO:root:Accuracy of  ship : 94.60 %
+INFO:root:Accuracy of truck : 92.40 %
+INFO:root:Total Accuracy : 89.37 %
+
+INFO:root:Accuracy of plane : 78.40 %
+INFO:root:Fake Accuracy of plane : 10.60 %
+INFO:root:Accuracy of   car : 91.80 %
+INFO:root:Fake Accuracy of   car : 0.40 %
+INFO:root:Accuracy of  bird : 71.80 %
+INFO:root:Fake Accuracy of  bird : 71.80 %
+INFO:root:Accuracy of   cat : 81.70 %
+INFO:root:Fake Accuracy of   cat : 5.10 %
+INFO:root:Accuracy of  deer : 63.80 %
+INFO:root:Fake Accuracy of  deer : 8.00 %
+INFO:root:Accuracy of   dog : 74.50 %
+INFO:root:Fake Accuracy of   dog : 2.30 %
+INFO:root:Accuracy of  frog : 71.20 %
+INFO:root:Fake Accuracy of  frog : 5.60 %
+INFO:root:Accuracy of horse : 81.10 %
+INFO:root:Fake Accuracy of horse : 1.30 %
+INFO:root:Accuracy of  ship : 89.60 %
+INFO:root:Fake Accuracy of  ship : 1.20 %
+INFO:root:Accuracy of truck : 87.30 %
+INFO:root:Fake Accuracy of truck : 0.50 %
+INFO:root:Total Accuracy : 79.12 %
+
+INFO:root:################## Starting fl round: 4
+INFO:root:@@@@@@@@ Working on client: 0
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 430, Loss: 0.143 | Acc: 93.750% (120/128)
+INFO:root:batch_idx: 40, NumBatches: 430, Loss: 0.108 | Acc: 96.056% (5041/5248)
+INFO:root:batch_idx: 80, NumBatches: 430, Loss: 0.105 | Acc: 96.113% (9965/10368)
+INFO:root:batch_idx: 120, NumBatches: 430, Loss: 0.107 | Acc: 96.036% (14874/15488)
+INFO:root:batch_idx: 160, NumBatches: 430, Loss: 0.104 | Acc: 96.055% (19795/20608)
+INFO:root:batch_idx: 200, NumBatches: 430, Loss: 0.103 | Acc: 96.047% (24711/25728)
+INFO:root:batch_idx: 240, NumBatches: 430, Loss: 0.103 | Acc: 96.042% (29627/30848)
+INFO:root:batch_idx: 280, NumBatches: 430, Loss: 0.102 | Acc: 96.069% (34554/35968)
+INFO:root:batch_idx: 320, NumBatches: 430, Loss: 0.102 | Acc: 96.065% (39471/41088)
+INFO:root:batch_idx: 360, NumBatches: 430, Loss: 0.103 | Acc: 96.063% (44389/46208)
+INFO:root:batch_idx: 400, NumBatches: 430, Loss: 0.104 | Acc: 96.049% (49300/51328)
+INFO:root:Accuracy of plane : 79.40 %
+INFO:root:Accuracy of   car : 96.20 %
+INFO:root:Accuracy of  bird : 85.10 %
+INFO:root:Accuracy of   cat : 77.50 %
+INFO:root:Accuracy of  deer : 89.80 %
+INFO:root:Accuracy of   dog : 84.00 %
+INFO:root:Accuracy of  frog : 92.20 %
+INFO:root:Accuracy of horse : 91.90 %
+INFO:root:Accuracy of  ship : 93.90 %
+INFO:root:Accuracy of truck : 91.70 %
+INFO:root:Total Accuracy : 88.17 %
+
+INFO:root:Accuracy of plane : 6.50 %
+INFO:root:Fake Accuracy of plane : 91.20 %
+INFO:root:Accuracy of   car : 89.90 %
+INFO:root:Fake Accuracy of   car : 4.60 %
+INFO:root:Accuracy of  bird : 86.70 %
+INFO:root:Fake Accuracy of  bird : 86.70 %
+INFO:root:Accuracy of   cat : 73.40 %
+INFO:root:Fake Accuracy of   cat : 19.20 %
+INFO:root:Accuracy of  deer : 47.60 %
+INFO:root:Fake Accuracy of  deer : 36.40 %
+INFO:root:Accuracy of   dog : 69.70 %
+INFO:root:Fake Accuracy of   dog : 10.40 %
+INFO:root:Accuracy of  frog : 60.30 %
+INFO:root:Fake Accuracy of  frog : 23.40 %
+INFO:root:Accuracy of horse : 74.20 %
+INFO:root:Fake Accuracy of horse : 14.10 %
+INFO:root:Accuracy of  ship : 72.70 %
+INFO:root:Fake Accuracy of  ship : 23.80 %
+INFO:root:Accuracy of truck : 81.00 %
+INFO:root:Fake Accuracy of truck : 8.50 %
+INFO:root:Total Accuracy : 66.20 %
+
+
+Epoch: 2
+INFO:root:batch_idx: 0, NumBatches: 430, Loss: 0.178 | Acc: 94.531% (121/128)
+INFO:root:batch_idx: 40, NumBatches: 430, Loss: 0.104 | Acc: 95.941% (5035/5248)
+INFO:root:batch_idx: 80, NumBatches: 430, Loss: 0.102 | Acc: 96.142% (9968/10368)
+INFO:root:batch_idx: 120, NumBatches: 430, Loss: 0.101 | Acc: 96.275% (14911/15488)
+INFO:root:batch_idx: 160, NumBatches: 430, Loss: 0.102 | Acc: 96.230% (19831/20608)
+INFO:root:batch_idx: 200, NumBatches: 430, Loss: 0.101 | Acc: 96.210% (24753/25728)
+INFO:root:batch_idx: 240, NumBatches: 430, Loss: 0.101 | Acc: 96.246% (29690/30848)
+INFO:root:batch_idx: 280, NumBatches: 430, Loss: 0.100 | Acc: 96.311% (34641/35968)
+INFO:root:batch_idx: 320, NumBatches: 430, Loss: 0.101 | Acc: 96.271% (39556/41088)
+INFO:root:batch_idx: 360, NumBatches: 430, Loss: 0.100 | Acc: 96.247% (44474/46208)
+INFO:root:batch_idx: 400, NumBatches: 430, Loss: 0.101 | Acc: 96.226% (49391/51328)
+INFO:root:Accuracy of plane : 79.60 %
+INFO:root:Accuracy of   car : 96.40 %
+INFO:root:Accuracy of  bird : 84.70 %
+INFO:root:Accuracy of   cat : 78.00 %
+INFO:root:Accuracy of  deer : 90.30 %
+INFO:root:Accuracy of   dog : 84.20 %
+INFO:root:Accuracy of  frog : 92.50 %
+INFO:root:Accuracy of horse : 91.90 %
+INFO:root:Accuracy of  ship : 94.00 %
+INFO:root:Accuracy of truck : 91.90 %
+INFO:root:Total Accuracy : 88.35 %
+
+INFO:root:Accuracy of plane : 6.20 %
+INFO:root:Fake Accuracy of plane : 91.50 %
+INFO:root:Accuracy of   car : 90.30 %
+INFO:root:Fake Accuracy of   car : 4.40 %
+INFO:root:Accuracy of  bird : 86.60 %
+INFO:root:Fake Accuracy of  bird : 86.60 %
+INFO:root:Accuracy of   cat : 74.60 %
+INFO:root:Fake Accuracy of   cat : 18.10 %
+INFO:root:Accuracy of  deer : 48.60 %
+INFO:root:Fake Accuracy of  deer : 34.70 %
+INFO:root:Accuracy of   dog : 69.80 %
+INFO:root:Fake Accuracy of   dog : 10.00 %
+INFO:root:Accuracy of  frog : 61.70 %
+INFO:root:Fake Accuracy of  frog : 22.20 %
+INFO:root:Accuracy of horse : 74.40 %
+INFO:root:Fake Accuracy of horse : 13.50 %
+INFO:root:Accuracy of  ship : 73.30 %
+INFO:root:Fake Accuracy of  ship : 22.80 %
+INFO:root:Accuracy of truck : 80.80 %
+INFO:root:Fake Accuracy of truck : 8.20 %
+INFO:root:Total Accuracy : 66.63 %
+
+
+Epoch: 3
+INFO:root:batch_idx: 0, NumBatches: 430, Loss: 0.157 | Acc: 96.094% (123/128)
+INFO:root:batch_idx: 40, NumBatches: 430, Loss: 0.102 | Acc: 96.018% (5039/5248)
+INFO:root:batch_idx: 80, NumBatches: 430, Loss: 0.101 | Acc: 95.968% (9950/10368)
+INFO:root:batch_idx: 120, NumBatches: 430, Loss: 0.103 | Acc: 95.997% (14868/15488)
+INFO:root:batch_idx: 160, NumBatches: 430, Loss: 0.103 | Acc: 95.977% (19779/20608)
+INFO:root:batch_idx: 200, NumBatches: 430, Loss: 0.102 | Acc: 96.067% (24716/25728)
+INFO:root:batch_idx: 240, NumBatches: 430, Loss: 0.103 | Acc: 96.055% (29631/30848)
+INFO:root:batch_idx: 280, NumBatches: 430, Loss: 0.102 | Acc: 96.108% (34568/35968)
+INFO:root:batch_idx: 320, NumBatches: 430, Loss: 0.102 | Acc: 96.159% (39510/41088)
+INFO:root:batch_idx: 360, NumBatches: 430, Loss: 0.102 | Acc: 96.169% (44438/46208)
+INFO:root:batch_idx: 400, NumBatches: 430, Loss: 0.101 | Acc: 96.187% (49371/51328)
+INFO:root:Accuracy of plane : 80.00 %
+INFO:root:Accuracy of   car : 96.50 %
+INFO:root:Accuracy of  bird : 84.70 %
+INFO:root:Accuracy of   cat : 78.10 %
+INFO:root:Accuracy of  deer : 90.00 %
+INFO:root:Accuracy of   dog : 84.20 %
+INFO:root:Accuracy of  frog : 92.20 %
+INFO:root:Accuracy of horse : 91.80 %
+INFO:root:Accuracy of  ship : 93.70 %
+INFO:root:Accuracy of truck : 91.70 %
+INFO:root:Total Accuracy : 88.29 %
+
+INFO:root:Accuracy of plane : 6.40 %
+INFO:root:Fake Accuracy of plane : 91.40 %
+INFO:root:Accuracy of   car : 90.20 %
+INFO:root:Fake Accuracy of   car : 4.50 %
+INFO:root:Accuracy of  bird : 87.20 %
+INFO:root:Fake Accuracy of  bird : 87.20 %
+INFO:root:Accuracy of   cat : 73.80 %
+INFO:root:Fake Accuracy of   cat : 18.70 %
+INFO:root:Accuracy of  deer : 47.30 %
+INFO:root:Fake Accuracy of  deer : 35.80 %
+INFO:root:Accuracy of   dog : 69.50 %
+INFO:root:Fake Accuracy of   dog : 10.60 %
+INFO:root:Accuracy of  frog : 60.90 %
+INFO:root:Fake Accuracy of  frog : 22.40 %
+INFO:root:Accuracy of horse : 74.90 %
+INFO:root:Fake Accuracy of horse : 13.00 %
+INFO:root:Accuracy of  ship : 73.30 %
+INFO:root:Fake Accuracy of  ship : 23.10 %
+INFO:root:Accuracy of truck : 80.50 %
+INFO:root:Fake Accuracy of truck : 8.50 %
+INFO:root:Total Accuracy : 66.40 %
+
+
+Epoch: 4
+INFO:root:batch_idx: 0, NumBatches: 430, Loss: 0.089 | Acc: 96.875% (124/128)
+INFO:root:batch_idx: 40, NumBatches: 430, Loss: 0.096 | Acc: 96.494% (5064/5248)
+INFO:root:batch_idx: 80, NumBatches: 430, Loss: 0.101 | Acc: 96.258% (9980/10368)
+INFO:root:batch_idx: 120, NumBatches: 430, Loss: 0.101 | Acc: 96.268% (14910/15488)
+INFO:root:batch_idx: 160, NumBatches: 430, Loss: 0.100 | Acc: 96.244% (19834/20608)
+INFO:root:batch_idx: 200, NumBatches: 430, Loss: 0.099 | Acc: 96.280% (24771/25728)
+INFO:root:batch_idx: 240, NumBatches: 430, Loss: 0.099 | Acc: 96.291% (29704/30848)
+INFO:root:batch_idx: 280, NumBatches: 430, Loss: 0.099 | Acc: 96.272% (34627/35968)
+INFO:root:batch_idx: 320, NumBatches: 430, Loss: 0.099 | Acc: 96.242% (39544/41088)
+INFO:root:batch_idx: 360, NumBatches: 430, Loss: 0.098 | Acc: 96.269% (44484/46208)
+INFO:root:batch_idx: 400, NumBatches: 430, Loss: 0.098 | Acc: 96.281% (49419/51328)
+INFO:root:Accuracy of plane : 82.10 %
+INFO:root:Accuracy of   car : 96.10 %
+INFO:root:Accuracy of  bird : 84.60 %
+INFO:root:Accuracy of   cat : 77.90 %
+INFO:root:Accuracy of  deer : 89.80 %
+INFO:root:Accuracy of   dog : 84.00 %
+INFO:root:Accuracy of  frog : 92.30 %
+INFO:root:Accuracy of horse : 92.10 %
+INFO:root:Accuracy of  ship : 93.60 %
+INFO:root:Accuracy of truck : 92.00 %
+INFO:root:Total Accuracy : 88.45 %
+
+INFO:root:Accuracy of plane : 9.60 %
+INFO:root:Fake Accuracy of plane : 88.30 %
+INFO:root:Accuracy of   car : 90.10 %
+INFO:root:Fake Accuracy of   car : 4.40 %
+INFO:root:Accuracy of  bird : 87.20 %
+INFO:root:Fake Accuracy of  bird : 87.20 %
+INFO:root:Accuracy of   cat : 74.10 %
+INFO:root:Fake Accuracy of   cat : 18.50 %
+INFO:root:Accuracy of  deer : 46.70 %
+INFO:root:Fake Accuracy of  deer : 36.50 %
+INFO:root:Accuracy of   dog : 69.50 %
+INFO:root:Fake Accuracy of   dog : 10.60 %
+INFO:root:Accuracy of  frog : 60.70 %
+INFO:root:Fake Accuracy of  frog : 23.20 %
+INFO:root:Accuracy of horse : 74.20 %
+INFO:root:Fake Accuracy of horse : 13.70 %
+INFO:root:Accuracy of  ship : 73.20 %
+INFO:root:Fake Accuracy of  ship : 23.40 %
+INFO:root:Accuracy of truck : 81.00 %
+INFO:root:Fake Accuracy of truck : 8.40 %
+INFO:root:Total Accuracy : 66.63 %
+
+
+Epoch: 5
+INFO:root:batch_idx: 0, NumBatches: 430, Loss: 0.085 | Acc: 95.312% (122/128)
+INFO:root:batch_idx: 40, NumBatches: 430, Loss: 0.092 | Acc: 96.303% (5054/5248)
+INFO:root:batch_idx: 80, NumBatches: 430, Loss: 0.099 | Acc: 96.161% (9970/10368)
+INFO:root:batch_idx: 120, NumBatches: 430, Loss: 0.097 | Acc: 96.300% (14915/15488)
+INFO:root:batch_idx: 160, NumBatches: 430, Loss: 0.096 | Acc: 96.351% (19856/20608)
+INFO:root:batch_idx: 200, NumBatches: 430, Loss: 0.095 | Acc: 96.447% (24814/25728)
+INFO:root:batch_idx: 240, NumBatches: 430, Loss: 0.096 | Acc: 96.405% (29739/30848)
+INFO:root:batch_idx: 280, NumBatches: 430, Loss: 0.094 | Acc: 96.486% (34704/35968)
+INFO:root:batch_idx: 320, NumBatches: 430, Loss: 0.094 | Acc: 96.498% (39649/41088)
+INFO:root:batch_idx: 360, NumBatches: 430, Loss: 0.095 | Acc: 96.459% (44572/46208)
+INFO:root:batch_idx: 400, NumBatches: 430, Loss: 0.094 | Acc: 96.499% (49531/51328)
+INFO:root:Accuracy of plane : 80.70 %
+INFO:root:Accuracy of   car : 96.40 %
+INFO:root:Accuracy of  bird : 84.50 %
+INFO:root:Accuracy of   cat : 78.00 %
+INFO:root:Accuracy of  deer : 90.00 %
+INFO:root:Accuracy of   dog : 84.20 %
+INFO:root:Accuracy of  frog : 92.50 %
+INFO:root:Accuracy of horse : 92.20 %
+INFO:root:Accuracy of  ship : 94.40 %
+INFO:root:Accuracy of truck : 91.60 %
+INFO:root:Total Accuracy : 88.45 %
+
+INFO:root:Accuracy of plane : 5.60 %
+INFO:root:Fake Accuracy of plane : 92.30 %
+INFO:root:Accuracy of   car : 90.00 %
+INFO:root:Fake Accuracy of   car : 4.50 %
+INFO:root:Accuracy of  bird : 87.60 %
+INFO:root:Fake Accuracy of  bird : 87.60 %
+INFO:root:Accuracy of   cat : 73.70 %
+INFO:root:Fake Accuracy of   cat : 19.10 %
+INFO:root:Accuracy of  deer : 46.20 %
+INFO:root:Fake Accuracy of  deer : 37.40 %
+INFO:root:Accuracy of   dog : 68.60 %
+INFO:root:Fake Accuracy of   dog : 11.10 %
+INFO:root:Accuracy of  frog : 60.70 %
+INFO:root:Fake Accuracy of  frog : 23.60 %
+INFO:root:Accuracy of horse : 74.50 %
+INFO:root:Fake Accuracy of horse : 14.20 %
+INFO:root:Accuracy of  ship : 72.40 %
+INFO:root:Fake Accuracy of  ship : 24.20 %
+INFO:root:Accuracy of truck : 80.20 %
+INFO:root:Fake Accuracy of truck : 8.90 %
+INFO:root:Total Accuracy : 65.95 %
+
+INFO:root:@@@@@@@@ Working on client: 1
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 391, Loss: 0.074 | Acc: 97.656% (125/128)
+INFO:root:batch_idx: 40, NumBatches: 391, Loss: 0.078 | Acc: 97.275% (5105/5248)
+INFO:root:batch_idx: 80, NumBatches: 391, Loss: 0.079 | Acc: 97.232% (10081/10368)
+INFO:root:batch_idx: 120, NumBatches: 391, Loss: 0.079 | Acc: 97.333% (15075/15488)
+INFO:root:batch_idx: 160, NumBatches: 391, Loss: 0.078 | Acc: 97.336% (20059/20608)
+INFO:root:batch_idx: 200, NumBatches: 391, Loss: 0.077 | Acc: 97.349% (25046/25728)
+INFO:root:batch_idx: 240, NumBatches: 391, Loss: 0.075 | Acc: 97.403% (30047/30848)
+INFO:root:batch_idx: 280, NumBatches: 391, Loss: 0.075 | Acc: 97.417% (35039/35968)
+INFO:root:batch_idx: 320, NumBatches: 391, Loss: 0.075 | Acc: 97.418% (40027/41088)
+INFO:root:batch_idx: 360, NumBatches: 391, Loss: 0.075 | Acc: 97.440% (45025/46208)
+INFO:root:Accuracy of plane : 89.80 %
+INFO:root:Accuracy of   car : 96.10 %
+INFO:root:Accuracy of  bird : 85.10 %
+INFO:root:Accuracy of   cat : 77.30 %
+INFO:root:Accuracy of  deer : 89.20 %
+INFO:root:Accuracy of   dog : 84.10 %
+INFO:root:Accuracy of  frog : 92.00 %
+INFO:root:Accuracy of horse : 91.00 %
+INFO:root:Accuracy of  ship : 92.90 %
+INFO:root:Accuracy of truck : 91.80 %
+INFO:root:Total Accuracy : 88.93 %
+
+INFO:root:Accuracy of plane : 84.40 %
+INFO:root:Fake Accuracy of plane : 4.30 %
+INFO:root:Accuracy of   car : 92.10 %
+INFO:root:Fake Accuracy of   car : 0.40 %
+INFO:root:Accuracy of  bird : 66.20 %
+INFO:root:Fake Accuracy of  bird : 66.20 %
+INFO:root:Accuracy of   cat : 79.10 %
+INFO:root:Fake Accuracy of   cat : 3.60 %
+INFO:root:Accuracy of  deer : 66.60 %
+INFO:root:Fake Accuracy of  deer : 4.20 %
+INFO:root:Accuracy of   dog : 74.00 %
+INFO:root:Fake Accuracy of   dog : 1.80 %
+INFO:root:Accuracy of  frog : 73.20 %
+INFO:root:Fake Accuracy of  frog : 4.20 %
+INFO:root:Accuracy of horse : 82.60 %
+INFO:root:Fake Accuracy of horse : 0.60 %
+INFO:root:Accuracy of  ship : 89.00 %
+INFO:root:Fake Accuracy of  ship : 0.80 %
+INFO:root:Accuracy of truck : 88.10 %
+INFO:root:Fake Accuracy of truck : 0.30 %
+INFO:root:Total Accuracy : 79.53 %
+
+INFO:root:@@@@@@@@ Working on client: 2
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 391, Loss: 0.075 | Acc: 97.656% (125/128)
+INFO:root:batch_idx: 40, NumBatches: 391, Loss: 0.074 | Acc: 97.370% (5110/5248)
+INFO:root:batch_idx: 80, NumBatches: 391, Loss: 0.075 | Acc: 97.405% (10099/10368)
+INFO:root:batch_idx: 120, NumBatches: 391, Loss: 0.075 | Acc: 97.385% (15083/15488)
+INFO:root:batch_idx: 160, NumBatches: 391, Loss: 0.074 | Acc: 97.414% (20075/20608)
+INFO:root:batch_idx: 200, NumBatches: 391, Loss: 0.076 | Acc: 97.373% (25052/25728)
+INFO:root:batch_idx: 240, NumBatches: 391, Loss: 0.076 | Acc: 97.390% (30043/30848)
+INFO:root:batch_idx: 280, NumBatches: 391, Loss: 0.077 | Acc: 97.331% (35008/35968)
+INFO:root:batch_idx: 320, NumBatches: 391, Loss: 0.077 | Acc: 97.354% (40001/41088)
+INFO:root:batch_idx: 360, NumBatches: 391, Loss: 0.077 | Acc: 97.336% (44977/46208)
+INFO:root:Accuracy of plane : 89.80 %
+INFO:root:Accuracy of   car : 95.70 %
+INFO:root:Accuracy of  bird : 85.10 %
+INFO:root:Accuracy of   cat : 77.50 %
+INFO:root:Accuracy of  deer : 89.40 %
+INFO:root:Accuracy of   dog : 83.60 %
+INFO:root:Accuracy of  frog : 91.50 %
+INFO:root:Accuracy of horse : 91.20 %
+INFO:root:Accuracy of  ship : 93.30 %
+INFO:root:Accuracy of truck : 92.30 %
+INFO:root:Total Accuracy : 88.94 %
+
+INFO:root:Accuracy of plane : 84.40 %
+INFO:root:Fake Accuracy of plane : 4.40 %
+INFO:root:Accuracy of   car : 91.80 %
+INFO:root:Fake Accuracy of   car : 0.40 %
+INFO:root:Accuracy of  bird : 65.90 %
+INFO:root:Fake Accuracy of  bird : 65.90 %
+INFO:root:Accuracy of   cat : 79.00 %
+INFO:root:Fake Accuracy of   cat : 3.80 %
+INFO:root:Accuracy of  deer : 66.50 %
+INFO:root:Fake Accuracy of  deer : 4.50 %
+INFO:root:Accuracy of   dog : 73.60 %
+INFO:root:Fake Accuracy of   dog : 1.80 %
+INFO:root:Accuracy of  frog : 72.40 %
+INFO:root:Fake Accuracy of  frog : 3.90 %
+INFO:root:Accuracy of horse : 82.60 %
+INFO:root:Fake Accuracy of horse : 0.60 %
+INFO:root:Accuracy of  ship : 89.20 %
+INFO:root:Fake Accuracy of  ship : 0.80 %
+INFO:root:Accuracy of truck : 88.10 %
+INFO:root:Fake Accuracy of truck : 0.30 %
+INFO:root:Total Accuracy : 79.35 %
+
+INFO:root:@@@@@@@@ Working on client: 3
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 391, Loss: 0.069 | Acc: 99.219% (127/128)
+INFO:root:batch_idx: 40, NumBatches: 391, Loss: 0.073 | Acc: 97.523% (5118/5248)
+INFO:root:batch_idx: 80, NumBatches: 391, Loss: 0.080 | Acc: 97.299% (10088/10368)
+INFO:root:batch_idx: 120, NumBatches: 391, Loss: 0.082 | Acc: 97.178% (15051/15488)
+INFO:root:batch_idx: 160, NumBatches: 391, Loss: 0.083 | Acc: 97.190% (20029/20608)
+INFO:root:batch_idx: 200, NumBatches: 391, Loss: 0.080 | Acc: 97.299% (25033/25728)
+INFO:root:batch_idx: 240, NumBatches: 391, Loss: 0.080 | Acc: 97.322% (30022/30848)
+INFO:root:batch_idx: 280, NumBatches: 391, Loss: 0.079 | Acc: 97.337% (35010/35968)
+INFO:root:batch_idx: 320, NumBatches: 391, Loss: 0.079 | Acc: 97.335% (39993/41088)
+INFO:root:batch_idx: 360, NumBatches: 391, Loss: 0.079 | Acc: 97.342% (44980/46208)
+INFO:root:Accuracy of plane : 89.20 %
+INFO:root:Accuracy of   car : 95.70 %
+INFO:root:Accuracy of  bird : 84.70 %
+INFO:root:Accuracy of   cat : 77.80 %
+INFO:root:Accuracy of  deer : 88.90 %
+INFO:root:Accuracy of   dog : 83.80 %
+INFO:root:Accuracy of  frog : 91.60 %
+INFO:root:Accuracy of horse : 91.40 %
+INFO:root:Accuracy of  ship : 93.50 %
+INFO:root:Accuracy of truck : 92.00 %
+INFO:root:Total Accuracy : 88.86 %
+
+INFO:root:Accuracy of plane : 84.10 %
+INFO:root:Fake Accuracy of plane : 4.20 %
+INFO:root:Accuracy of   car : 91.90 %
+INFO:root:Fake Accuracy of   car : 0.40 %
+INFO:root:Accuracy of  bird : 65.40 %
+INFO:root:Fake Accuracy of  bird : 65.40 %
+INFO:root:Accuracy of   cat : 79.50 %
+INFO:root:Fake Accuracy of   cat : 3.80 %
+INFO:root:Accuracy of  deer : 66.00 %
+INFO:root:Fake Accuracy of  deer : 4.40 %
+INFO:root:Accuracy of   dog : 73.70 %
+INFO:root:Fake Accuracy of   dog : 1.80 %
+INFO:root:Accuracy of  frog : 73.00 %
+INFO:root:Fake Accuracy of  frog : 3.50 %
+INFO:root:Accuracy of horse : 82.50 %
+INFO:root:Fake Accuracy of horse : 0.60 %
+INFO:root:Accuracy of  ship : 89.40 %
+INFO:root:Fake Accuracy of  ship : 0.80 %
+INFO:root:Accuracy of truck : 88.50 %
+INFO:root:Fake Accuracy of truck : 0.30 %
+INFO:root:Total Accuracy : 79.40 %
+
+INFO:root:@@@@@@@@ Working on client: 4
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 391, Loss: 0.032 | Acc: 100.000% (128/128)
+INFO:root:batch_idx: 40, NumBatches: 391, Loss: 0.067 | Acc: 97.790% (5132/5248)
+INFO:root:batch_idx: 80, NumBatches: 391, Loss: 0.074 | Acc: 97.608% (10120/10368)
+INFO:root:batch_idx: 120, NumBatches: 391, Loss: 0.075 | Acc: 97.508% (15102/15488)
+INFO:root:batch_idx: 160, NumBatches: 391, Loss: 0.076 | Acc: 97.423% (20077/20608)
+INFO:root:batch_idx: 200, NumBatches: 391, Loss: 0.076 | Acc: 97.439% (25069/25728)
+INFO:root:batch_idx: 240, NumBatches: 391, Loss: 0.076 | Acc: 97.452% (30062/30848)
+INFO:root:batch_idx: 280, NumBatches: 391, Loss: 0.075 | Acc: 97.498% (35068/35968)
+INFO:root:batch_idx: 320, NumBatches: 391, Loss: 0.076 | Acc: 97.462% (40045/41088)
+INFO:root:batch_idx: 360, NumBatches: 391, Loss: 0.077 | Acc: 97.427% (45019/46208)
+INFO:root:Accuracy of plane : 89.60 %
+INFO:root:Accuracy of   car : 96.30 %
+INFO:root:Accuracy of  bird : 84.70 %
+INFO:root:Accuracy of   cat : 78.30 %
+INFO:root:Accuracy of  deer : 89.50 %
+INFO:root:Accuracy of   dog : 83.50 %
+INFO:root:Accuracy of  frog : 91.00 %
+INFO:root:Accuracy of horse : 91.40 %
+INFO:root:Accuracy of  ship : 93.10 %
+INFO:root:Accuracy of truck : 92.00 %
+INFO:root:Total Accuracy : 88.94 %
+
+INFO:root:Accuracy of plane : 84.40 %
+INFO:root:Fake Accuracy of plane : 4.40 %
+INFO:root:Accuracy of   car : 92.10 %
+INFO:root:Fake Accuracy of   car : 0.40 %
+INFO:root:Accuracy of  bird : 65.80 %
+INFO:root:Fake Accuracy of  bird : 65.80 %
+INFO:root:Accuracy of   cat : 79.90 %
+INFO:root:Fake Accuracy of   cat : 3.90 %
+INFO:root:Accuracy of  deer : 65.80 %
+INFO:root:Fake Accuracy of  deer : 4.30 %
+INFO:root:Accuracy of   dog : 74.00 %
+INFO:root:Fake Accuracy of   dog : 1.80 %
+INFO:root:Accuracy of  frog : 72.10 %
+INFO:root:Fake Accuracy of  frog : 3.70 %
+INFO:root:Accuracy of horse : 82.30 %
+INFO:root:Fake Accuracy of horse : 0.60 %
+INFO:root:Accuracy of  ship : 89.20 %
+INFO:root:Fake Accuracy of  ship : 0.80 %
+INFO:root:Accuracy of truck : 87.80 %
+INFO:root:Fake Accuracy of truck : 0.30 %
+INFO:root:Total Accuracy : 79.34 %
+
+INFO:root:@@@@@@@@ Working on client: 5
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 391, Loss: 0.042 | Acc: 98.438% (126/128)
+INFO:root:batch_idx: 40, NumBatches: 391, Loss: 0.083 | Acc: 97.256% (5104/5248)
+INFO:root:batch_idx: 80, NumBatches: 391, Loss: 0.085 | Acc: 97.232% (10081/10368)
+INFO:root:batch_idx: 120, NumBatches: 391, Loss: 0.082 | Acc: 97.346% (15077/15488)
+INFO:root:batch_idx: 160, NumBatches: 391, Loss: 0.080 | Acc: 97.438% (20080/20608)
+INFO:root:batch_idx: 200, NumBatches: 391, Loss: 0.080 | Acc: 97.388% (25056/25728)
+INFO:root:batch_idx: 240, NumBatches: 391, Loss: 0.080 | Acc: 97.384% (30041/30848)
+INFO:root:batch_idx: 280, NumBatches: 391, Loss: 0.079 | Acc: 97.406% (35035/35968)
+INFO:root:batch_idx: 320, NumBatches: 391, Loss: 0.079 | Acc: 97.386% (40014/41088)
+INFO:root:batch_idx: 360, NumBatches: 391, Loss: 0.079 | Acc: 97.412% (45012/46208)
+INFO:root:Accuracy of plane : 89.40 %
+INFO:root:Accuracy of   car : 95.80 %
+INFO:root:Accuracy of  bird : 84.60 %
+INFO:root:Accuracy of   cat : 77.50 %
+INFO:root:Accuracy of  deer : 89.00 %
+INFO:root:Accuracy of   dog : 83.80 %
+INFO:root:Accuracy of  frog : 91.80 %
+INFO:root:Accuracy of horse : 91.50 %
+INFO:root:Accuracy of  ship : 93.50 %
+INFO:root:Accuracy of truck : 92.20 %
+INFO:root:Total Accuracy : 88.91 %
+
+INFO:root:Accuracy of plane : 83.80 %
+INFO:root:Fake Accuracy of plane : 4.20 %
+INFO:root:Accuracy of   car : 91.90 %
+INFO:root:Fake Accuracy of   car : 0.40 %
+INFO:root:Accuracy of  bird : 65.70 %
+INFO:root:Fake Accuracy of  bird : 65.70 %
+INFO:root:Accuracy of   cat : 79.90 %
+INFO:root:Fake Accuracy of   cat : 3.50 %
+INFO:root:Accuracy of  deer : 66.30 %
+INFO:root:Fake Accuracy of  deer : 4.70 %
+INFO:root:Accuracy of   dog : 72.80 %
+INFO:root:Fake Accuracy of   dog : 1.80 %
+INFO:root:Accuracy of  frog : 73.60 %
+INFO:root:Fake Accuracy of  frog : 3.60 %
+INFO:root:Accuracy of horse : 82.90 %
+INFO:root:Fake Accuracy of horse : 0.60 %
+INFO:root:Accuracy of  ship : 90.00 %
+INFO:root:Fake Accuracy of  ship : 0.80 %
+INFO:root:Accuracy of truck : 88.00 %
+INFO:root:Fake Accuracy of truck : 0.30 %
+INFO:root:Total Accuracy : 79.49 %
+
+INFO:root:@@@@@@@@ Working on client: 6
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 391, Loss: 0.117 | Acc: 96.875% (124/128)
+INFO:root:batch_idx: 40, NumBatches: 391, Loss: 0.083 | Acc: 97.351% (5109/5248)
+INFO:root:batch_idx: 80, NumBatches: 391, Loss: 0.080 | Acc: 97.338% (10092/10368)
+INFO:root:batch_idx: 120, NumBatches: 391, Loss: 0.079 | Acc: 97.327% (15074/15488)
+INFO:root:batch_idx: 160, NumBatches: 391, Loss: 0.080 | Acc: 97.239% (20039/20608)
+INFO:root:batch_idx: 200, NumBatches: 391, Loss: 0.080 | Acc: 97.264% (25024/25728)
+INFO:root:batch_idx: 240, NumBatches: 391, Loss: 0.079 | Acc: 97.306% (30017/30848)
+INFO:root:batch_idx: 280, NumBatches: 391, Loss: 0.079 | Acc: 97.325% (35006/35968)
+INFO:root:batch_idx: 320, NumBatches: 391, Loss: 0.079 | Acc: 97.301% (39979/41088)
+INFO:root:batch_idx: 360, NumBatches: 391, Loss: 0.079 | Acc: 97.288% (44955/46208)
+INFO:root:Accuracy of plane : 89.70 %
+INFO:root:Accuracy of   car : 96.00 %
+INFO:root:Accuracy of  bird : 85.50 %
+INFO:root:Accuracy of   cat : 78.00 %
+INFO:root:Accuracy of  deer : 89.20 %
+INFO:root:Accuracy of   dog : 83.80 %
+INFO:root:Accuracy of  frog : 91.60 %
+INFO:root:Accuracy of horse : 91.50 %
+INFO:root:Accuracy of  ship : 93.50 %
+INFO:root:Accuracy of truck : 92.00 %
+INFO:root:Total Accuracy : 89.08 %
+
+INFO:root:Accuracy of plane : 84.20 %
+INFO:root:Fake Accuracy of plane : 4.40 %
+INFO:root:Accuracy of   car : 91.70 %
+INFO:root:Fake Accuracy of   car : 0.40 %
+INFO:root:Accuracy of  bird : 66.30 %
+INFO:root:Fake Accuracy of  bird : 66.30 %
+INFO:root:Accuracy of   cat : 79.80 %
+INFO:root:Fake Accuracy of   cat : 3.70 %
+INFO:root:Accuracy of  deer : 66.60 %
+INFO:root:Fake Accuracy of  deer : 4.50 %
+INFO:root:Accuracy of   dog : 73.20 %
+INFO:root:Fake Accuracy of   dog : 1.70 %
+INFO:root:Accuracy of  frog : 73.00 %
+INFO:root:Fake Accuracy of  frog : 3.70 %
+INFO:root:Accuracy of horse : 83.60 %
+INFO:root:Fake Accuracy of horse : 0.50 %
+INFO:root:Accuracy of  ship : 89.40 %
+INFO:root:Fake Accuracy of  ship : 0.80 %
+INFO:root:Accuracy of truck : 87.40 %
+INFO:root:Fake Accuracy of truck : 0.30 %
+INFO:root:Total Accuracy : 79.52 %
+
+INFO:root:@@@@@@@@ Working on client: 7
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 391, Loss: 0.032 | Acc: 98.438% (126/128)
+INFO:root:batch_idx: 40, NumBatches: 391, Loss: 0.083 | Acc: 97.161% (5099/5248)
+INFO:root:batch_idx: 80, NumBatches: 391, Loss: 0.080 | Acc: 97.251% (10083/10368)
+INFO:root:batch_idx: 120, NumBatches: 391, Loss: 0.081 | Acc: 97.333% (15075/15488)
+INFO:root:batch_idx: 160, NumBatches: 391, Loss: 0.083 | Acc: 97.229% (20037/20608)
+INFO:root:batch_idx: 200, NumBatches: 391, Loss: 0.082 | Acc: 97.275% (25027/25728)
+INFO:root:batch_idx: 240, NumBatches: 391, Loss: 0.081 | Acc: 97.322% (30022/30848)
+INFO:root:batch_idx: 280, NumBatches: 391, Loss: 0.079 | Acc: 97.353% (35016/35968)
+INFO:root:batch_idx: 320, NumBatches: 391, Loss: 0.078 | Acc: 97.384% (40013/41088)
+INFO:root:batch_idx: 360, NumBatches: 391, Loss: 0.078 | Acc: 97.349% (44983/46208)
+INFO:root:Accuracy of plane : 89.40 %
+INFO:root:Accuracy of   car : 96.00 %
+INFO:root:Accuracy of  bird : 85.50 %
+INFO:root:Accuracy of   cat : 77.90 %
+INFO:root:Accuracy of  deer : 88.60 %
+INFO:root:Accuracy of   dog : 83.60 %
+INFO:root:Accuracy of  frog : 91.50 %
+INFO:root:Accuracy of horse : 91.40 %
+INFO:root:Accuracy of  ship : 93.40 %
+INFO:root:Accuracy of truck : 91.70 %
+INFO:root:Total Accuracy : 88.90 %
+
+INFO:root:Accuracy of plane : 84.10 %
+INFO:root:Fake Accuracy of plane : 4.30 %
+INFO:root:Accuracy of   car : 91.80 %
+INFO:root:Fake Accuracy of   car : 0.40 %
+INFO:root:Accuracy of  bird : 66.70 %
+INFO:root:Fake Accuracy of  bird : 66.70 %
+INFO:root:Accuracy of   cat : 79.90 %
+INFO:root:Fake Accuracy of   cat : 3.70 %
+INFO:root:Accuracy of  deer : 65.70 %
+INFO:root:Fake Accuracy of  deer : 5.10 %
+INFO:root:Accuracy of   dog : 72.80 %
+INFO:root:Fake Accuracy of   dog : 1.80 %
+INFO:root:Accuracy of  frog : 72.90 %
+INFO:root:Fake Accuracy of  frog : 4.10 %
+INFO:root:Accuracy of horse : 82.90 %
+INFO:root:Fake Accuracy of horse : 0.60 %
+INFO:root:Accuracy of  ship : 89.50 %
+INFO:root:Fake Accuracy of  ship : 0.80 %
+INFO:root:Accuracy of truck : 87.40 %
+INFO:root:Fake Accuracy of truck : 0.30 %
+INFO:root:Total Accuracy : 79.37 %
+
+INFO:root:@@@@@@@@ Working on client: 8
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 391, Loss: 0.109 | Acc: 96.094% (123/128)
+INFO:root:batch_idx: 40, NumBatches: 391, Loss: 0.082 | Acc: 97.085% (5095/5248)
+INFO:root:batch_idx: 80, NumBatches: 391, Loss: 0.080 | Acc: 97.290% (10087/10368)
+INFO:root:batch_idx: 120, NumBatches: 391, Loss: 0.080 | Acc: 97.295% (15069/15488)
+INFO:root:batch_idx: 160, NumBatches: 391, Loss: 0.081 | Acc: 97.312% (20054/20608)
+INFO:root:batch_idx: 200, NumBatches: 391, Loss: 0.081 | Acc: 97.310% (25036/25728)
+INFO:root:batch_idx: 240, NumBatches: 391, Loss: 0.079 | Acc: 97.352% (30031/30848)
+INFO:root:batch_idx: 280, NumBatches: 391, Loss: 0.079 | Acc: 97.320% (35004/35968)
+INFO:root:batch_idx: 320, NumBatches: 391, Loss: 0.079 | Acc: 97.342% (39996/41088)
+INFO:root:batch_idx: 360, NumBatches: 391, Loss: 0.079 | Acc: 97.362% (44989/46208)
+INFO:root:Accuracy of plane : 89.80 %
+INFO:root:Accuracy of   car : 96.20 %
+INFO:root:Accuracy of  bird : 84.70 %
+INFO:root:Accuracy of   cat : 78.10 %
+INFO:root:Accuracy of  deer : 89.30 %
+INFO:root:Accuracy of   dog : 83.70 %
+INFO:root:Accuracy of  frog : 91.40 %
+INFO:root:Accuracy of horse : 91.10 %
+INFO:root:Accuracy of  ship : 93.60 %
+INFO:root:Accuracy of truck : 92.00 %
+INFO:root:Total Accuracy : 88.99 %
+
+INFO:root:Accuracy of plane : 84.20 %
+INFO:root:Fake Accuracy of plane : 4.30 %
+INFO:root:Accuracy of   car : 92.00 %
+INFO:root:Fake Accuracy of   car : 0.40 %
+INFO:root:Accuracy of  bird : 65.60 %
+INFO:root:Fake Accuracy of  bird : 65.60 %
+INFO:root:Accuracy of   cat : 79.90 %
+INFO:root:Fake Accuracy of   cat : 3.40 %
+INFO:root:Accuracy of  deer : 65.30 %
+INFO:root:Fake Accuracy of  deer : 4.60 %
+INFO:root:Accuracy of   dog : 73.70 %
+INFO:root:Fake Accuracy of   dog : 1.70 %
+INFO:root:Accuracy of  frog : 72.50 %
+INFO:root:Fake Accuracy of  frog : 3.50 %
+INFO:root:Accuracy of horse : 82.50 %
+INFO:root:Fake Accuracy of horse : 0.60 %
+INFO:root:Accuracy of  ship : 89.50 %
+INFO:root:Fake Accuracy of  ship : 0.80 %
+INFO:root:Accuracy of truck : 88.10 %
+INFO:root:Fake Accuracy of truck : 0.30 %
+INFO:root:Total Accuracy : 79.33 %
+
+INFO:root:@@@@@@@@ Working on client: 9
+
+Epoch: 1
+INFO:root:batch_idx: 0, NumBatches: 391, Loss: 0.043 | Acc: 98.438% (126/128)
+INFO:root:batch_idx: 40, NumBatches: 391, Loss: 0.075 | Acc: 97.618% (5123/5248)
+INFO:root:batch_idx: 80, NumBatches: 391, Loss: 0.083 | Acc: 97.348% (10093/10368)
+INFO:root:batch_idx: 120, NumBatches: 391, Loss: 0.077 | Acc: 97.404% (15086/15488)
+INFO:root:batch_idx: 160, NumBatches: 391, Loss: 0.077 | Acc: 97.389% (20070/20608)
+INFO:root:batch_idx: 200, NumBatches: 391, Loss: 0.076 | Acc: 97.458% (25074/25728)
+INFO:root:batch_idx: 240, NumBatches: 391, Loss: 0.077 | Acc: 97.429% (30055/30848)
+INFO:root:batch_idx: 280, NumBatches: 391, Loss: 0.077 | Acc: 97.384% (35027/35968)
+INFO:root:batch_idx: 320, NumBatches: 391, Loss: 0.076 | Acc: 97.423% (40029/41088)
+INFO:root:batch_idx: 360, NumBatches: 391, Loss: 0.076 | Acc: 97.436% (45023/46208)
+INFO:root:Accuracy of plane : 89.40 %
+INFO:root:Accuracy of   car : 96.30 %
+INFO:root:Accuracy of  bird : 84.70 %
+INFO:root:Accuracy of   cat : 77.90 %
+INFO:root:Accuracy of  deer : 89.60 %
+INFO:root:Accuracy of   dog : 83.40 %
+INFO:root:Accuracy of  frog : 91.40 %
+INFO:root:Accuracy of horse : 91.70 %
+INFO:root:Accuracy of  ship : 93.50 %
+INFO:root:Accuracy of truck : 92.10 %
+INFO:root:Total Accuracy : 89.00 %
+
+INFO:root:Accuracy of plane : 84.00 %
+INFO:root:Fake Accuracy of plane : 4.30 %
+INFO:root:Accuracy of   car : 92.00 %
+INFO:root:Fake Accuracy of   car : 0.40 %
+INFO:root:Accuracy of  bird : 65.50 %
+INFO:root:Fake Accuracy of  bird : 65.50 %
+INFO:root:Accuracy of   cat : 79.40 %
+INFO:root:Fake Accuracy of   cat : 3.40 %
+INFO:root:Accuracy of  deer : 65.70 %
+INFO:root:Fake Accuracy of  deer : 4.30 %
+INFO:root:Accuracy of   dog : 73.40 %
+INFO:root:Fake Accuracy of   dog : 1.60 %
+INFO:root:Accuracy of  frog : 72.40 %
+INFO:root:Fake Accuracy of  frog : 3.40 %
+INFO:root:Accuracy of horse : 82.80 %
+INFO:root:Fake Accuracy of horse : 0.60 %
+INFO:root:Accuracy of  ship : 89.20 %
+INFO:root:Fake Accuracy of  ship : 0.80 %
+INFO:root:Accuracy of truck : 88.20 %
+INFO:root:Fake Accuracy of truck : 0.30 %
+INFO:root:Total Accuracy : 79.26 %
+
+Measuring the accuracy of the averaged global model ...
+INFO:root:Accuracy of plane : 89.80 %
+INFO:root:Accuracy of   car : 96.80 %
+INFO:root:Accuracy of  bird : 85.40 %
+INFO:root:Accuracy of   cat : 78.50 %
+INFO:root:Accuracy of  deer : 90.10 %
+INFO:root:Accuracy of   dog : 84.10 %
+INFO:root:Accuracy of  frog : 92.00 %
+INFO:root:Accuracy of horse : 91.80 %
+INFO:root:Accuracy of  ship : 94.50 %
+INFO:root:Accuracy of truck : 91.90 %
+INFO:root:Total Accuracy : 89.49 %
+
+INFO:root:Accuracy of plane : 79.60 %
+INFO:root:Fake Accuracy of plane : 9.80 %
+INFO:root:Accuracy of   car : 92.20 %
+INFO:root:Fake Accuracy of   car : 0.40 %
+INFO:root:Accuracy of  bird : 71.80 %
+INFO:root:Fake Accuracy of  bird : 71.80 %
+INFO:root:Accuracy of   cat : 81.50 %
+INFO:root:Fake Accuracy of   cat : 5.00 %
+INFO:root:Accuracy of  deer : 64.30 %
+INFO:root:Fake Accuracy of  deer : 8.10 %
+INFO:root:Accuracy of   dog : 74.20 %
+INFO:root:Fake Accuracy of   dog : 2.20 %
+INFO:root:Accuracy of  frog : 71.50 %
+INFO:root:Fake Accuracy of  frog : 5.40 %
+INFO:root:Accuracy of horse : 80.90 %
+INFO:root:Fake Accuracy of horse : 1.40 %
+INFO:root:Accuracy of  ship : 89.50 %
+INFO:root:Fake Accuracy of  ship : 1.10 %
+INFO:root:Accuracy of truck : 86.60 %
+INFO:root:Fake Accuracy of truck : 0.50 %
+INFO:root:Total Accuracy : 79.21 %
+
