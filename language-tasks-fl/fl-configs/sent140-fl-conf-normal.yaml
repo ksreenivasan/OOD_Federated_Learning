@@ -1,0 +1,78 @@
+---
+name: sent140
+dataset: sent140
+text: True
+partitioning: iid
+arch: textBC
+loss: nll
+device: cuda:0
+dataPath: "./data/sentiment-140/"
+#startCheckPoint: "./checkpoints/model_at_epoch_500_0.05_500_false.pt"
+#startCheckPoint: "./outputs/name_imdb_initLr_0.05_numFLEpochs_500/best_model.pt"
+
+modelParams:
+  vocabSize: 0
+  embeddingDim: 200
+  hiddenDim: 200
+  outputDim: 1
+  numLayers: 2
+  bidirectional: false
+  padIdx: 0
+  dropout: 0.5
+  
+normalTrainConfig:
+  batchSize: 20
+  testBatchSize: 20
+  method: None
+  optimizer: sgd
+  initLr: 0.05
+  momentum: 0.9
+  weightDecay: 0.0001
+  internalEpochs: 2
+  
+attackerTrainConfig:
+  batchSize: 20
+  testBatchSize: 20
+  method: blackbox   # options blackbox|pgd
+  optimizer: sgd
+  initLr: 0.01
+  momentum: 0.9
+  modelReplacement: False
+  weightDecay: 0.0001
+  epsilon: 2.0      # will be used by pgd only
+  projectFrequency: 1 # will be used by pgd only
+  internalEpochs: 2
+  
+
+#th: 100
+#fractionOfTrain: 1.0
+#totalUsers: 100
+
+#th: 40
+#fractionOfTrain: 1.0
+#totalUsers: 450
+
+th: 0
+fractionOfTrain: 0.25
+totalUsers: 1948
+  
+numActiveUsersPerRound: 10
+
+numEdgePtsAdv: 60
+numEdgePtsGood: 0
+
+
+numFLEpochs: 500
+
+enableCkpt: True
+
+ckptEpochs: [ 10, 50, 100, 200, 300, 400, 500 ]
+
+#outputDir: $../../outputs/name_initLr_numFLEpochs_attack
+outputDir: ./outputs/sent140-normal-fl-th0_fr0.25_u1948_lr_0.05-yorogs-vocab/
+
+attack: False
+backdoor: greek-director-backdoor
+attackFreq: 10
+numAdversaries: 0
+

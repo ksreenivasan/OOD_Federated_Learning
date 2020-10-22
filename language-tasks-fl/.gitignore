@@ -1,0 +1,4 @@
+src/**/__pycache__
+./data/leaf-data/femnist/data/intermediate
+./data/leaf-data/femnist/data/all_data
+./data/leaf-data/femnist/data/raw_data

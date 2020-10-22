@@ -1,0 +1,45 @@
+name: sent140
+dataset: sent140
+text: True
+arch: textBC
+loss: nll
+device: cuda:0
+dataPath: "../../data/sentiment-140/"
+
+#dataPath: "../../data/reviews-data/greek-1"
+#dataPath: "../../data/aclImdb/"
+#startCheckPoint: "./checkpoints/model_at_epoch_500_0.05_500_false.pt"
+#startCheckPoint: "./outputs/name_imdb_initLr_0.05_numFLEpochs_500/best_model.pt"
+
+modelParams:
+  vocabSize: 0
+  embeddingDim: 200
+  hiddenDim: 200
+  outputDim: 1
+  numLayers: 2
+  bidirectional: False
+  padIdx: 0
+  dropout: 0.5
+
+normalTrainConfig:
+  batchSize: 200
+  testBatchSize: 200
+  method: None
+  optimizer: sgd
+  initLr: 0.05
+  momentum: 0.9
+  weightDecay: 0.0001
+  internalEpochs: 100
+
+enableCkpt: True
+numEpochs: 100
+ckptEpochs: [ 0, 5, 10, 50, 100, 100, 200, 300, 400, 499, 500 ]
+
+#outputDir: $../../outputs/name_initLr_numFLEpochs_attack
+outputDir: ./out/sent140-trials-1/
+
+th: 0
+fractionOfTrain: 0.25
+
+
+

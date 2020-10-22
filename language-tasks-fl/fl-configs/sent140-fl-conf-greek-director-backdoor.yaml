@@ -1,0 +1,80 @@
+---
+name: sent140
+dataset: sent140
+text: True
+partitioning: iid
+arch: textBC
+
+loss: nll # ignored
+
+device: cuda:0
+dataPath: "./data/sentiment-140/"
+
+# path of the model chekcpoint to resume training with
+startCheckPoint: './outputs/sent140-normal-fl-th0_fr0.25_u1948_lr_0.05-yorogs-vocab/model_at_epoch_100.pt'
+#startCheckPoint: './out/sent140-normal-trials-data-th/model_at_epoch_200.pt'
+#startCheckPoint: "./outputs/name_imdb_initLr_0.05_numFLEpochs_500/best_model.pt"
+
+# update model architecture using these parameters
+modelParams:
+  vocabSize: 0
+  embeddingDim: 200
+  hiddenDim: 200
+  outputDim: 1
+  numLayers: 2
+  bidirectional: False
+  padIdx: 0
+  dropout: 0.5
+
+# training parameters for normal/honest workers  
+normalTrainConfig:
+  batchSize: 20
+  testBatchSize: 20
+  method: None
+  optimizer: sgd
+  initLr: 0.05
+  momentum: 0.9
+  weightDecay: 0.0001
+  internalEpochs: 2
+
+# training parameters for attacker  
+attackerTrainConfig:
+  batchSize: 20
+  testBatchSize: 20
+  method: blackbox   # options blackbox|pgd
+  optimizer: sgd
+  initLr: 0.05
+  momentum: 0.9
+  modelReplacement: False
+  weightDecay: 0.0001
+  epsilon: 2.0      # will be used by pgd only
+  projectFrequency: 1 # will be used by pgd only
+  internalEpochs: 2
+  
+
+th: 0   # this is the threshold on minimum tweets per user,  used while building twitter dataset. used here to locate the data. 
+fractionOfTrain: 0.25  # this is the fraction of data sampled from original sentiment140 dataset. used here to locate the data.
+totalUsers: 1948
+
+numEdgePtsAdv: 60   # number of edge(backdoor) points that will be used by adversary.
+numEdgePtsGood: 0   # number of edge points with correct lable to be distributed among normal users.
+
+numActiveUsersPerRound: 10  # active users in each FL round
+
+numFLEpochs: 500
+
+enableCkpt: False  # if false ,will not save checkpoints else save checkpoints at given epochs given in ckptEpochs
+
+ckptEpochs: [ 0, 5, 10, 50, 100, 200, 300, 400, 499, 500 ]
+
+#outputDir: $../../outputs/name_initLr_numFLEpochs_attack
+outputDir: ./out/sent140-greek-director-backdoor-2-10-190-lr-adapt/
+
+attack: True   # if disabled will do normal FL training 
+
+backdoor: greek-director-backdoor # name of backdoor to locate backdoor data and use any backdoor specific stuff
+attackFreq: 10
+numAdversaries: 1
+attackFromEpoch: 101
+
+
