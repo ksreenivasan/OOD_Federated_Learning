@@ -1,30 +1,50 @@
-'''
-    dummy file to use as an adaptor to switch between
-    two vgg architectures
-
-    vgg9: use vgg9_only.py which is from https://github.com/kuangliu/pytorch-cifar
-    vgg11/13/16/19: use vgg_modified.py which is modified from https://github.com/pytorch/vision.git
-'''
-
+'''VGG11/13/16/19 in Pytorch.'''
 import torch
 import torch.nn as nn
-import models.vgg9_only as vgg9
-import models.vgg_modified as vgg_mod
-import logging
-
-logging.basicConfig()
-logger = logging.getLogger()
-logger.setLevel(logging.INFO)
 
 
-def get_vgg_model(vgg_name):
-    logging.info("GET_VGG_MODEL: Fetch {}".format(vgg_name))
-    if vgg_name == 'vgg9':
-        return vgg9.VGG('VGG9')
-    elif vgg_name == 'vgg11':
-        return vgg_mod.vgg11()
-    elif vgg_name == 'vgg13':
-        return vgg_mod.vgg13()
-    elif vgg_name == 'vgg16':
-        return vgg_mod.vgg16()
+cfg = {
+    'VGG11': [64, 'M', 128, 'M', 256, 256, 'M', 512, 512, 'M', 512, 512, 'M'],
+    'VGG13': [64, 64, 'M', 128, 128, 'M', 256, 256, 'M', 512, 512, 'M', 512, 512, 'M'],
+    'VGG16': [64, 64, 'M', 128, 128, 'M', 256, 256, 256, 'M', 512, 512, 512, 'M', 512, 512, 512, 'M'],
+    'VGG19': [64, 64, 'M', 128, 128, 'M', 256, 256, 256, 256, 'M', 512, 512, 512, 512, 'M', 512, 512, 512, 512, 'M'],
+}
 
+
+class VGG(nn.Module):
+    def __init__(self, vgg_name):
+        super(VGG, self).__init__()
+        self.features = self._make_layers(cfg[vgg_name])
+        self.classifier = nn.Linear(512, 10)
+
+    def forward(self, x):
+        out = self.features(x)
+        out = out.view(out.size(0), -1)
+        out = self.classifier(out)
+        return out
+
+    def _make_layers(self, cfg):
+        layers = []
+        in_channels = 3
+        for x in cfg:
+            if x == 'M':
+                layers += [nn.MaxPool2d(kernel_size=2, stride=2)]
+            else:
+                layers += [nn.Conv2d(in_channels, x, kernel_size=3, padding=1),
+                           #nn.BatchNorm2d(x),
+                           nn.ReLU(inplace=True)]
+                in_channels = x
+        layers += [nn.AvgPool2d(kernel_size=1, stride=1)]
+        return nn.Sequential(*layers)
+
+
+def test():
+    net = VGG('VGG11')
+    x = torch.randn(2,3,32,32)
+    y = net(x)
+    print(net)
+    for p_index, (n, p) in enumerate(net.named_parameters()):
+        print(n, p.size())
+    print(y.size())
+
+#test()

@@ -113,6 +113,8 @@ def test(args, model, device, test_loader, mode="raw-task"):
 ## original version of the poisoned
 # def create_poisoned_dataset(fashion_mnist_dataset, emnist_dataset):
 #     # for this first trial, we make the "Trouser" to be mis-labeled as `1` in EMNIST dataset
+#     # TODO (hwang): speed this part up
+#     # TODO (hwang): we want actually just conduct this part of code once.
 
 #     indices_label_trouser = np.where(np.array(fashion_mnist_dataset.targets) == 1)[0]
 

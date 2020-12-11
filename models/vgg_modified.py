@@ -2,15 +2,9 @@
 Modified from https://github.com/pytorch/vision.git
 '''
 import math
-import logging
 
 import torch.nn as nn
 import torch.nn.init as init
-
-
-logging.basicConfig()
-logger = logging.getLogger()
-logger.setLevel(logging.INFO)
 
 __all__ = [
     'VGG', 'vgg11', 'vgg11_bn', 'vgg13', 'vgg13_bn', 'vgg16', 'vgg16_bn',

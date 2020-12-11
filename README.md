@@ -1,82 +1,29 @@
-## Attack of the Tails: Yes, You Really Can Backdoor Federated Learning
+# Train CIFAR10 with PyTorch (for Out Of Distribution data)
 
-### Overview
----
-Due to its decentralized nature, Federated Learning (FL) lends itself to adversarial attacks in the form of backdoors during training. The goal of a backdoor is to corrupt the performance of the trained model on specific sub-tasks (e.g., by classifying green cars as frogs). A range of FL backdoor attacks have been introduced in the literature, but also methods to defend against them, and it is currently an open question whether FL systems can be tailored to be robust against backdoors. In this work, we propose a new family of backdoor attacks, which we refer to as edge-case backdoors. An edge-case backdoor forces a model to misclasify on seemingly easy inputs that are however unlikely to be part of the training, or test data, i.e., they live on the tail of the input distribution. We explain how these edge-case backdoors can lead to unsavory failures and may have serious repercussions on fairness, and  exhibit that with careful tuning at the side of the adversary, one can insert them across a range of machine learning tasks.
+I'm playing with [PyTorch](http://pytorch.org/) on the CIFAR10 dataset.
 
-### Depdendencies (tentative)
----
-Tested stable depdencises:
-* python 3.6.5 (Anaconda)
-* PyTorch 1.1.0
-* torchvision 0.2.2
-* CUDA 10.0.130
-* cuDNN 7.5.1
+## Prerequisites
+- Python 3.6+
+- PyTorch 1.0+
 
-### Data Preparation
----
-1. For Southwest Airline (for CIFAR-10) and traditional Cretan costumes (for ImageNet) edge-case example, most of the collected edge-case datasets are available in `./saved_datasets`. 
-2. To get the `Ardis` dataset, the edge-case datasets can be generated via running `get_ardis_data.sh` and then `generating_poisoned_DA.py`.
+## Accuracy
+| Model             | Acc.        |
+| ----------------- | ----------- |
+| [VGG16](https://arxiv.org/abs/1409.1556)              | 92.64%      |
+| [ResNet18](https://arxiv.org/abs/1512.03385)          | 93.02%      |
+| [ResNet50](https://arxiv.org/abs/1512.03385)          | 93.62%      |
+| [ResNet101](https://arxiv.org/abs/1512.03385)         | 93.75%      |
+| [MobileNetV2](https://arxiv.org/abs/1801.04381)       | 94.43%      |
+| [ResNeXt29(32x4d)](https://arxiv.org/abs/1611.05431)  | 94.73%      |
+| [ResNeXt29(2x64d)](https://arxiv.org/abs/1611.05431)  | 94.82%      |
+| [DenseNet121](https://arxiv.org/abs/1608.06993)       | 95.04%      |
+| [PreActResNet18](https://arxiv.org/abs/1603.05027)    | 95.11%      |
+| [DPN92](https://arxiv.org/abs/1707.01629)             | 95.16%      |
 
-### Running Experients:
----
-The main script is `./simulated_averaging.py`, to launch the jobs, we provide a script `./run_simulated_averaging.sh`. And we provide a detailed description on the arguments.
+## Learning rate adjustment
+I manually change the `lr` during training:
+- `0.1` for epoch `[0,150)`
+- `0.01` for epoch `[150,250)`
+- `0.001` for epoch `[250,350)`
 
-
-| Argument                      | Description                                 |
-| ----------------------------- | ---------------------------------------- |
-| `fraction` | Only used for EMNIST, varying the fraction of poisioned data points in attacker's poisoned dataset. |
-| `lr` | Inital learning rate that will be used for local training process. |
-| `batch-size` | Batch size for the optimizers e.g. SGD or Adam. |
-| `dataset`      | Dataset to use. |
-| `model`      | Model to use. |
-| `gamma` | the factor of learning rate decay, i.e. the effective learning rate is `lr*gamma^t`. |
-| `batch-size` | Batch size for the optimizers e.g. SGD or Adam. |
-| `num_nets` | The total number of available users e.g. 3383 for EMNIST and 200 for CIFAR-10. |
-| `fl_round` | maximum number of FL rounds for the code to run. |
-| `part_nets_per_round` | Number of active users that are sampled per FL round to participate. |
-| `local_train_period` | Number of local training epochs that the honest users can run. |
-| `adversarial_local_training_period`  | Number of local training epochs that the attacker(s) can run. |
-| `fl_mode`    | `fixed-freq` or `fixed-pool` for fixed frequency and fixed pool attacking settings.  |
-| `attacker_pool_size`    | Number of attackers in the total number of available users, used only when `fl_mode=fixed-pool`. |
-| `defense_method`    | Defense method over the data center end.   |
-| `stddev` | Standard deviation of the noise added for weak DP defense. |
-| `norm_bound` | Norm bound for the norm difference clipping defense. |
-| `attack_method` | Attacking schemes used for attacker and either be `blackbox` or `PGD`. |
-| `attack_case` | Wether or not to conduct edge-case attack, can be `edge-case`, `normal-case` or `almost-edge-case`. |
-| `model_replacement` | Used when `attack_method=PGD` to control if the attack is PGD with replacement or without replacement. |
-| `project_frequency` | How frequent (in how many iterations) to project to the l2 norm ball in PGD attack. |
-| `eps` | Radius the l2 norm ball in PGD attack. |
-| `adv_lr` | Learning rate of the attacker when conducting PGD attack. |
-| `poison_type` | Specify the backdoor for each dataset using `southwest` for CIFAR-10 and `ardis` for EMNIST. |
-| `device` | Specify the hardware to run the experiment. |
-
-
-#### Sample command
-Blackbox attack on Southwest Airline exmaple over CIFAR-19 dataset where there is no defense on the data center. The attacker participate in the fixed-frequency manner.
-```
-python simulated_averaging.py \
---lr 0.02 \
---gamma 0.998 \
---num_nets 200 \
---fl_round 1500 \
---part_nets_per_round 10 \
---local_train_period 2 \
---adversarial_local_training_period 2 \
---dataset cifar10 \
---model vgg9 \
---fl_mode fixed-freq \
---attacker_pool_size 100 \
---defense_method no-defense \
---attack_method blackbox \
---attack_case edge-case \
---model_replacement False \
---project_frequency 10 \
---stddev 0.025 \
---eps 2 \
---adv_lr 0.02 \
---prox_attack False \
---poison_type southwest \
---norm_bound 2 \
---device=cuda
-```
+Resume the training with `python main.py --resume --lr=0.01`

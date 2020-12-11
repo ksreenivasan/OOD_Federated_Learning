@@ -14,6 +14,8 @@ import numpy as np
 
 def create_fashion_poisoned_dataset(fashion_mnist_dataset, emnist_dataset, fraction=1, num_gdps_sampled=100):
     # for this first trial, we make the "Trouser" to be mis-labeled as `1` in EMNIST dataset
+    # TODO (hwang): speed this part up
+    # TODO (hwang): we want actually just conduct this part of code once.
     
     indices_label_trouser = np.where(np.array(fashion_mnist_dataset.targets) == 1)[0]
 
@@ -166,7 +168,7 @@ def create_ardis_test_dataset(emnist_dataset):
 
 if __name__ == '__main__':
     ### Hyper-params:
-    fraction=0.15 #0.0334 #0.01 #0.1 #0.0168 #10
+    fraction=0.1 #0.0334 #0.01 #0.1 #0.0168 #10
     num_gdps_sampled = 100
     poison = 'ardis'
 

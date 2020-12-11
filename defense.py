@@ -1,8 +1,6 @@
 import torch
 from utils import *
 
-from geometric_median import geometric_median
-
 def vectorize_net(net):
     return torch.cat([p.view(-1) for p in net.parameters()])
 
@@ -80,21 +78,16 @@ class WeightDiffClippingDefense(Defense):
 
 
 class WeakDPDefense(Defense):
-    """
-        deprecated: don't use!
-        according to literature, DPDefense should be applied
-        to the aggregated model, not invidual models
-        """
     def __init__(self, norm_bound, *args, **kwargs):
         self.norm_bound = norm_bound
+        self.device = kwargs['device']
 
-    def exec(self, client_model, device, *args, **kwargs):
-        self.device = device
+    def exec(self, client_model, *args, **kwargs):
         vectorized_net = vectorize_net(client_model)
         weight_norm = torch.norm(vectorized_net).item()
         clipped_weight = vectorized_net/max(1, weight_norm/self.norm_bound)
-        dp_weight = clipped_weight + torch.randn(
-            vectorized_net.size(),device=self.device) * self.stddev
+        # dp_weight = clipped_weight + torch.randn(
+            # vectorized_net.size(),device=self.device) * self.stddev
 
         load_model_weight(client_model, clipped_weight)
         return None
@@ -102,16 +95,13 @@ class WeakDPDefense(Defense):
 class AddNoise(Defense):
     def __init__(self, stddev, *args, **kwargs):
         self.stddev = stddev
+        self.device = kwargs['device']
 
-    def exec(self, client_model, device, *args, **kwargs):
-        self.device = device
+    def exec(self, client_model, *args, **kwargs):
         vectorized_net = vectorize_net(client_model)
-        gaussian_noise = torch.randn(vectorized_net.size(),
-                            device=self.device) * self.stddev
-        dp_weight = vectorized_net + gaussian_noise
+        dp_weight = vectorized_net + torch.randn(
+            vectorized_net.size(), device=self.device) * self.stddev
         load_model_weight(client_model, dp_weight)
-        logger.info("Weak DP Defense: added noise of norm: {}".format(torch.norm(gaussian_noise)))
-        
         return None
 
 
@@ -126,7 +116,7 @@ class Krum(Defense):
         self.num_workers = num_workers
         self.s = num_adv
 
-    def exec(self, client_models, num_dps, g_user_indices, device, *args, **kwargs):
+    def exec(self, client_models, num_dps, device, *args, **kwargs):
         vectorize_nets = [vectorize_net(cm).detach().cpu().numpy() for cm in client_models]
         
         neighbor_distances = []
@@ -136,6 +126,7 @@ class Krum(Defense):
                 if i != j:
                     g_j = vectorize_nets[j]
                     distance.append(float(np.linalg.norm(g_i-g_j)**2)) # let's change this to pytorch version
+                    #distance.append(torch.norm(g_i-g_j).item()**2)
             neighbor_distances.append(distance)
 
         # compute scores
@@ -155,7 +146,7 @@ class Krum(Defense):
             scores.append(sum(np.take(dists, topk_ind)))
         if self._mode == "krum":
             i_star = scores.index(min(scores))
-            logger.info("@@@@ The chosen one is user: {}, which is global user: {}".format(scores.index(min(scores)), g_user_indices[scores.index(min(scores))]))
+            logger.info("The chosen one is user: {}".format(scores.index(min(scores))))
             aggregated_model = client_models[0] # slicing which doesn't really matter
             load_model_weight(aggregated_model, torch.from_numpy(vectorize_nets[i_star]).to(device))
             neo_net_list = [aggregated_model]
@@ -171,7 +162,7 @@ class Krum(Defense):
 
             logger.info("Num data points: {}".format(num_dps))
             logger.info("Num selected data points: {}".format(selected_num_dps))
-            logger.info("The chosen ones are users: {}, which are global users: {}".format(topk_ind, [g_user_indices[ti] for ti in topk_ind]))
+            logger.info("The chosen ones are users: {}".format(topk_ind))
             #aggregated_grad = np.mean(np.array(vectorize_nets)[topk_ind, :], axis=0)
             aggregated_grad = np.average(np.array(vectorize_nets)[topk_ind, :], weights=reconstructed_freq, axis=0).astype(np.float32)
 
@@ -191,110 +182,43 @@ class RFA(Defense):
     the code is translated from the TensorFlow implementation: 
     https://github.com/krishnap25/RFA/blob/01ec26e65f13f46caf1391082aa76efcdb69a7a8/models/model.py#L264-L298
     """
-    def __init__(self, *args, **kwargs):
+    def __init__(self, num_workers, num_adv, *args, **kwargs):
         pass
 
-    def exec(self, client_models, net_freq, 
-                   maxiter=4, eps=1e-5,
-                   ftol=1e-6, device=torch.device("cuda"), 
-                    *args, **kwargs):
+    def exec(self, client_models, num_dps, device, *args, **kwargs):
         """Computes geometric median of atoms with weights alphas using Weiszfeld's Algorithm
         """
-        # so alphas will be the same as the net freq in our code
-        alphas = np.asarray(net_freq, dtype=np.float32)
-        vectorize_nets = [vectorize_net(cm).detach().cpu().numpy() for cm in client_models]
-        median = self.weighted_average_oracle(vectorize_nets, alphas)
-
+        alphas = np.asarray(alphas, dtype=points[0][0].dtype) / sum(alphas)
+        median = ServerModel.weighted_average_oracle(points, alphas)
         num_oracle_calls = 1
 
         # logging
-        obj_val = self.geometric_median_objective(median=median, points=vectorize_nets, alphas=alphas)
-
+        obj_val = ServerModel.geometric_median_objective(median, points, alphas)
         logs = []
         log_entry = [0, obj_val, 0, 0]
-        logs.append("Tracking log entry: {}".format(log_entry))
-        logger.info('Starting Weiszfeld algorithm')
-        logger.info(log_entry)
+        logs.append(log_entry)
+        if verbose:
+            print('Starting Weiszfeld algorithm')
+            print(log_entry)
 
         # start
         for i in range(maxiter):
             prev_median, prev_obj_val = median, obj_val
-            weights = np.asarray([alpha / max(eps, self.l2dist(median, p)) for alpha, p in zip(alphas, vectorize_nets)],
+            weights = np.asarray([alpha / max(eps, ServerModel.l2dist(median, p)) for alpha, p in zip(alphas, points)],
                                  dtype=alphas.dtype)
             weights = weights / weights.sum()
-            median = self.weighted_average_oracle(vectorize_nets, weights)
+            median = ServerModel.weighted_average_oracle(points, weights)
             num_oracle_calls += 1
-            obj_val = self.geometric_median_objective(median, vectorize_nets, alphas)
+            obj_val = ServerModel.geometric_median_objective(median, points, alphas)
             log_entry = [i+1, obj_val,
                          (prev_obj_val - obj_val)/obj_val,
-                         self.l2dist(median, prev_median)]
+                         ServerModel.l2dist(median, prev_median)]
             logs.append(log_entry)
-            logs.append("Tracking log entry: {}".format(log_entry))
-            logger.info("#### Oracle Cals: {}, Objective Val: {}".format(num_oracle_calls, obj_val))
+            if verbose:
+                print(log_entry)
             if abs(prev_obj_val - obj_val) < ftol * obj_val:
                 break
-        #logger.info("Num Oracale Calls: {}, Logs: {}".format(num_oracle_calls, logs))
-
-        aggregated_model = client_models[0] # slicing which doesn't really matter
-        load_model_weight(aggregated_model, torch.from_numpy(median.astype(np.float32)).to(device))
-        neo_net_list = [aggregated_model]
-        neo_net_freq = [1.0]
-        return neo_net_list, neo_net_freq
-
-    def weighted_average_oracle(self, points, weights):
-        """Computes weighted average of atoms with specified weights
-        Args:
-            points: list, whose weighted average we wish to calculate
-                Each element is a list_of_np.ndarray
-            weights: list of weights of the same length as atoms
-        """
-        ### original implementation in TFF
-        #tot_weights = np.sum(weights)
-        #weighted_updates = [np.zeros_like(v) for v in points[0]]
-        #for w, p in zip(weights, points):
-        #    for j, weighted_val in enumerate(weighted_updates):
-        #        weighted_val += (w / tot_weights) * p[j]
-        #return weighted_updates
-        ####
-        tot_weights = np.sum(weights)
-        weighted_updates = np.zeros(points[0].shape)
-        for w, p in zip(weights, points):
-            weighted_updates += (w * p / tot_weights)
-        return weighted_updates
-
-    def l2dist(self, p1, p2):
-        """L2 distance between p1, p2, each of which is a list of nd-arrays"""
-        # this is a helper function
-        return np.linalg.norm(p1 - p2)
-
-    def geometric_median_objective(self, median, points, alphas):
-        """Compute geometric median objective."""
-        return sum([alpha * self.l2dist(median, p) for alpha, p in zip(alphas, points)])
-
-
-class GeoMedian(Defense):
-    """
-    we implement the robust aggregator of Geometric Median (GM)
-    """
-    def __init__(self, *args, **kwargs):
-        pass
-
-    def exec(self, client_models, net_freq, 
-                   maxiter=4, eps=1e-5,
-                   ftol=1e-6, device=torch.device("cuda"), 
-                    *args, **kwargs):
-        """Computes geometric median of atoms with weights alphas using Weiszfeld's Algorithm
-        """
-        # so alphas will be the same as the net freq in our code
-        alphas = np.asarray(net_freq, dtype=np.float32)
-        vectorize_nets = np.array([vectorize_net(cm).detach().cpu().numpy() for cm in client_models]).astype(np.float32)
-        median = geometric_median(vectorize_nets)
-
-        aggregated_model = client_models[0] # slicing which doesn't really matter
-        load_model_weight(aggregated_model, torch.from_numpy(median.astype(np.float32)).to(device))
-        neo_net_list = [aggregated_model]
-        neo_net_freq = [1.0]
-        return neo_net_list, neo_net_freq
+        return median, num_oracle_calls, logs
 
 
 if __name__ == "__main__":

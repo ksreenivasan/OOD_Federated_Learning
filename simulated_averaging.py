@@ -6,7 +6,7 @@ import torch.backends.cudnn as cudnn
 
 import torchvision.transforms as transforms
 from torchvision import datasets, transforms
-
+from torchvision import models
 import os
 import argparse
 import pdb
@@ -16,7 +16,7 @@ from torch.optim import lr_scheduler
 
 from utils import *
 from fl_trainer import *
-from models.vgg import get_vgg_model
+from models import VGG
 
 READ_CKPT=True
 
@@ -62,7 +62,7 @@ if __name__ == "__main__":
     parser.add_argument('--attacker_pool_size', type=int, default=100,
                         help='size of attackers in the population, used when args.fl_mode == fixed-pool only')    
     parser.add_argument('--defense_method', type=str, default="no-defense",
-                        help='defense method used: no-defense|norm-clipping|norm-clipping-adaptive|weak-dp|krum|multi-krum|rfa|')
+                        help='describe if there is defense method: no-defense|norm-clipping|weak-dp|krum|multi-krum|')
     parser.add_argument('--device', type=str, default='cuda',
                         help='device to set, can take the value of: cuda or cuda:x')
     parser.add_argument('--attack_method', type=str, default="blackbox",
@@ -87,12 +87,10 @@ if __name__ == "__main__":
                         help='project once every how many epochs')
     parser.add_argument('--adv_lr', type=float, default=0.02,
                         help='learning rate for adv in PGD setting')
-    parser.add_argument('--prox_attack', type=bool_string, default=False,
-                        help='use prox attack')
     parser.add_argument('--attack_case', type=str, default="edge-case",
                         help='attack case indicates wheather the honest nodes see the attackers poisoned data points: edge-case|normal-case|almost-edge-case')
-    parser.add_argument('--stddev', type=float, default=0.158,
-                        help='choose std_dev for weak-dp defense')
+    parser.add_argument('--prox_attack', type=bool_string, default=False,
+                        help='use prox attack')
     args = parser.parse_args()
     use_cuda = not args.no_cuda and torch.cuda.is_available()
     kwargs = {'num_workers': 1, 'pin_memory': True} if use_cuda else {}
@@ -120,7 +118,7 @@ if __name__ == "__main__":
 
     import copy
     # the hyper-params are inspired by the paper "Can you really backdoor FL?" (https://arxiv.org/pdf/1911.07963.pdf)
-    # partition_strategy = "homo"
+    #partition_strategy = "homo"
     partition_strategy = "hetero-dir"
 
     net_dataidx_map = partition_data(
@@ -133,36 +131,43 @@ if __name__ == "__main__":
     adversarial_local_training_period = 5
 
     # load poisoned dataset:
-    poisoned_train_loader, vanilla_test_loader, targetted_task_test_loader, num_dps_poisoned_dataset, clean_train_loader = load_poisoned_dataset(args=args)
-    # READ_CKPT = False
+    poisoned_train_loader, vanilla_test_loader, targetted_task_test_loader, num_dps_poisoned_dataset = load_poisoned_dataset(args=args)
+
     if READ_CKPT:
         if args.model == "lenet":
             net_avg = Net(num_classes=10).to(device)
-            with open("./checkpoint/emnist_lenet_10epoch.pt", "rb") as ckpt_file:
-                ckpt_state_dict = torch.load(ckpt_file, map_location=device)
-        elif args.model in ("vgg9", "vgg11", "vgg13", "vgg16"):
-            net_avg = get_vgg_model(args.model).to(device)
-            # net_avg = VGG(args.model.upper()).to(device)
+            with open("emnist_lenet.pt", "rb") as ckpt_file:
+                ckpt_state_dict = torch.load(ckpt_file)
+                net_avg.load_state_dict(ckpt_state_dict)
+        elif args.model == "vgg11":
+            net_avg = VGG('VGG11').to(device)
             # load model here
             #with open("./checkpoint/trained_checkpoint_vanilla.pt", "rb") as ckpt_file:
-            with open("./checkpoint/Cifar10_{}_10epoch.pt".format(args.model.upper()), "rb") as ckpt_file:
+            with open("./checkpoint/Cifar10_VGG11_10epoch.pt", "rb") as ckpt_file:
                 ckpt_state_dict = torch.load(ckpt_file, map_location=device)
-        net_avg.load_state_dict(ckpt_state_dict)
+                net_avg.load_state_dict(ckpt_state_dict)
+        elif args.model == "vgg11_imagenet":
+            # will download a pretrained model
+            net_avg = models.vgg11(pretrained=True).to(device)
         logger.info("Loading checkpoint file successfully ...")
+        logger.info("let's see how the model looks like ... ")
+        logger.info("{}".format(net_avg))
     else:
         if args.model == "lenet":
             net_avg = Net(num_classes=10).to(device)
-        elif args.model in ("vgg9", "vgg11", "vgg13", "vgg16"):
-            net_avg = get_vgg_model(args.model).to(device)
-
+        elif args.model == "vgg11":
+            net_avg = VGG('VGG11').to(device)
+    
     logger.info("Test the model performance on the entire task before FL process ... ")
+    # put a different test function
 
-    test(net_avg, device, vanilla_test_loader, test_batch_size=args.test_batch_size, criterion=criterion, mode="raw-task", dataset=args.dataset)
-    test(net_avg, device, targetted_task_test_loader, test_batch_size=args.test_batch_size, criterion=criterion, mode="targetted-task", dataset=args.dataset, poison_type=args.poison_type)
-
+    logger.info("Main Task Acc ...")
+    test_imagenet(net_avg, vanilla_test_loader, args, device)
+    logger.info("Target Task Acc ...")
+    test_imagenet(net_avg, targetted_task_test_loader, args, device)
     # let's remain a copy of the global model for measuring the norm distance:
     vanilla_model = copy.deepcopy(net_avg)
-
+    
     if args.fl_mode == "fixed-freq":
         arguments = {
             #"poisoned_emnist_dataset":poisoned_emnist_dataset,
@@ -178,11 +183,10 @@ if __name__ == "__main__":
             "adversarial_local_training_period":args.adversarial_local_training_period,
             "args_lr":args.lr,
             "args_gamma":args.gamma,
-            "attacking_fl_rounds":[i for i in range(1, args.fl_round + 1) if (i-1)%10 == 0], #"attacking_fl_rounds":[i for i in range(1, fl_round + 1)], #"attacking_fl_rounds":[1],
+            "attacking_fl_rounds":[i for i in range(1, args.fl_round + 1) if (i-1)%4 == 0], #"attacking_fl_rounds":[i for i in range(1, fl_round + 1)], #"attacking_fl_rounds":[1],
             #"attacking_fl_rounds":[i for i in range(1, args.fl_round + 1) if (i-1)%100 == 0], #"attacking_fl_rounds":[i for i in range(1, fl_round + 1)], #"attacking_fl_rounds":[1],
             "num_dps_poisoned_dataset":num_dps_poisoned_dataset,
             "poisoned_emnist_train_loader":poisoned_train_loader,
-            "clean_train_loader":clean_train_loader,
             "vanilla_emnist_test_loader":vanilla_test_loader,
             "targetted_task_test_loader":targetted_task_test_loader,
             "batch_size":args.batch_size,
@@ -199,7 +203,6 @@ if __name__ == "__main__":
             "adv_lr":args.adv_lr,
             "prox_attack":args.prox_attack,
             "attack_case":args.attack_case,
-            "stddev":args.stddev,
         }
 
         frequency_fl_trainer = FrequencyFederatedLearningTrainer(arguments=arguments)
@@ -222,7 +225,7 @@ if __name__ == "__main__":
             "args_gamma":args.gamma,
             "num_dps_poisoned_dataset":num_dps_poisoned_dataset,
             "poisoned_emnist_train_loader":poisoned_train_loader,
-            "clean_train_loader":clean_train_loader,
+            "clean_emnist_train_loader":clean_train_loader,
             "vanilla_emnist_test_loader":vanilla_test_loader,
             "targetted_task_test_loader":targetted_task_test_loader,
             "batch_size":args.batch_size,
@@ -239,11 +242,24 @@ if __name__ == "__main__":
             "adv_lr":args.adv_lr,
             "prox_attack":args.prox_attack,
             "attack_case":args.attack_case,
-            "stddev":args.stddev,
      }
 
         fixed_pool_fl_trainer = FixedPoolFederatedLearningTrainer(arguments=arguments)
         fixed_pool_fl_trainer.run()
+
+    if args.fl_mode == "imagenet":
+        arguments = {
+            "vanilla_model": vanilla_model,
+            "num_nets":args.num_nets,
+            "workers_per_round": args.part_nets_per_round,
+            "num_dps_poisoned_dataset": num_dps_poisoned_dataset,
+            "device": args.device,
+            "data_idx_maps": net_dataidx_map
+        }
+        imagenet_trainer = ImageNetFederatedTrainer(arguments=arguments)
+        imagenet_trainer.run()
+                
+
 
     # (old version) Depracated
     # # prepare fashionMNIST dataset

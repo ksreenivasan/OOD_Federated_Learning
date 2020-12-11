@@ -20,7 +20,8 @@ import logging
 import pickle
 import random
 
-from datasets import MNIST_truncated, EMNIST_truncated, CIFAR10_truncated, CIFAR10_Poisoned, CIFAR10NormalCase_truncated, EMNIST_NormalCase_truncated
+from datasets import MNIST_truncated, EMNIST_truncated, CIFAR10_truncated, CIFAR10_Poisoned
+from datasets import ImageFolderTruncated, ImageFolderPoisonedTruncated, ImageFolderPoisonedTruncatedTest, ImageFolderNormalCase_truncated
 
 logging.basicConfig()
 logger = logging.getLogger()
@@ -133,6 +134,7 @@ def partition_data(dataset, datadir, partition, n_nets, alpha, args):
         n_train = X_train.shape[0]
     elif dataset.lower() == 'cifar10':
         X_train, y_train, X_test, y_test = load_cifar10_data(datadir)
+        # TODO(hwang): this is actually a bad solution, please verify if we really want this
         # if args.poison_type == "howto":
         #     sampled_indices_train = [874, 49163, 34287, 21422, 48003, 47001, 48030, 22984, 37533, 41336, 3678, 37365,
         #                                 19165, 34385, 41861, 39824, 561, 49588, 4528, 3378, 38658, 38735, 19500,  9744, 47026, 1605, 389]
@@ -167,6 +169,41 @@ def partition_data(dataset, datadir, partition, n_nets, alpha, args):
                                                             ]))
         y_train = trainset.get_train_labels
         n_train = y_train.shape[0]
+    elif dataset.lower() == "imagenet":
+        _train_dir = "~/data/train" #imagenet data location
+        normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                                         std=[0.229, 0.224, 0.225])
+
+        trainset = datasets.ImageFolder(_train_dir, 
+                                        transform=transforms.Compose([
+                                                 transforms.RandomResizedCrop(224),
+                                                 transforms.RandomHorizontalFlip(),
+                                                 transforms.ToTensor(),
+                                                 normalize,
+                                                 ]))
+
+        # K = 1000
+        # class_counter = {}
+        # for i in range(K):
+        #     class_counter[i] = 0
+        # for idx, img in enumerate(trainset.imgs):
+        #     class_counter[img[-1]] += 1
+        # for idx, (k, v) in enumerate(class_counter.items()):
+        #     logger.info("$$$$$ Class: {} Num Count: {}".format(k, v))
+        # logger.info('#########################################################')
+        # logger.info("Key with min val: {}".format(min(class_counter, key = lambda k: class_counter[k])))
+        # min_class_index = min(class_counter, key = lambda k: class_counter[k])
+        # for idx, (k, v) in enumerate(trainset.class_to_idx.items()):
+        #     if v == min_class_index:
+        #         min_class_name = k
+        #         break
+        # logger.info("class_to_idx: {}, {}".format(min_class_name, trainset.class_to_idx[min_class_name]))
+        #exit()
+
+        #y_train = trainset.get_train_labels
+        y_train = np.array([img[-1] for img in trainset.imgs])
+        n_train = y_train.shape[0]
+
     elif dataset == "shakespeare":
         net_dataidx_map = {}
         with open(datadir[0]) as json_file:
@@ -189,8 +226,13 @@ def partition_data(dataset, datadir, partition, n_nets, alpha, args):
         net_dataidx_map = {i: batch_idxs[i] for i in range(n_nets)}
 
     elif partition == "hetero-dir":
+
+        #TODO: 
         min_size = 0
-        K = 10
+        if dataset == "imagenet":
+            K = 1000
+        elif dataset == "cifar10":
+            K = 10
         N = y_train.shape[0]
         net_dataidx_map = {}
 
@@ -276,14 +318,34 @@ def get_dataloader(dataset, datadir, train_bs, test_bs, dataidxs=None):
             # data prep for test set
             transform_test = transforms.Compose([transforms.ToTensor(),normalize])
 
-        train_ds = dl_obj(datadir, dataidxs=dataidxs, train=True, transform=transform_train, download=True)
-        test_ds = dl_obj(datadir, train=False, transform=transform_test, download=True)
+    elif dataset == "imagenet":
+        dl_obj = ImageFolderTruncated
+
+        _train_dir = "/home/ubuntu/data/train" #imagenet data location
+        normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                                         std=[0.229, 0.224, 0.225]) 
+        transform_train = transform=transforms.Compose([
+                         transforms.RandomResizedCrop(224),
+                         transforms.RandomHorizontalFlip(),
+                         transforms.ToTensor(),
+                         normalize
+                     ])
+    transform_test = transforms.Compose([transforms.ToTensor(),normalize])
+
+    if dataset == "imagenet":
+        train_ds = dl_obj(_train_dir, dataidxs=dataidxs, transform=transform_train)
+        #test_ds = dl_obj(datadir, train=False, transform=transform_test, download=True)
 
         train_dl = data.DataLoader(dataset=train_ds, batch_size=train_bs, shuffle=True)
-        test_dl = data.DataLoader(dataset=test_ds, batch_size=test_bs, shuffle=False)
+        #test_dl = data.DataLoader(dataset=test_ds, batch_size=test_bs, shuffle=False)
+    else:
+        train_ds = dl_obj(datadir, dataidxs=dataidxs, train=True, transform=transform_train, download=True)
+        #test_ds = dl_obj(datadir, train=False, transform=transform_test, download=True)
 
-    return train_dl, test_dl
-
+        train_dl = data.DataLoader(dataset=train_ds, batch_size=train_bs, shuffle=True)
+        #test_dl = data.DataLoader(dataset=test_ds, batch_size=test_bs, shuffle=False)        
+        
+    return train_dl, None
 
 
 def get_dataloader_normal_case(dataset, datadir, train_bs, test_bs, 
@@ -291,7 +353,6 @@ def get_dataloader_normal_case(dataset, datadir, train_bs, test_bs,
                                 user_id=0, 
                                 num_total_users=200,
                                 poison_type="southwest",
-                                ardis_dataset=None,
                                 attack_case='normal-case'):
     if dataset in ('mnist', 'emnist', 'cifar10'):
         if dataset == 'mnist':
@@ -332,27 +393,27 @@ def get_dataloader_normal_case(dataset, datadir, train_bs, test_bs,
                 ])
             # data prep for test set
             transform_test = transforms.Compose([transforms.ToTensor(),normalize])
+    elif dataset == "imagenet":
+        dl_obj = ImageFolderNormalCase_truncated
 
-        # this only supports cifar10 right now, please be super careful when calling it using other datasets
-        # def __init__(self, root, 
-        #                 dataidxs=None, 
-        #                 train=True, 
-        #                 transform=None, 
-        #                 target_transform=None, 
-        #                 download=False,
-        #                 user_id=0,
-        #                 num_total_users=200,
-        #                 poison_type="southwest"):        
-        train_ds = dl_obj(datadir, dataidxs=dataidxs, train=True, transform=transform_train, download=True,
-                                    user_id=user_id, num_total_users=num_total_users, poison_type=poison_type,
-                                    ardis_dataset_train=ardis_dataset, attack_case=attack_case)
-        
-        test_ds = None #dl_obj(datadir, train=False, transform=transform_test, download=True)
+        _train_dir = "/home/ubuntu/data/train" #imagenet data location
+        normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                                         std=[0.229, 0.224, 0.225]) 
+        transform_train = transform=transforms.Compose([
+                         transforms.RandomResizedCrop(224),
+                         transforms.RandomHorizontalFlip(),
+                         transforms.ToTensor(),
+                         normalize
+                     ])
+    transform_test = transforms.Compose([transforms.ToTensor(),normalize])
 
-        train_dl = data.DataLoader(dataset=train_ds, batch_size=train_bs, shuffle=True)
-        test_dl = data.DataLoader(dataset=test_ds, batch_size=test_bs, shuffle=False)
-
-    return train_dl, test_dl
+    train_ds = dl_obj(_train_dir, dataidxs=dataidxs, transform=transform_train,
+                                user_id=user_id, attack_case=attack_case)
+    
+    test_ds = None #dl_obj(datadir, train=False, transform=transform_test, download=True)
+    train_dl = data.DataLoader(dataset=train_ds, batch_size=train_bs, shuffle=True)
+    #test_dl = data.DataLoader(dataset=test_ds, batch_size=test_bs, shuffle=False)
+    return train_dl, None
 
 
 
@@ -391,6 +452,8 @@ def load_poisoned_dataset(args):
                                transforms.Normalize((0.1307,), (0.3081,))
                            ]))
 
+        # okay, so what we really need here is just three loaders: i.e. poisoned training loader, poisoned test loader, normal test loader
+        # @ksreenivasan: going to add a clean train set as well so that we can estimate global model
         poisoned_train_loader = torch.utils.data.DataLoader(poisoned_dataset,
              batch_size=args.batch_size, shuffle=True, **kwargs)
         vanilla_test_loader = torch.utils.data.DataLoader(emnist_test_dataset,
@@ -426,20 +489,11 @@ def load_poisoned_dataset(args):
 
             poisoned_trainset = copy.deepcopy(trainset)
 
-            if args.attack_case == "edge-case":
-                with open('./saved_datasets/southwest_images_new_train.pkl', 'rb') as train_f:
-                    saved_southwest_dataset_train = pickle.load(train_f)
+            with open('./saved_datasets/southwest_images_new_train.pkl', 'rb') as train_f:
+                saved_southwest_dataset_train = pickle.load(train_f)
 
-                with open('./saved_datasets/southwest_images_new_test.pkl', 'rb') as test_f:
-                    saved_southwest_dataset_test = pickle.load(test_f)
-            elif args.attack_case == "normal-case" or args.attack_case == "almost-edge-case":
-                with open('./saved_datasets/southwest_images_adv_p_percent_edge_case.pkl', 'rb') as train_f:
-                    saved_southwest_dataset_train = pickle.load(train_f)
-
-                with open('./saved_datasets/southwest_images_p_percent_edge_case_test.pkl', 'rb') as test_f:
-                    saved_southwest_dataset_test = pickle.load(test_f)
-            else:
-                raise NotImplementedError("Not Matched Attack Case ...")             
+            with open('./saved_datasets/southwest_images_new_test.pkl', 'rb') as test_f:
+                saved_southwest_dataset_test = pickle.load(test_f)
 
             #
             logger.info("OOD (Southwest Airline) train-data shape we collected: {}".format(saved_southwest_dataset_train.shape))
@@ -453,19 +507,13 @@ def load_poisoned_dataset(args):
 
 
             # downsample the poisoned dataset #################
-            if args.attack_case == "edge-case":
-                num_sampled_poisoned_data_points = 100 # N
-                samped_poisoned_data_indices = np.random.choice(saved_southwest_dataset_train.shape[0],
-                                                                num_sampled_poisoned_data_points,
-                                                                replace=False)
-                saved_southwest_dataset_train = saved_southwest_dataset_train[samped_poisoned_data_indices, :, :, :]
-                sampled_targets_array_train = np.array(sampled_targets_array_train)[samped_poisoned_data_indices]
-                logger.info("!!!!!!!!!!!Num poisoned data points in the mixed dataset: {}".format(num_sampled_poisoned_data_points))
-            elif args.attack_case == "normal-case" or args.attack_case == "almost-edge-case":
-                num_sampled_poisoned_data_points = 100 # N
-                samped_poisoned_data_indices = np.random.choice(784,
-                                                                num_sampled_poisoned_data_points,
-                                                                replace=False)
+            num_sampled_poisoned_data_points = 100 # N
+            samped_poisoned_data_indices = np.random.choice(saved_southwest_dataset_train.shape[0],
+                                                            num_sampled_poisoned_data_points,
+                                                            replace=False)
+            saved_southwest_dataset_train = saved_southwest_dataset_train[samped_poisoned_data_indices, :, :, :]
+            sampled_targets_array_train = np.array(sampled_targets_array_train)[samped_poisoned_data_indices]
+            logger.info("!!!!!!!!!!!Num poisoned data points in the mixed dataset: {}".format(num_sampled_poisoned_data_points))
             ######################################################
 
 
@@ -779,8 +827,73 @@ def load_poisoned_dataset(args):
             vanilla_test_loader = torch.utils.data.DataLoader(testset, batch_size=args.test_batch_size, shuffle=False)
             targetted_task_test_loader = torch.utils.data.DataLoader(poisoned_testset, batch_size=args.test_batch_size, shuffle=False)
             num_dps_poisoned_dataset = poisoned_trainset.data.shape[0]
+    elif args.dataset.lower() in "imagenet":
+        """
+        Poisoned data loading imagenet
+        """
+        #TODO: Data directory location
+        normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                                     std=[0.229, 0.224, 0.225])
+        vanilla_test_loader = torch.utils.data.DataLoader(
+            datasets.ImageFolder("/home/ubuntu/data/val", transforms.Compose([
+                transforms.Resize(256),
+                transforms.CenterCrop(224),
+                transforms.ToTensor(),
+                normalize,
+            ])),
+            batch_size=128, shuffle=False,
+            num_workers=8, pin_memory=True)
 
-    return poisoned_train_loader, vanilla_test_loader, targetted_task_test_loader, num_dps_poisoned_dataset, clean_train_loader
+        transform_train = transforms.Compose([
+                transforms.RandomResizedCrop(224),
+                transforms.RandomHorizontalFlip(),
+                transforms.ToTensor(),
+                normalize,
+            ])
+
+        transform_test = transforms.Compose([
+                    transforms.Resize(256),
+                    transforms.CenterCrop(224),
+                    transforms.ToTensor(),
+                    normalize,
+                ])
+
+        train_dataset = datasets.ImageFolder(
+            "/home/ubuntu/data/train", transform_train)
+
+        # we conduct an approach to down sample the training set here:
+        num_sampled_poisoned_data_points = 1000
+        num_total_datapoints = len(train_dataset.imgs)
+        samped_data_indices = np.random.choice(num_total_datapoints, num_sampled_poisoned_data_points, replace=False)
+        
+        # we del it to release memory
+        del train_dataset
+
+        train_dataset = ImageFolderPoisonedTruncated(root="/home/ubuntu/data/train",
+                                                    dataidxs=samped_data_indices,
+                                                    transform=transform_train)
+
+        logger.info("@@@@@@@@@@@@@@@@ Num dps in poisoned dataset: {}".format(len(train_dataset.imgs)))
+        
+        # then let's build a data loader on the top of it.
+        poisoned_train_loader = torch.utils.data.DataLoader(
+            train_dataset, batch_size=64, shuffle=True,
+            num_workers=8, pin_memory=True)
+
+        # let's do this now and I'd hope that is the last thing we need
+        # def __init__(self, root, transform=None, target_transform=None,
+        #              loader=default_loader, is_valid_file=None):
+        test_loader = ImageFolderPoisonedTruncatedTest(root="/home/ubuntu/data/val", # this dir is not useful, consider to remove it
+                                                        transform=transform_test)
+        targetted_task_test_loader = torch.utils.data.DataLoader(
+                test_loader,
+                batch_size=128, shuffle=False,
+                num_workers=8, pin_memory=True)
+
+        num_dps_poisoned_dataset=len(train_dataset.imgs)
+        logger.info("data points in targetted_task_test: {}".format(len(test_loader.imgs)))
+
+    return poisoned_train_loader, vanilla_test_loader, targetted_task_test_loader, num_dps_poisoned_dataset
 
 
 def seed_experiment(seed=0):

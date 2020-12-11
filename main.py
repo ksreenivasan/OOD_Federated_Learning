@@ -8,7 +8,6 @@ from torchvision import datasets, transforms
 from torch.optim.lr_scheduler import StepLR, MultiStepLR
 
 from models import *
-from models.vgg import get_vgg_model
 from utils import *
 
 
@@ -146,9 +145,8 @@ def main():
         model = Net(num_classes=10).to(device)
         optimizer = optim.SGD(model.parameters(), lr=args.lr, momentum=0.9, weight_decay=1e-4)
         scheduler = StepLR(optimizer, step_size=1, gamma=args.gamma)
-    elif args.model in ("vgg9", "vgg11", "vgg13", "vgg16"):
-        model = get_vgg_model(args.model).to(device)
-        #model = VGG(args.model.upper()).to(device)
+    elif args.model == "VGG11":
+        model = VGG('VGG11').to(device)
         optimizer = optim.SGD(model.parameters(), lr=args.lr, momentum=0.9, weight_decay=1e-4)
         scheduler = MultiStepLR(optimizer, milestones=[e for e in [151, 251]], gamma=0.1)
 
@@ -164,7 +162,7 @@ def main():
         scheduler.step()
 
     if epoch % 5 == 0:
-        torch.save(model.state_dict(), "./checkpoint/{}_{}_{}epoch.pt".format(args.dataset, args.model.upper(), args.epochs))
+        torch.save(model.state_dict(), "{}_{}_{}epoch.pt".format(args.dataset, args.model, args.epochs))
 
 
 if __name__ == '__main__':
