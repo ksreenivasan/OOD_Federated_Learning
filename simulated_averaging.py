@@ -149,6 +149,8 @@ if __name__ == "__main__":
                 ckpt_state_dict = torch.load(ckpt_file, map_location=device)
         net_avg.load_state_dict(ckpt_state_dict)
         logger.info("Loading checkpoint file successfully ...")
+        for param in net_avg.classifier.parameters():
+            print(param)
     else:
         if args.model == "lenet":
             net_avg = Net(num_classes=10).to(device)
