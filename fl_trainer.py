@@ -735,6 +735,18 @@ class FixedPoolFederatedLearningTrainer(FederatedLearningTrainer):
         wg_norm_list = []
         # let's conduct multi-round training
         prev_avg = copy.deepcopy(self.net_avg)
+
+        # weight = self.net_avg.classifier.parameters()
+        # for i, param in enumerate(self.net_avg.classifier.parameters()):
+        #     if i == 0:
+        #         weight = param.data.cpu().numpy()
+        # print(logging_items)
+        # data_test = {0,1,1, weight, weight}
+        # np.savetxt('weight.csv' , data_test , fmt='%s', delimiter=',')
+        # with open('logging/benchmark_02.csv', 'a+') as lf:
+        #     write = csv.writer(lf)
+        #     write.writerows([weight])
+        #     write.writerows([weight])
         for flr in range(1, self.fl_round+1):
             # randomly select participating clients
             # in this current version, we sample `part_nets_per_round` per FL round since we assume attacker will always participates
@@ -918,6 +930,10 @@ class FixedPoolFederatedLearningTrainer(FederatedLearningTrainer):
             with open('logging/benchmark_01.csv', 'a+') as lf:
                 write = csv.writer(lf)
                 write.writerows(logging_items)
+
+            # df_data = logging_items
+            # df_writer = pd.DataFrame(df_data)
+            # df_writer.to_csv("logging/test_write.csv", mode='a+')
             prev_avg = copy.deepcopy(self.net_avg)
             if self.defense_technique == "weak-dp":
                 # add noise to self.net_avg
