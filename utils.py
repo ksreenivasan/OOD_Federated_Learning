@@ -795,3 +795,24 @@ def seed_experiment(seed=0):
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
     logger.info("Seeded everything")
+
+
+def get_logging_items(net_list, selected_node_indices, avg_net_prev, avg_net, attackers_idxs, fl_round):
+    logging_list = []
+    for net_idx, global_user_idx in enumerate(selected_node_indices):
+        #round id weights bias is-attacker
+        net = net_list[net_idx]
+        is_attacker = 0
+        bias = list(net.classifier.parameters())[0].data.cpu().numpy()
+        weights = list(net.classifier.parameters())[-1].data.cpu().numpy()
+        if global_user_idx in attackers_idxs:
+            is_attacker = 1
+        item = [fl_round, is_attacker, global_user_idx, weights, bias]
+        logging_list.append(item)
+    prev_avg_item = [fl_round, 0, -2, list(avg_net_prev.classifier.parameters())[-1].data.cpu().numpy(), list(avg_net_prev.classifier.parameters())[0].data.cpu().numpy()] if avg_net_prev else [fl_round, 0, -2, None]
+    avg_item = [fl_round, 0, -1, list(avg_net.classifier.parameters())[-1].data.cpu().numpy(), list(avg_net.classifier.parameters())[0].data.cpu().numpy()]
+    logging_list.append(prev_avg_item)
+    logging_list.append(avg_item)
+    return logging_list
+        
+

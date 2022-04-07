@@ -18,6 +18,8 @@ from utils import *
 from fl_trainer import *
 from models.vgg import get_vgg_model
 
+import wandb
+
 READ_CKPT=True
 
 
@@ -93,6 +95,8 @@ if __name__ == "__main__":
                         help='attack case indicates wheather the honest nodes see the attackers poisoned data points: edge-case|normal-case|almost-edge-case')
     parser.add_argument('--stddev', type=float, default=0.158,
                         help='choose std_dev for weak-dp defense')
+    parser.add_argument('--attacker_percent', type=float, default=0.1,
+                        help='the percentage of attackers per all clients')                       
     args = parser.parse_args()
     use_cuda = not args.no_cuda and torch.cuda.is_available()
     kwargs = {'num_workers': 1, 'pin_memory': True} if use_cuda else {}
@@ -149,8 +153,9 @@ if __name__ == "__main__":
                 ckpt_state_dict = torch.load(ckpt_file, map_location=device)
         net_avg.load_state_dict(ckpt_state_dict)
         logger.info("Loading checkpoint file successfully ...")
-        for param in net_avg.classifier.parameters():
-            print(param)
+        # print(net_avg.classifier)
+        # for param in net_avg.classifier.parameters():
+        #     print(param.data)
     else:
         if args.model == "lenet":
             net_avg = Net(num_classes=10).to(device)
@@ -164,7 +169,49 @@ if __name__ == "__main__":
 
     # let's remain a copy of the global model for measuring the norm distance:
     vanilla_model = copy.deepcopy(net_avg)
-
+    wandb_ins = wandb.init(project="Backdoor attack in FL",
+               entity="aiotlab",
+               name="benchmark-nodefense",
+               group="CIFAR-10",
+               config={
+            #"poisoned_emnist_dataset":poisoned_emnist_dataset,
+            "vanilla_model":vanilla_model,
+            "net_avg":net_avg,
+            "net_dataidx_map":net_dataidx_map,
+            "num_nets":args.num_nets,
+            "dataset":args.dataset,
+            "model":args.model,
+            "part_nets_per_round":args.part_nets_per_round,
+            "attacker_pool_size":args.attacker_pool_size,
+            "fl_round":args.fl_round,
+            "local_training_period":args.local_train_period,
+            "adversarial_local_training_period":args.adversarial_local_training_period,
+            "args_lr":args.lr,
+            "args_gamma":args.gamma,
+            "num_dps_poisoned_dataset":num_dps_poisoned_dataset,
+            "poisoned_emnist_train_loader":poisoned_train_loader,
+            "clean_train_loader":clean_train_loader,
+            "vanilla_emnist_test_loader":vanilla_test_loader,
+            "targetted_task_test_loader":targetted_task_test_loader,
+            "batch_size":args.batch_size,
+            "test_batch_size":args.test_batch_size,
+            "log_interval":args.log_interval,
+            "defense_technique":args.defense_method,
+            "attack_method":args.attack_method,
+            "eps":args.eps,
+            "norm_bound":args.norm_bound,
+            "poison_type":args.poison_type,
+            "device":device,
+            "model_replacement":args.model_replacement,
+            "project_frequency":args.project_frequency,
+            "adv_lr":args.adv_lr,
+            "prox_attack":args.prox_attack,
+            "attack_case":args.attack_case,
+            "stddev":args.stddev,
+            "attacker_percent":args.attacker_percent,
+            }
+               )
+    
     if args.fl_mode == "fixed-freq":
         arguments = {
             #"poisoned_emnist_dataset":poisoned_emnist_dataset,
@@ -242,10 +289,13 @@ if __name__ == "__main__":
             "prox_attack":args.prox_attack,
             "attack_case":args.attack_case,
             "stddev":args.stddev,
+            "attacker_percent":args.attacker_percent,
      }
-
+            
         fixed_pool_fl_trainer = FixedPoolFederatedLearningTrainer(arguments=arguments)
-        fixed_pool_fl_trainer.run()
+        wandb_logging = fixed_pool_fl_trainer.run(wandb_ins)
+        # print(wandb_logging)
+        # wandb.log({"general": wandb_logging})
 
     # (old version) Depracated
     # # prepare fashionMNIST dataset

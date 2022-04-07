@@ -12,6 +12,8 @@ import pandas as pd
 from torch.nn.utils import parameters_to_vector, vector_to_parameters
 import datasets
 
+import csv
+
 class Net(nn.Module):
     def __init__(self, num_classes):
         super(Net, self).__init__()
@@ -682,6 +684,7 @@ class FixedPoolFederatedLearningTrainer(FederatedLearningTrainer):
         self.prox_attack = arguments['prox_attack']
         self.attack_case = arguments['attack_case']
         self.stddev = arguments['stddev']
+        self.attacker_percent = arguments['attacker_percent']
 
 
         logger.info("Posion type! {}".format(self.poison_type))
@@ -720,9 +723,10 @@ class FixedPoolFederatedLearningTrainer(FederatedLearningTrainer):
         else:
             NotImplementedError("Unsupported defense method !")
 
-        self.__attacker_pool = np.random.choice(self.num_nets, self.attacker_pool_size, replace=False)
+        # self.__attacker_pool = np.random.choice(self.num_nets, self.attacker_pool_size, replace=False)
+        self.__attacker_pool = np.random.choice(self.num_nets, int(self.num_nets*self.attacker_percent), replace=False)
 
-    def run(self):
+    def run(self, wandb_ins=None):
         main_task_acc = []
         raw_task_acc = []
         backdoor_task_acc = []
@@ -730,6 +734,7 @@ class FixedPoolFederatedLearningTrainer(FederatedLearningTrainer):
         adv_norm_diff_list = []
         wg_norm_list = []
         # let's conduct multi-round training
+        prev_avg = copy.deepcopy(self.net_avg)
         for flr in range(1, self.fl_round+1):
             # randomly select participating clients
             # in this current version, we sample `part_nets_per_round` per FL round since we assume attacker will always participates
@@ -738,7 +743,6 @@ class FixedPoolFederatedLearningTrainer(FederatedLearningTrainer):
             selected_attackers = [idx for idx in selected_node_indices if idx in self.__attacker_pool]
             selected_honest_users = [idx for idx in selected_node_indices if idx not in self.__attacker_pool]
             logger.info("Selected Attackers in FL iteration-{}: {}".format(flr, selected_attackers))
-
             num_data_points = []
             for sni in selected_node_indices:
                 if sni in selected_attackers:
@@ -801,6 +805,7 @@ class FixedPoolFederatedLearningTrainer(FederatedLearningTrainer):
 
 
                 current_adv_norm_diff_list = []
+                cnt_attacker = len(selected_attackers)
                 if global_user_idx in selected_attackers:
                     # for e in range(1, self.adversarial_local_training_period+1):
                     #    # we always assume net index 0 is adversary
@@ -909,7 +914,11 @@ class FixedPoolFederatedLearningTrainer(FederatedLearningTrainer):
 
             # after local training periods
             self.net_avg = fed_avg_aggregator(net_list, net_freq, device=self.device, model=self.model)
-
+            logging_items = get_logging_items(net_list, selected_node_indices, prev_avg, self.net_avg, selected_attackers, flr)
+            with open('logging/benchmark_01.csv', 'a+') as lf:
+                write = csv.writer(lf)
+                write.writerows(logging_items)
+            prev_avg = copy.deepcopy(self.net_avg)
             if self.defense_technique == "weak-dp":
                 # add noise to self.net_avg
                 noise_adder = AddNoise(stddev=self.stddev)
@@ -928,12 +937,26 @@ class FixedPoolFederatedLearningTrainer(FederatedLearningTrainer):
             main_task_acc.append(overall_acc)
             raw_task_acc.append(raw_acc)
             backdoor_task_acc.append(backdoor_acc)
-            if len(current_adv_norm_diff_list) == 0:
-                adv_norm_diff_list.append(0)
-            else:
-                # if you have multiple adversaries in a round, average their norm diff
-                adv_norm_diff_list.append(1.0*sum(current_adv_norm_diff_list)/len(current_adv_norm_diff_list))
-        
+            
+            adv_norm_diff = 1.0*sum(current_adv_norm_diff_list)/len(current_adv_norm_diff_list) if len(current_adv_norm_diff_list) else 0
+            # current_len_norm_diff = len(current_adv_norm_diff_list)
+            # if len(current_adv_norm_diff_list) == 0:
+            #     adv_norm_diff_list.append(0)
+            # else:
+            #     # if you have multiple adversaries in a round, average their norm diff
+            #     adv_norm_diff_list.append(1.0*sum(current_adv_norm_diff_list)/len(current_adv_norm_diff_list))
+            adv_norm_diff_list.append(adv_norm_diff)
+            if(wandb_ins):
+                wandb_logging = {'fl_iter': flr, 
+                            'main_task_acc': overall_acc, 
+                            'backdoor_acc': backdoor_acc, 
+                            'raw_task_acc':raw_acc, 
+                            'adv_norm_diff': adv_norm_diff, 
+                            'wg_norm': torch.norm(v0).item(),
+                            'cnt_attackers': cnt_attacker,
+                            }
+                wandb_ins.log({"general": wandb_logging})
+            
         df = pd.DataFrame({'fl_iter': fl_iter_list, 
                             'main_task_acc': main_task_acc, 
                             'backdoor_acc': backdoor_task_acc, 
@@ -950,4 +973,16 @@ class FixedPoolFederatedLearningTrainer(FederatedLearningTrainer):
         results_filename = get_results_filename(self.poison_type, self.attack_method, self.model_replacement, self.project_frequency,
                 self.defense_technique, self.norm_bound, self.prox_attack, fixed_pool=True, model_arch=self.model)
         df.to_csv(results_filename, index=False)
+        # wandb_logging = {'fl_iter': fl_iter_list, 
+        #                     'main_task_acc': main_task_acc, 
+        #                     'backdoor_acc': backdoor_task_acc, 
+        #                     'raw_task_acc':raw_task_acc, 
+        #                     'adv_norm_diff': adv_norm_diff_list, 
+        #                     'wg_norm': wg_norm_list,
+
+        #                     }
         logger.info("Wrote accuracy results to: {}".format(results_filename))
+        # if(wandb_ins):
+        #     wandb_ins.log({"general": wandb_logging})
+        # return wandb_logging
+
