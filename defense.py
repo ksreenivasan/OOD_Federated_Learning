@@ -297,6 +297,88 @@ class GeoMedian(Defense):
         return neo_net_list, neo_net_freq
 
 
+class CONTRA(Defense):
+
+    """
+    REIMPLEMENT OF CONTRA ALGORITHM
+    Awan, S., Luo, B., Li, F. (2021). 
+    CONTRA: Defending Against Poisoning Attacks in Federated Learning.
+    In: Bertino, E., Shulman, H., Waidner, M. (eds) 
+    Computer Security – ESORICS 2021. 
+    ESORICS 2021. Lecture Notes in Computer Science(), 
+    vol 12972. Springer, Cham. https://doi.org/10.1007/978-3-030-88418-5_22
+    """
+    def __init__(self, *args, **kwargs):
+        pass
+    
+    def exec(self, client_models, net_freq, selected_node_indices, historical_local_updates, reputations, delta, threshold, k = 3, device=torch.device("cuda"), *args, **kwargs):
+        
+        vectorize_nets = [vectorize_net(cm).detach().cpu().numpy() for cm in client_models]
+        
+        total_clients = len(historical_local_updates)
+        avg_k_top_cs = [0.0 for _ in range(total_clients)]
+        pairwise_cs = np.zeros((total_clients, total_clients))
+        for net_idx, global_node_id in enumerate(selected_node_indices):
+            i_local_updates = np.asarray(historical_local_updates[global_node_id])
+            cs_i = []
+            for client_p in range(total_clients):
+                if client_p+1 != global_node_id:
+                    cs_p_i = np.dot(i_local_updates, np.asarray(historical_local_updates[client_p]))/(np.linalg.norm(i_local_updates)*np.linalg.norm(historical_local_updates[client_p]))
+                    cs_i.append(cs_p_i)
+                    pairwise_cs[global_node_id][client_p] = cs_p_i
+            cs_i = np.asarray(cs_i)
+            cs_i[::-1].sort()
+            avg_k_top_cs_i = np.average(cs_i[:k])
+            if avg_k_top_cs_i > threshold:
+                reputations[global_node_id] -= delta
+            else:
+                reputations[global_node_id] += delta
+
+            avg_k_top_cs[global_node_id] = avg_k_top_cs_i
+
+        alignment_levels = pairwise_cs.copy()
+        lr_list = [1.0 for _ in range(total_clients)]
+        for net_idx in range(total_clients):
+            cs_m_n = []
+            for client_p in range(total_clients):
+                if client_p != net_idx:
+                    alignment_levels[net_idx][client_p] *= np.min(1.0, avg_k_top_cs[net_idx]/avg_k_top_cs[client_p])
+            lr_net_idx = 1 - np.max(alignment_levels[net_idx])
+            lr_list[net_idx] = lr_net_idx
+            reputations[net_idx] = np.max(np.asarray(reputations))
+        lr_list = np.asarray(lr_list)
+        lr_list = lr_list/(np.max(lr_list))
+        lr_list = np.log(lr_list/(1-lr_list)) + 0.5 
+        weights = lr_list.copy()
+        aggregated_w = self.weighted_average_oracle(vectorize_nets, weights)
+        aggregated_model = client_models[0] # slicing which doesn't really matter
+        load_model_weight(aggregated_model, torch.from_numpy(aggregated_w.astype(np.float32)).to(device))
+        neo_net_list = [aggregated_model]
+        neo_net_freq = [1.0]
+        return neo_net_list, neo_net_freq, reputations
+        
+    def weighted_average_oracle(self, points, weights):
+        """Computes weighted average of atoms with specified weights
+        Args:
+            points: list, whose weighted average we wish to calculate
+                Each element is a list_of_np.ndarray
+            weights: list of weights of the same length as atoms
+        """
+        ### original implementation in TFF
+        #tot_weights = np.sum(weights)
+        #weighted_updates = [np.zeros_like(v) for v in points[0]]
+        #for w, p in zip(weights, points):
+        #    for j, weighted_val in enumerate(weighted_updates):
+        #        weighted_val += (w / tot_weights) * p[j]
+        #return weighted_updates
+        ####
+        tot_weights = np.sum(weights)
+        weighted_updates = np.zeros(points[0].shape)
+        for w, p in zip(weights, points):
+            weighted_updates += (w * p / tot_weights)
+        return weighted_updates
+    
+
 if __name__ == "__main__":
     # some tests here
     import copy

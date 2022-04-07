@@ -4,6 +4,7 @@ import torch
 import torch.nn.functional as F
 
 from utils import *
+from helpers import *
 from defense import *
 
 from models.vgg import get_vgg_model
@@ -11,6 +12,7 @@ import pandas as pd
 
 from torch.nn.utils import parameters_to_vector, vector_to_parameters
 import datasets
+
 
 import csv
 
@@ -685,6 +687,11 @@ class FixedPoolFederatedLearningTrainer(FederatedLearningTrainer):
         self.attack_case = arguments['attack_case']
         self.stddev = arguments['stddev']
         self.attacker_percent = arguments['attacker_percent']
+        self.reputation_score = [1.0 for _ in range(arguments['num_nets'])] #init reputation score for all clients in the FL systems
+        self.local_update_history = [None for _ in range(arguments['num_nets'])] #theta i,t => keep track of update history of clients
+        self.flatten_weights = []
+        self.flatten_net_avg = None
+
 
 
         logger.info("Posion type! {}".format(self.poison_type))
@@ -720,6 +727,8 @@ class FixedPoolFederatedLearningTrainer(FederatedLearningTrainer):
             self._defender = Krum(mode='multi-krum', num_workers=self.part_nets_per_round, num_adv=1)
         elif arguments["defense_technique"] == "rfa":
             self._defender = RFA()
+        elif arguments["defense_technique"] == "contra":
+            self._defender = Contra()
         else:
             NotImplementedError("Unsupported defense method !")
 
@@ -735,22 +744,18 @@ class FixedPoolFederatedLearningTrainer(FederatedLearningTrainer):
         wg_norm_list = []
         # let's conduct multi-round training
         prev_avg = copy.deepcopy(self.net_avg)
+        self.flatten_net_avg = flatten_model(self.net_avg)
 
-        # weight = self.net_avg.classifier.parameters()
-        # for i, param in enumerate(self.net_avg.classifier.parameters()):
-        #     if i == 0:
-        #         weight = param.data.cpu().numpy()
-        # print(logging_items)
-        # data_test = {0,1,1, weight, weight}
-        # np.savetxt('weight.csv' , data_test , fmt='%s', delimiter=',')
-        # with open('logging/benchmark_02.csv', 'a+') as lf:
-        #     write = csv.writer(lf)
-        #     write.writerows([weight])
-        #     write.writerows([weight])
         for flr in range(1, self.fl_round+1):
             # randomly select participating clients
             # in this current version, we sample `part_nets_per_round` per FL round since we assume attacker will always participates
-            selected_node_indices = np.random.choice(self.num_nets, size=self.part_nets_per_round, replace=False)
+            if self.defense_technique == "contra":
+                probs = 0.1+0.1*(1.0-0.1)*self.reputation_score
+                probs = probs/(sum(probs))
+                selected_node_indices = np.random.choice(self.num_nets, size=self.part_nets_per_round, replace=False, probs)
+        
+            else:
+                selected_node_indices = np.random.choice(self.num_nets, size=self.part_nets_per_round, replace=False)
 
             selected_attackers = [idx for idx in selected_node_indices if idx in self.__attacker_pool]
             selected_honest_users = [idx for idx in selected_node_indices if idx not in self.__attacker_pool]
@@ -920,12 +925,26 @@ class FixedPoolFederatedLearningTrainer(FederatedLearningTrainer):
                                                         eps=1e-5,
                                                         ftol=1e-7,
                                                         device=self.device)
+            elif self.defense_technique == "contra":
+                delta = 0.1
+                thr = 0.5
+                k = 3
+                net_list, net_freq, repu_s = self._defender.exec(client_models=net_list,net_freq=net_freq, selected_node_indices = selected_node_indices, historical_local_updates = self.historical_local_updates, reputations=self.reputation_score, delta=delta, threshold=thr, k = k)
+                self.reputation_score = repu_s
             else:
                 NotImplementedError("Unsupported defense method !")
 
 
             # after local training periods
+            
+            #First we update the local updates of each client in this training round
+            for net_idx, global_client_indx in enumerate(selected_node_indices):
+                flatten_local_model = flatten_model(net_list[net_idx])
+                local_updates = flatten_local_model - self.flatten_net_avg
+                self.local_update_history[global_client_indx] = self.local_update_history[global_client_indx] + local_updates if self.local_update_history[global_client_indx] is not None else local_updates
+
             self.net_avg = fed_avg_aggregator(net_list, net_freq, device=self.device, model=self.model)
+            self.flatten_net_avg = flatten_model(self.net_avg)
             logging_items = get_logging_items(net_list, selected_node_indices, prev_avg, self.net_avg, selected_attackers, flr)
             with open('logging/benchmark_01.csv', 'a+') as lf:
                 write = csv.writer(lf)

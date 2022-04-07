@@ -1,6 +1,7 @@
 __pycache__/
 .idea/
 log/
+logging/
 wandb/
 models/
 utils/__pycache__/
