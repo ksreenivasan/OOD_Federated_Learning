@@ -171,7 +171,7 @@ if __name__ == "__main__":
     vanilla_model = copy.deepcopy(net_avg)
     wandb_ins = wandb.init(project="Backdoor attack in FL",
                entity="aiotlab",
-               name="benchmark-nodefense",
+               name=f"benchmark-{args.defense_method}",
                group="CIFAR-10",
                config={
             #"poisoned_emnist_dataset":poisoned_emnist_dataset,

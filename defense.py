@@ -1,5 +1,6 @@
 import torch
 from utils import *
+from scipy.special import logit, expit
 
 from geometric_median import geometric_median
 
@@ -314,18 +315,36 @@ class CONTRA(Defense):
     def exec(self, client_models, net_freq, selected_node_indices, historical_local_updates, reputations, delta, threshold, k = 3, device=torch.device("cuda"), *args, **kwargs):
         
         vectorize_nets = [vectorize_net(cm).detach().cpu().numpy() for cm in client_models]
-        
+        training_client_cnt = len(selected_node_indices)
         total_clients = len(historical_local_updates)
         avg_k_top_cs = [0.0 for _ in range(total_clients)]
         pairwise_cs = np.zeros((total_clients, total_clients))
+        # pairwise_cs = np.zeros((training_client_cnt, training_client_cnt))
+
+
         for net_idx, global_node_id in enumerate(selected_node_indices):
             i_local_updates = np.asarray(historical_local_updates[global_node_id])
             cs_i = []
-            for client_p in range(total_clients):
-                if client_p+1 != global_node_id:
-                    cs_p_i = np.dot(i_local_updates, np.asarray(historical_local_updates[client_p]))/(np.linalg.norm(i_local_updates)*np.linalg.norm(historical_local_updates[client_p]))
+            for net_idx_p, global_node_id_p in enumerate(selected_node_indices):
+                if global_node_id_p != global_node_id:
+                    p_update = historical_local_updates[global_node_id_p]
+                    if len(p_update) > 1:
+                        cs_p_i = np.dot(i_local_updates, np.asarray(historical_local_updates[global_node_id_p]))/(np.linalg.norm(i_local_updates)*np.linalg.norm(historical_local_updates[global_node_id_p]))
+                    else:
+                        cs_p_i = 0.0
                     cs_i.append(cs_p_i)
-                    pairwise_cs[global_node_id][client_p] = cs_p_i
+                    pairwise_cs[global_node_id][global_node_id_p] = cs_p_i
+                        
+            # for client_p in range(total_clients):
+            #     if client_p+1 != global_node_id:
+            #         p_update = historical_local_updates[client_p]
+            #         if len(p_update) > 1:
+            #             cs_p_i = np.dot(i_local_updates, np.asarray(historical_local_updates[client_p]))/(np.linalg.norm(i_local_updates)*np.linalg.norm(historical_local_updates[client_p]))
+            #         else:
+            #             cs_p_i = 0.0
+            #         cs_i.append(cs_p_i)
+            #         pairwise_cs[global_node_id][client_p] = cs_p_i
+            
             cs_i = np.asarray(cs_i)
             cs_i[::-1].sort()
             avg_k_top_cs_i = np.average(cs_i[:k])
@@ -333,23 +352,49 @@ class CONTRA(Defense):
                 reputations[global_node_id] -= delta
             else:
                 reputations[global_node_id] += delta
-
             avg_k_top_cs[global_node_id] = avg_k_top_cs_i
 
         alignment_levels = pairwise_cs.copy()
         lr_list = [1.0 for _ in range(total_clients)]
-        for net_idx in range(total_clients):
+        # for net_idx, global_node_id in enumerate(selected_node_indices):
+        #     lr_list[global_node_id] = 1.0
+        # print("avg_k_top_cs: ", avg_k_top_cs)
+        for net_idx in selected_node_indices:
             cs_m_n = []
-            for client_p in range(total_clients):
-                if client_p != net_idx:
-                    alignment_levels[net_idx][client_p] *= np.min(1.0, avg_k_top_cs[net_idx]/avg_k_top_cs[client_p])
-            lr_net_idx = 1 - np.max(alignment_levels[net_idx])
+            for client_p in selected_node_indices:
+                if client_p != net_idx: 
+                    if avg_k_top_cs[client_p] > avg_k_top_cs[net_idx]:
+                        alignment_levels[net_idx][client_p] *= float(avg_k_top_cs[net_idx]/avg_k_top_cs[client_p])
+                    # else:
+                    #     alignment_levels[net_idx][client_p] *= min(1.0, float(avg_k_top_cs[net_idx])/1.0)
+            a = np.asarray(alignment_levels[net_idx])
+            a = a[a != 0.0]
+            # print("a: ", a)
+            # print(max(a))
+            # print("alignment_levels[net_idx]: ", alignment_levels[net_idx])
+            # print("max(alignment_levels[net_idx]: ", max(alignment_levels[net_idx]))
+            # print(alignment_levels[net_idx].shape)
+            lr_net_idx = 1.0 - np.amax(alignment_levels[net_idx])
+            #print("lr_net_idx: ", lr_net_idx)
             lr_list[net_idx] = lr_net_idx
-            reputations[net_idx] = np.max(np.asarray(reputations))
-        lr_list = np.asarray(lr_list)
-        lr_list = lr_list/(np.max(lr_list))
-        lr_list = np.log(lr_list/(1-lr_list)) + 0.5 
+            reputations[net_idx] = max(np.asarray(reputations))
+        #print("alignment_levels: ", alignment_levels)
+        lr_final = []
+        for net_idx, global_node_id in enumerate(selected_node_indices):
+            lr_final.append(lr_list[global_node_id])
+        #print("lr_list first: ", lr_final)
+        lr_list = np.asarray(lr_final)
+        lr_list = lr_list/(max(lr_list))
+        print("lr_list: ", lr_list)
+        for i, lr in enumerate(lr_list):
+            if(lr == 1.0):
+                lr_list[i] = logit(0.99)+0.5
+            else:
+                lr_list[i] = logit(lr_list[i]) + 0.5
+        # lr_list = logit(lr_list/(1.0-lr_list)) + 0.5 
+        print("lr_list: ", lr_list)
         weights = lr_list.copy()
+        print("weights: ", weights)
         aggregated_w = self.weighted_average_oracle(vectorize_nets, weights)
         aggregated_model = client_models[0] # slicing which doesn't really matter
         load_model_weight(aggregated_model, torch.from_numpy(aggregated_w.astype(np.float32)).to(device))

@@ -6,6 +6,7 @@ import torch.nn.functional as F
 from utils import *
 from helpers import *
 from defense import *
+# from defense import Con
 
 from models.vgg import get_vgg_model
 import pandas as pd
@@ -688,7 +689,7 @@ class FixedPoolFederatedLearningTrainer(FederatedLearningTrainer):
         self.stddev = arguments['stddev']
         self.attacker_percent = arguments['attacker_percent']
         self.reputation_score = [1.0 for _ in range(arguments['num_nets'])] #init reputation score for all clients in the FL systems
-        self.local_update_history = [None for _ in range(arguments['num_nets'])] #theta i,t => keep track of update history of clients
+        self.local_update_history = [[0.0] for _ in range(arguments['num_nets'])] #theta i,t => keep track of update history of clients
         self.flatten_weights = []
         self.flatten_net_avg = None
 
@@ -728,7 +729,7 @@ class FixedPoolFederatedLearningTrainer(FederatedLearningTrainer):
         elif arguments["defense_technique"] == "rfa":
             self._defender = RFA()
         elif arguments["defense_technique"] == "contra":
-            self._defender = Contra()
+            self._defender = CONTRA()
         else:
             NotImplementedError("Unsupported defense method !")
 
@@ -750,9 +751,14 @@ class FixedPoolFederatedLearningTrainer(FederatedLearningTrainer):
             # randomly select participating clients
             # in this current version, we sample `part_nets_per_round` per FL round since we assume attacker will always participates
             if self.defense_technique == "contra":
-                probs = 0.1+0.1*(1.0-0.1)*self.reputation_score
-                probs = probs/(sum(probs))
-                selected_node_indices = np.random.choice(self.num_nets, size=self.part_nets_per_round, replace=False, probs)
+                probs = []
+                for score in self.reputation_score:
+                    prob = 0.1 + 0.1*(1.0-0.1)*score
+                    probs.append(prob)
+                # probs = 0.1+0.1*(1.0-0.1)*self.reputation_score
+                probs = np.asarray(probs)/(sum(probs))
+                self.reputation_score = probs.copy()
+                selected_node_indices = np.random.choice(self.num_nets, size=self.part_nets_per_round, replace=False, p=probs)
         
             else:
                 selected_node_indices = np.random.choice(self.num_nets, size=self.part_nets_per_round, replace=False)
@@ -890,6 +896,15 @@ class FixedPoolFederatedLearningTrainer(FederatedLearningTrainer):
                         # experimental
                         norm_diff_collector.append(honest_norm_diff)
 
+
+             #First we update the local updates of each client in this training round
+            for net_idx, global_client_indx in enumerate(selected_node_indices):
+                flatten_local_model = flatten_model(net_list[net_idx])
+                updates = flatten_local_model.cpu().data.numpy() - self.flatten_net_avg.cpu().data.numpy()
+                # print(updates)
+                # local_updates = np.asarray(flatten_local_model.cpu().data.numpy() - self.flatten_net_avg.cpu().data.numpy())
+                self.local_update_history[global_client_indx] = self.local_update_history[global_client_indx] + updates if self.local_update_history[global_client_indx] is not None else updates
+
             ### conduct defense here:
             if self.defense_technique == "no-defense":
                 pass
@@ -929,7 +944,7 @@ class FixedPoolFederatedLearningTrainer(FederatedLearningTrainer):
                 delta = 0.1
                 thr = 0.5
                 k = 3
-                net_list, net_freq, repu_s = self._defender.exec(client_models=net_list,net_freq=net_freq, selected_node_indices = selected_node_indices, historical_local_updates = self.historical_local_updates, reputations=self.reputation_score, delta=delta, threshold=thr, k = k)
+                net_list, net_freq, repu_s = self._defender.exec(client_models=net_list,net_freq=net_freq, selected_node_indices = selected_node_indices, historical_local_updates = self.local_update_history, reputations=self.reputation_score, delta=delta, threshold=thr, k = k)
                 self.reputation_score = repu_s
             else:
                 NotImplementedError("Unsupported defense method !")
@@ -937,18 +952,18 @@ class FixedPoolFederatedLearningTrainer(FederatedLearningTrainer):
 
             # after local training periods
             
-            #First we update the local updates of each client in this training round
-            for net_idx, global_client_indx in enumerate(selected_node_indices):
-                flatten_local_model = flatten_model(net_list[net_idx])
-                local_updates = flatten_local_model - self.flatten_net_avg
-                self.local_update_history[global_client_indx] = self.local_update_history[global_client_indx] + local_updates if self.local_update_history[global_client_indx] is not None else local_updates
+            # #First we update the local updates of each client in this training round
+            # for net_idx, global_client_indx in enumerate(selected_node_indices):
+            #     flatten_local_model = flatten_model(net_list[net_idx])
+            #     local_updates = flatten_local_model - self.flatten_net_avg
+            #     self.local_update_history[global_client_indx] = self.local_update_history[global_client_indx] + local_updates if self.local_update_history[global_client_indx] is not None else local_updates
 
             self.net_avg = fed_avg_aggregator(net_list, net_freq, device=self.device, model=self.model)
             self.flatten_net_avg = flatten_model(self.net_avg)
-            logging_items = get_logging_items(net_list, selected_node_indices, prev_avg, self.net_avg, selected_attackers, flr)
-            with open('logging/benchmark_01.csv', 'a+') as lf:
-                write = csv.writer(lf)
-                write.writerows(logging_items)
+            # logging_items = get_logging_items(net_list, selected_node_indices, prev_avg, self.net_avg, selected_attackers, flr)
+            # with open('logging/benchmark_01.csv', 'a+') as lf:
+            #     write = csv.writer(lf)
+            #     write.writerows(logging_items)
 
             # df_data = logging_items
             # df_writer = pd.DataFrame(df_data)
