@@ -926,12 +926,12 @@ class FixedPoolFederatedLearningTrainer(FederatedLearningTrainer):
             elif self.defense_technique == "krum":
                 net_list, net_freq = self._defender.exec(client_models=net_list, 
                                                         num_dps=[self.num_dps_poisoned_dataset]+num_data_points,
-                                                        g_user_indices=g_user_indices,
+                                                        g_user_indices=selected_node_indices,
                                                         device=self.device)
             elif self.defense_technique == "multi-krum":
                 net_list, net_freq = self._defender.exec(client_models=net_list, 
                                                         num_dps=[self.num_dps_poisoned_dataset]+num_data_points,
-                                                        g_user_indices=g_user_indices,
+                                                        g_user_indices=selected_node_indices,
                                                         device=self.device)
             elif self.defense_technique == "rfa":
                 net_list, net_freq = self._defender.exec(client_models=net_list,
