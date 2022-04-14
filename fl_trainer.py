@@ -738,7 +738,7 @@ class FixedPoolFederatedLearningTrainer(FederatedLearningTrainer):
         elif arguments["defense_technique"] == "contra":
             self._defender = CONTRA()
         elif arguments["defense_technique"] == "kmeans-based":
-            self._defender = KmeansBased()
+            self._defender = KmeansBased(num_workers=self.part_nets_per_round, num_adv=1)
         else:
             NotImplementedError("Unsupported defense method !")
 
@@ -861,6 +861,11 @@ class FixedPoolFederatedLearningTrainer(FederatedLearningTrainer):
                             train(net, self.device, self.poisoned_emnist_train_loader, optimizer, e, log_interval=self.log_interval, criterion=self.criterion,
                                     pgd_attack=self.pgd_attack, eps=self.eps*self.args_gamma**(flr-1), model_original=model_original, project_frequency=self.project_frequency, adv_optimizer=adv_optimizer,
                                     prox_attack=self.prox_attack, wg_hat=wg_hat)
+                        elif self.defense_technique == 'kmeans-bases':
+                            if flr < 50:
+                                train(net, self.device, self.poisoned_emnist_train_loader, optimizer, e, log_interval=self.log_interval, criterion=self.criterion,
+                                    pgd_attack=self.pgd_attack, eps=self.eps*self.args_gamma**(flr-1), model_original=model_original, project_frequency=self.project_frequency, adv_optimizer=adv_optimizer,
+                                    prox_attack=self.prox_attack, wg_hat=wg_hat)
                         else:
                             train(net, self.device, self.poisoned_emnist_train_loader, optimizer, e, log_interval=self.log_interval, criterion=self.criterion,
                                     pgd_attack=self.pgd_attack, eps=self.eps, model_original=model_original, project_frequency=self.project_frequency, adv_optimizer=adv_optimizer,
@@ -957,18 +962,19 @@ class FixedPoolFederatedLearningTrainer(FederatedLearningTrainer):
                 self.reputation_score = repu_s
                 
             elif self.defense_technique == "kmeans-based":
-                if flr <= 50:
-                    net_list, net_freq = self._defender.exec(client_models=net_list, 
-                                        num_dps=[self.num_dps_poisoned_dataset]+num_data_points,
-                                        g_user_indices=selected_node_indices,
-                                        device=self.device)
-                else:
-                    net_list, net_freq = self._defender.exec(client_models=net_list,
-                                                            num_dps=[self.num_dps_poisoned_dataset]+num_data_points,
-                                                            net_freq=net_freq,
-                                                            net_avg=self.net_avg,
-                                                            g_user_indices=selected_node_indices,
-                                                            device=self.device)
+                # if flr <= 50:
+                #     net_list, net_freq = self._defender.exec(client_models=net_list, 
+                #                         num_dps=[self.num_dps_poisoned_dataset]+num_data_points,
+                #                         g_user_indices=selected_node_indices,
+                #                         device=self.device)
+                # else:
+                net_list, net_freq = self._defender.exec(client_models=net_list,
+                                                        num_dps=[self.num_dps_poisoned_dataset]+num_data_points,
+                                                        net_freq=net_freq,
+                                                        net_avg=self.net_avg,
+                                                        g_user_indices=selected_node_indices,
+                                                        round=flr,
+                                                        device=self.device)
             else:
                 NotImplementedError("Unsupported defense method !")
 

@@ -154,6 +154,7 @@ class Krum(Defense):
             # alternative to topk in pytorch and tensorflow
             topk_ind = np.argpartition(dists, nb_in_score)[:nb_in_score]
             scores.append(sum(np.take(dists, topk_ind)))
+        
         if self._mode == "krum":
             i_star = scores.index(min(scores))
             logger.info("@@@@ The chosen one is user: {}, which is global user: {}".format(scores.index(min(scores)), g_user_indices[scores.index(min(scores))]))
@@ -424,53 +425,96 @@ class CONTRA(Defense):
         return weighted_updates
     
 class KmeansBased(Defense):
-    def __init__(self, *args, **kwargs):
-        pass
+    def __init__(self, num_workers, num_adv, *args, **kwargs):
+        self.num_workers = num_workers
+        self.s = num_adv
     def exec(self, client_models, num_dps, net_avg, net_freq, g_user_indices, round, device=torch.device("cuda"), *args, **kwargs):
         from sklearn.cluster import KMeans
-        
-        total_client = len(client_models)
-        bias_list, weight_list, avg_bias, avg_weight = extract_classifier_layer(client_models, net_avg)
-        eucl_dis, cs_dis = get_distance_on_avg_net(weight_list, avg_weight, total_client)
-        norm_cs_data = min_max_scale(cs_dis)
-        norm_eu_data = 1.0 - min_max_scale(eucl_dis)
-        stack_dis = np.hstack((norm_cs_data,norm_eu_data))
-        print("stack_dis.shape: ", stack_dis.shape)
-        kmeans = KMeans(n_clusters = 2)
-        pred_labels = kmeans.fit_predict(stack_dis)
-        print("pred_labels is: ", pred_labels)
-        label_0 = np.count_nonzero(pred_labels == 0)
-        label_1 = total_client - label_0
-        cnt_pred_attackers = label_0 if label_0 <= label_1 else label_1
-        label_att = 0 if label_0 <= label_1 else 1
-        print("label_att: ", label_att)
-        pred_attackers_indx = np.argwhere(np.asarray(pred_labels) == label_att).flatten()
+
+        if round < 50:
+            # WARM START WITH KRUM
+            vectorize_nets = [vectorize_net(cm).detach().cpu().numpy() for cm in client_models]
+            neighbor_distances = []
+            for i, g_i in enumerate(vectorize_nets):
+                distance = []
+                for j in range(i+1, len(vectorize_nets)):
+                    if i != j:
+                        g_j = vectorize_nets[j]
+                        distance.append(float(np.linalg.norm(g_i-g_j)**2)) # let's change this to pytorch version
+                neighbor_distances.append(distance)
+
+            # compute scores
+            nb_in_score = self.num_workers-self.s-2
+            scores = []
+            for i, g_i in enumerate(vectorize_nets):
+                dists = []
+                for j, g_j in enumerate(vectorize_nets):
+                    if j == i:
+                        continue
+                    if j < i:
+                        dists.append(neighbor_distances[j][i - j - 1])
+                    else:
+                        dists.append(neighbor_distances[i][j - i - 1])
+
+            # alternative to topk in pytorch and tensorflow
+            topk_ind = np.argpartition(dists, nb_in_score)[:nb_in_score]
+            scores.append(sum(np.take(dists, topk_ind)))
+            i_star = scores.index(min(scores))
+            logger.info("@@@@ The chosen one is user: {}, which is global user: {}".format(scores.index(min(scores)), g_user_indices[scores.index(min(scores))]))
+            aggregated_model = client_models[0] # slicing which doesn't really matter
+            load_model_weight(aggregated_model, torch.from_numpy(vectorize_nets[i_star]).to(device))
+            neo_net_list = [aggregated_model]
+            logger.info("Norm of Aggregated Model: {}".format(torch.norm(torch.nn.utils.parameters_to_vector(aggregated_model.parameters())).item()))
+            neo_net_freq = [1.0]
+            return neo_net_list, neo_net_freq
+        else:
+            vectorize_nets = [vectorize_net(cm).detach().cpu().numpy() for cm in client_models]
+            baseline_net = self.weighted_average_oracle(vectorize_nets, net_freq)
+            base_model = client_models[0]
+            load_model_weight(base_model, torch.from_numpy(baseline_net.astype(np.float32)).to(device)) 
+
+            total_client = len(client_models)
+            bias_list, weight_list, avg_bias, avg_weight = extract_classifier_layer(client_models, base_model)
+            eucl_dis, cs_dis = get_distance_on_avg_net(weight_list, avg_weight, total_client)
+            norm_cs_data = min_max_scale(cs_dis)
+            norm_eu_data = 1.0 - min_max_scale(eucl_dis)
+            stack_dis = np.hstack((norm_cs_data,norm_eu_data))
+            print("stack_dis.shape: ", stack_dis.shape)
+            kmeans = KMeans(n_clusters = 2)
+            pred_labels = kmeans.fit_predict(stack_dis)
+            print("pred_labels is: ", pred_labels)
+            label_0 = np.count_nonzero(pred_labels == 0)
+            label_1 = total_client - label_0
+            cnt_pred_attackers = label_0 if label_0 <= label_1 else label_1
+            label_att = 0 if label_0 <= label_1 else 1
+            print("label_att: ", label_att)
+            pred_attackers_indx = np.argwhere(np.asarray(pred_labels) == label_att).flatten()
 
 
-        print("pred_attackers_indx: ", pred_attackers_indx)
-        neo_net_list = []
-        neo_net_freq = []
-        pred_attackers_indx = pred_attackers_indx.tolist()
-        print("pred_attackers_indx: ", pred_attackers_indx)
-        selected_net_indx = []
-        for idx, net in enumerate(client_models):
-            if idx not in pred_attackers_indx:
-                neo_net_list.append(net)
-                neo_net_freq.append(1.0)
-                selected_net_indx.append(idx)
-        vectorize_nets = [vectorize_net(cm).detach().cpu().numpy() for cm in neo_net_list]
-        selected_num_dps = np.array(num_dps)[selected_net_indx]
-        reconstructed_freq = [snd/sum(selected_num_dps) for snd in selected_num_dps]
+            print("pred_attackers_indx: ", pred_attackers_indx)
+            neo_net_list = []
+            neo_net_freq = []
+            pred_attackers_indx = pred_attackers_indx.tolist()
+            print("pred_attackers_indx: ", pred_attackers_indx)
+            selected_net_indx = []
+            for idx, net in enumerate(client_models):
+                if idx not in pred_attackers_indx:
+                    neo_net_list.append(net)
+                    neo_net_freq.append(1.0)
+                    selected_net_indx.append(idx)
+            vectorize_nets = [vectorize_net(cm).detach().cpu().numpy() for cm in neo_net_list]
+            selected_num_dps = np.array(num_dps)[selected_net_indx]
+            reconstructed_freq = [snd/sum(selected_num_dps) for snd in selected_num_dps]
 
-        logger.info("Num data points: {}".format(num_dps))
-        logger.info("Num selected data points: {}".format(selected_num_dps))
-        logger.info("The chosen ones are users: {}, which are global users: {}".format(selected_net_indx, [g_user_indices[ti] for ti in selected_net_indx]))
-        aggregated_w = self.weighted_average_oracle(vectorize_nets, reconstructed_freq)
-        aggregated_model = client_models[0] # slicing which doesn't really matter
-        load_model_weight(aggregated_model, torch.from_numpy(aggregated_w.astype(np.float32)).to(device))
-        neo_net_list = [aggregated_model]
-        neo_net_freq = [1.0]
-        return neo_net_list, neo_net_freq
+            logger.info("Num data points: {}".format(num_dps))
+            logger.info("Num selected data points: {}".format(selected_num_dps))
+            logger.info("The chosen ones are users: {}, which are global users: {}".format(selected_net_indx, [g_user_indices[ti] for ti in selected_net_indx]))
+            aggregated_w = self.weighted_average_oracle(vectorize_nets, reconstructed_freq)
+            aggregated_model = client_models[0] # slicing which doesn't really matter
+            load_model_weight(aggregated_model, torch.from_numpy(aggregated_w.astype(np.float32)).to(device))
+            neo_net_list = [aggregated_model]
+            neo_net_freq = [1.0]
+            return neo_net_list, neo_net_freq
         
 
     def weighted_average_oracle(self, points, weights):
