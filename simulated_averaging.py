@@ -64,7 +64,7 @@ if __name__ == "__main__":
     parser.add_argument('--attacker_pool_size', type=int, default=100,
                         help='size of attackers in the population, used when args.fl_mode == fixed-pool only')    
     parser.add_argument('--defense_method', type=str, default="no-defense",
-                        help='defense method used: no-defense|norm-clipping|norm-clipping-adaptive|weak-dp|krum|multi-krum|rfa|')
+                        help='defense method used: no-defense|norm-clipping|norm-clipping-adaptive|weak-dp|krum|multi-krum|rfa|kmeans-based|contra')
     parser.add_argument('--device', type=str, default='cuda',
                         help='device to set, can take the value of: cuda or cuda:x')
     parser.add_argument('--attack_method', type=str, default="blackbox",
@@ -171,7 +171,7 @@ if __name__ == "__main__":
     vanilla_model = copy.deepcopy(net_avg)
     wandb_ins = wandb.init(project="Backdoor attack in FL",
                entity="aiotlab",
-               name=f"benchmark-{args.defense_method}",
+               name=f"idea-{args.defense_method}",
                group="CIFAR-10",
                config={
             #"poisoned_emnist_dataset":poisoned_emnist_dataset,

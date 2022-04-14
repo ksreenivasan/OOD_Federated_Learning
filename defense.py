@@ -423,7 +423,73 @@ class CONTRA(Defense):
             weighted_updates += (w * p / tot_weights)
         return weighted_updates
     
+class KmeansBased(Defense):
+    def __init__(self, *args, **kwargs):
+        pass
+    def exec(self, client_models, net_avg, net_freq, device=torch.device("cuda"), *args, **kwargs):
+        from sklearn.cluster import KMeans
+        
+        total_client = len(client_models)
+        bias_list, weight_list, avg_bias, avg_weight = extract_classifier_layer(client_models, net_avg)
+        eucl_dis, cs_dis = get_distance_on_avg_net(weight_list, avg_weight, total_client)
+        norm_cs_data = min_max_scale(eucl_dis)
+        norm_eu_data = 1.0 - min_max_scale(cs_dis)
+        stack_dis = np.hstack((norm_cs_data,norm_eu_data))
+        print("stack_dis.shape: ", stack_dis.shape)
+        kmeans = KMeans(n_clusters = 2)
+        pred_labels = kmeans.fit_predict(stack_dis)
+        print("pred_labels is: ", pred_labels)
+        label_0 = np.count_nonzero(pred_labels == 0)
+        label_1 = total_client - label_0
+        cnt_pred_attackers = label_0 if label_0 <= label_1 else label_1
+        label_att = 0 if label_0 <= label_1 else 1
+        print("label_att: ", label_att)
+        pred_attackers_indx = np.argwhere(np.asarray(pred_labels) == label_att).flatten()
 
+
+        print("pred_attackers_indx: ", pred_attackers_indx)
+        neo_net_list = []
+        neo_net_freq = []
+        pred_attackers_indx = pred_attackers_indx.tolist()
+        print("pred_attackers_indx: ", pred_attackers_indx)
+        for idx, net in enumerate(client_models):
+            if idx not in pred_attackers_indx:
+                neo_net_list.append(net)
+                neo_net_freq.append(1.0)
+        vectorize_nets = [vectorize_net(cm).detach().cpu().numpy() for cm in neo_net_list]
+        aggregated_w = self.weighted_average_oracle(vectorize_nets, neo_net_freq)
+        aggregated_model = client_models[0] # slicing which doesn't really matter
+        load_model_weight(aggregated_model, torch.from_numpy(aggregated_w.astype(np.float32)).to(device))
+        neo_net_list = [aggregated_model]
+        neo_net_freq = [1.0]
+        return neo_net_list, neo_net_freq
+        
+
+    def weighted_average_oracle(self, points, weights):
+        """Computes weighted average of atoms with specified weights
+        Args:
+            points: list, whose weighted average we wish to calculate
+                Each element is a list_of_np.ndarray
+            weights: list of weights of the same length as atoms
+        """
+        ### original implementation in TFF
+        #tot_weights = np.sum(weights)
+        #weighted_updates = [np.zeros_like(v) for v in points[0]]
+        #for w, p in zip(weights, points):
+        #    for j, weighted_val in enumerate(weighted_updates):
+        #        weighted_val += (w / tot_weights) * p[j]
+        #return weighted_updates
+        ####
+        tot_weights = np.sum(weights)
+        weighted_updates = np.zeros(points[0].shape)
+        for w, p in zip(weights, points):
+            weighted_updates += (w * p / tot_weights)
+        return weighted_updates
+    
+
+
+
+    
 if __name__ == "__main__":
     # some tests here
     import copy

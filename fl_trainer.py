@@ -377,6 +377,8 @@ class FrequencyFederatedLearningTrainer(FederatedLearningTrainer):
             self._defender = Krum(mode='multi-krum', num_workers=self.part_nets_per_round, num_adv=1)
         elif arguments["defense_technique"] == "rfa":
             self._defender = RFA()
+        elif arguments["defense_technique"] == "kmeans-based":
+            self._defender = KmeansBased()
         else:
             NotImplementedError("Unsupported defense method !")
 
@@ -599,6 +601,11 @@ class FrequencyFederatedLearningTrainer(FederatedLearningTrainer):
                                                         eps=1e-5,
                                                         ftol=1e-7,
                                                         device=self.device)
+            elif self.defense_technique == "kmeans-based":
+                net_list, net_freq = self._defender.exec(client_models=net_list,
+                                                        net_freq=net_freq,
+                                                        net_avg=self.net_avg,
+                                                        device=self.device)
             else:
                 NotImplementedError("Unsupported defense method !")
 
@@ -730,6 +737,8 @@ class FixedPoolFederatedLearningTrainer(FederatedLearningTrainer):
             self._defender = RFA()
         elif arguments["defense_technique"] == "contra":
             self._defender = CONTRA()
+        elif arguments["defense_technique"] == "kmeans-based":
+            self._defender = KmeansBased()
         else:
             NotImplementedError("Unsupported defense method !")
 
@@ -946,6 +955,12 @@ class FixedPoolFederatedLearningTrainer(FederatedLearningTrainer):
                 k = 3
                 net_list, net_freq, repu_s = self._defender.exec(client_models=net_list,net_freq=net_freq, selected_node_indices = selected_node_indices, historical_local_updates = self.local_update_history, reputations=self.reputation_score, delta=delta, threshold=thr, k = k)
                 self.reputation_score = repu_s
+                
+            elif self.defense_technique == "kmeans-based":
+                net_list, net_freq = self._defender.exec(client_models=net_list,
+                                                        net_freq=net_freq,
+                                                        net_avg=self.net_avg,
+                                                        device=self.device)
             else:
                 NotImplementedError("Unsupported defense method !")
 

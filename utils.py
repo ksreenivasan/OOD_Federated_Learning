@@ -2,6 +2,9 @@ import os
 import argparse
 import json
 import numpy as np
+from numpy import dot
+from numpy.linalg import norm
+
 import torch
 import torch.optim as optim
 import torch.nn as nn
@@ -11,6 +14,7 @@ import torch.utils.data as data
 import torch.nn.functional as F
 from torch.autograd import Variable
 from torchvision import datasets, transforms
+from sklearn.metrics.pairwise import cosine_similarity
 
 from itertools import product
 import math
@@ -27,7 +31,15 @@ logging.basicConfig()
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
-
+from sklearn import preprocessing
+min_max_scaler = preprocessing.MinMaxScaler()
+def min_max_scale(data_r):
+    data_r = np.asarray(data_r)
+    v = data_r[:].reshape((-1,1))
+    v_scaled = min_max_scaler.fit_transform(v)
+    data_r = v_scaled
+    return data_r
+    
 class Net(nn.Module):
     def __init__(self, num_classes):
         super(Net, self).__init__()
@@ -839,4 +851,40 @@ def get_logging_items(net_list, selected_node_indices, avg_net_prev, avg_net, at
     logging_list.append(avg_item)
     return logging_list
         
+def extract_classifier_layer(net_list, global_avg_net):
+    bias_list = []
+    weight_list = []
+    avg_bias = None
+    avg_weight = None
+    for net in net_list:
+        bias = None
+        weight = None
+        for idx, param in enumerate(net.classifier.parameters()):
+            if idx:
+                bias = param.data.cpu().numpy()
+            else:
+                weight = param.data.cpu().numpy()
+        bias_list.append(bias)
+        weight_list.append(weight)
+    for idx, param in enumerate(global_avg_net.classifier.parameters()):
+        if idx:
+            avg_bias = param.data.cpu().numpy()
+        else:
+            avg_weight = param.data.cpu().numpy()
+    return bias_list, weight_list, avg_bias, avg_weight
 
+def get_distance_on_avg_net(weight_list, avg_weight, total_cli = 10):
+    eucl_dis = []
+    cs_dis = []
+    for i in range(total_cli):
+        point = weight_list[i].flatten().reshape(-1,1)
+        base_p = avg_weight.flatten().reshape(-1,1)
+        ds = point - base_p
+        sum_sq = np.dot(ds.T, ds)
+        eucl_dis.append(float(np.sqrt(sum_sq).flatten()))
+    for i in range(total_cli):
+        point = weight_list[i].flatten()
+        base_p = avg_weight.flatten()
+        cs = dot(point, base_p)/(norm(point)*norm(base_p))
+        cs_dis.append(float(cs.flatten()))
+    return eucl_dis, cs_dis
