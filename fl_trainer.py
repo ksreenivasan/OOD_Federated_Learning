@@ -957,10 +957,18 @@ class FixedPoolFederatedLearningTrainer(FederatedLearningTrainer):
                 self.reputation_score = repu_s
                 
             elif self.defense_technique == "kmeans-based":
-                net_list, net_freq = self._defender.exec(client_models=net_list,
-                                                        net_freq=net_freq,
-                                                        net_avg=self.net_avg,
-                                                        device=self.device)
+                if flr <= 50:
+                    net_list, net_freq = self._defender.exec(client_models=net_list, 
+                                        num_dps=[self.num_dps_poisoned_dataset]+num_data_points,
+                                        g_user_indices=selected_node_indices,
+                                        device=self.device)
+                else:
+                    net_list, net_freq = self._defender.exec(client_models=net_list,
+                                                            num_dps=[self.num_dps_poisoned_dataset]+num_data_points,
+                                                            net_freq=net_freq,
+                                                            net_avg=self.net_avg,
+                                                            g_user_indices=selected_node_indices,
+                                                            device=self.device)
             else:
                 NotImplementedError("Unsupported defense method !")
 

@@ -426,14 +426,14 @@ class CONTRA(Defense):
 class KmeansBased(Defense):
     def __init__(self, *args, **kwargs):
         pass
-    def exec(self, client_models, net_avg, net_freq, device=torch.device("cuda"), *args, **kwargs):
+    def exec(self, client_models, num_dps, net_avg, net_freq, g_user_indices, round, device=torch.device("cuda"), *args, **kwargs):
         from sklearn.cluster import KMeans
         
         total_client = len(client_models)
         bias_list, weight_list, avg_bias, avg_weight = extract_classifier_layer(client_models, net_avg)
         eucl_dis, cs_dis = get_distance_on_avg_net(weight_list, avg_weight, total_client)
-        norm_cs_data = min_max_scale(eucl_dis)
-        norm_eu_data = 1.0 - min_max_scale(cs_dis)
+        norm_cs_data = min_max_scale(cs_dis)
+        norm_eu_data = 1.0 - min_max_scale(eucl_dis)
         stack_dis = np.hstack((norm_cs_data,norm_eu_data))
         print("stack_dis.shape: ", stack_dis.shape)
         kmeans = KMeans(n_clusters = 2)
@@ -452,12 +452,20 @@ class KmeansBased(Defense):
         neo_net_freq = []
         pred_attackers_indx = pred_attackers_indx.tolist()
         print("pred_attackers_indx: ", pred_attackers_indx)
+        selected_net_indx = []
         for idx, net in enumerate(client_models):
             if idx not in pred_attackers_indx:
                 neo_net_list.append(net)
                 neo_net_freq.append(1.0)
+                selected_net_indx.append(idx)
         vectorize_nets = [vectorize_net(cm).detach().cpu().numpy() for cm in neo_net_list]
-        aggregated_w = self.weighted_average_oracle(vectorize_nets, neo_net_freq)
+        selected_num_dps = np.array(num_dps)[selected_net_indx]
+        reconstructed_freq = [snd/sum(selected_num_dps) for snd in selected_num_dps]
+
+        logger.info("Num data points: {}".format(num_dps))
+        logger.info("Num selected data points: {}".format(selected_num_dps))
+        logger.info("The chosen ones are users: {}, which are global users: {}".format(selected_net_indx, [g_user_indices[ti] for ti in selected_net_indx]))
+        aggregated_w = self.weighted_average_oracle(vectorize_nets, reconstructed_freq)
         aggregated_model = client_models[0] # slicing which doesn't really matter
         load_model_weight(aggregated_model, torch.from_numpy(aggregated_w.astype(np.float32)).to(device))
         neo_net_list = [aggregated_model]
