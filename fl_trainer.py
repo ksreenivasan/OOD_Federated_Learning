@@ -738,7 +738,7 @@ class FixedPoolFederatedLearningTrainer(FederatedLearningTrainer):
         elif arguments["defense_technique"] == "contra":
             self._defender = CONTRA()
         elif arguments["defense_technique"] == "kmeans-based":
-            self._defender = KmeansBased()
+            self._defender = KmeansBased(num_workers=self.part_nets_per_round, num_adv=1)
         else:
             NotImplementedError("Unsupported defense method !")
 
@@ -957,18 +957,19 @@ class FixedPoolFederatedLearningTrainer(FederatedLearningTrainer):
                 self.reputation_score = repu_s
                 
             elif self.defense_technique == "kmeans-based":
-                if flr <= 50:
-                    net_list, net_freq = self._defender.exec(client_models=net_list, 
-                                        num_dps=[self.num_dps_poisoned_dataset]+num_data_points,
-                                        g_user_indices=selected_node_indices,
-                                        device=self.device)
-                else:
-                    net_list, net_freq = self._defender.exec(client_models=net_list,
-                                                            num_dps=[self.num_dps_poisoned_dataset]+num_data_points,
-                                                            net_freq=net_freq,
-                                                            net_avg=self.net_avg,
-                                                            g_user_indices=selected_node_indices,
-                                                            device=self.device)
+                # if flr <= 50:
+                #     net_list, net_freq = self._defender.exec(client_models=net_list, 
+                #                         num_dps=[self.num_dps_poisoned_dataset]+num_data_points,
+                #                         g_user_indices=selected_node_indices,
+                #                         device=self.device)
+                # else:
+                net_list, net_freq = self._defender.exec(client_models=net_list,
+                                                        num_dps=[self.num_dps_poisoned_dataset]+num_data_points,
+                                                        net_freq=net_freq,
+                                                        net_avg=self.net_avg,
+                                                        g_user_indices=selected_node_indices,
+                                                        round=flr,
+                                                        device=self.device)
             else:
                 NotImplementedError("Unsupported defense method !")
 
