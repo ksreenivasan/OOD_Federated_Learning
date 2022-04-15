@@ -456,9 +456,10 @@ class KmeansBased(Defense):
                     else:
                         dists.append(neighbor_distances[i][j - i - 1])
 
-            # alternative to topk in pytorch and tensorflow
-            topk_ind = np.argpartition(dists, nb_in_score)[:nb_in_score]
-            scores.append(sum(np.take(dists, topk_ind)))
+                # alternative to topk in pytorch and tensorflow
+                topk_ind = np.argpartition(dists, nb_in_score)[:nb_in_score]
+                scores.append(sum(np.take(dists, topk_ind)))
+            
             i_star = scores.index(min(scores))
             logger.info("@@@@ The chosen one is user: {}, which is global user: {}".format(scores.index(min(scores)), g_user_indices[scores.index(min(scores))]))
             aggregated_model = client_models[0] # slicing which doesn't really matter
@@ -474,8 +475,8 @@ class KmeansBased(Defense):
             load_model_weight(base_model, torch.from_numpy(baseline_net.astype(np.float32)).to(device)) 
 
             total_client = len(client_models)
-            bias_list, weight_list, avg_bias, avg_weight = extract_classifier_layer(client_models, base_model)
-            eucl_dis, cs_dis = get_distance_on_avg_net(weight_list, avg_weight, total_client)
+            bias_list, weight_list, avg_bias, avg_weight, weight_update = extract_classifier_layer(client_models, base_model)
+            eucl_dis, cs_dis = get_distance_on_avg_net(weight_list, avg_weight, weight_update, total_client)
             norm_cs_data = min_max_scale(cs_dis)
             norm_eu_data = 1.0 - min_max_scale(eucl_dis)
             stack_dis = np.hstack((norm_cs_data,norm_eu_data))
@@ -538,6 +539,170 @@ class KmeansBased(Defense):
             weighted_updates += (w * p / tot_weights)
         return weighted_updates
     
+
+class KrMLRFL(Defense):
+    """
+    we implement the robust aggregator at: https://papers.nips.cc/paper/6617-machine-learning-with-adversaries-byzantine-tolerant-gradient-descent.pdf
+    and we integrate both krum and multi-krum in this single class
+    """
+    def __init__(self, num_workers, num_adv, num_valid = 1, *args, **kwargs):
+        # assert (mode in ("krum", "multi-krum"))
+        self.num_valid = num_valid
+        self.num_workers = num_workers
+        self.s = num_adv
+
+    def exec(self, client_models, num_dps,net_freq, net_avg, g_user_indices, pseudo_avg_net, device, *args, **kwargs):
+        vectorize_nets = [vectorize_net(cm).detach().cpu().numpy() for cm in client_models]
+        trusted_models = []
+        neighbor_distances = []
+        for i, g_i in enumerate(vectorize_nets):
+            distance = []
+            for j in range(i+1, len(vectorize_nets)):
+                if i != j:
+                    g_j = vectorize_nets[j]
+                    distance.append(float(np.linalg.norm(g_i-g_j)**2)) # let's change this to pytorch version
+            neighbor_distances.append(distance)
+
+        # compute scores
+        nb_in_score = self.num_workers-self.s-2
+        scores = []
+        for i, g_i in enumerate(vectorize_nets):
+            dists = []
+            for j, g_j in enumerate(vectorize_nets):
+                if j == i:
+                    continue
+                if j < i:
+                    dists.append(neighbor_distances[j][i - j - 1])
+                else:
+                    dists.append(neighbor_distances[i][j - i - 1])
+            # alternative to topk in pytorch and tensorflow
+            topk_ind = np.argpartition(dists, nb_in_score)[:nb_in_score]
+            scores.append(sum(np.take(dists, topk_ind)))
+        
+        if self.num_valid == 1:
+            i_star = scores.index(min(scores))
+            logger.info("@@@@ The chosen trusted worker is user: {}, which is global user: {}".format(scores.index(min(scores)), g_user_indices[scores.index(min(scores))]))
+            # aggregated_model = client_models[0] # slicing which doesn't really matter
+            # load_model_weight(aggregated_model, torch.from_numpy(vectorize_nets[i_star]).to(device))
+            # neo_net_list = [aggregated_model]
+            # logger.info("Norm of the chosen trusted worker: {}".format(torch.norm(torch.nn.utils.parameters_to_vector(aggregated_model.parameters())).item()))
+            # neo_net_freq = [1.0]
+            # return neo_net_list, neo_net_freq
+            trusted_models.append(i_star)
+        else:
+            # topk_ind = np.argpartition(scores, nb_in_score+2)[:nb_in_score+2]
+            topk_ind = np.argpartition(scores, nb_in_score+2)[:self.num_valid]
+            
+            # we reconstruct the weighted averaging here:
+            selected_num_dps = np.array(num_dps)[topk_ind]
+            # reconstructed_freq = [snd/sum(selected_num_dps) for snd in selected_num_dps]
+
+            # logger.info("Num data points: {}".format(num_dps))
+            logger.info("Num selected data points: {}".format(selected_num_dps))
+            logger.info("The chosen ones are users: {}, which are global users: {}".format(topk_ind, [g_user_indices[ti] for ti in topk_ind]))
+            #aggregated_grad = np.mean(np.array(vectorize_nets)[topk_ind, :], axis=0)
+            # aggregated_grad = np.average(np.array(vectorize_nets)[topk_ind, :], weights=reconstructed_freq, axis=0).astype(np.float32)
+
+            # aggregated_model = client_models[0] # slicing which doesn't really matter
+            # load_model_weight(aggregated_model, torch.from_numpy(aggregated_grad).to(device))
+            # neo_net_list = [aggregated_model]
+            #logger.info("Norm of Aggregated Model: {}".format(torch.norm(torch.nn.utils.parameters_to_vector(aggregated_model.parameters())).item()))
+            # neo_net_freq = [1.0]
+            # return neo_net_list, neo_net_freq
+
+            for ind in topk_ind:
+                trusted_models.append(ind)
+        
+        # From now on, trusted_models contain the index base models treated as valid users.
+        vectorize_nets = [vectorize_net(cm).detach().cpu().numpy() for cm in client_models]
+        # pseudo_avg_w = vectorize_net(pseudo_avg_net).detach().cpu().numpy()
+        # baseline_net = self.weighted_average_oracle(vectorize_nets, net_freq)
+        # glob_model = client_models[0]
+        # load_model_weight(glob_model, torch.from_numpy(baseline_net.astype(np.float32)).to(device)) 
+        bias_list, weight_list, avg_bias, avg_weight, weight_update, glob_update = extract_classifier_layer(client_models, pseudo_avg_net, net_avg)
+        t_score = self.get_trustworthy_scores(trusted_models, weight_update)
+        c_score = self.get_contribution_scores(trusted_models, weight_update, glob_update)
+        f_score = [t_score[i] + c_score[i] for i in range(len(t_score))]
+        print("f_score: ", f_score)
+        pred_attackers = pred_attackers_indx = np.argwhere(np.asarray(f_score) == 0).flatten()
+        print("pred_attackers_indx: ", pred_attackers_indx)
+        neo_net_list = []
+        neo_net_freq = []
+        selected_net_indx = []
+        for idx, net in enumerate(client_models):
+            if idx not in pred_attackers_indx:
+                neo_net_list.append(net)
+                neo_net_freq.append(1.0)
+                selected_net_indx.append(idx)
+        vectorize_nets = [vectorize_net(cm).detach().cpu().numpy() for cm in neo_net_list]
+        selected_num_dps = np.array(num_dps)[selected_net_indx]
+        reconstructed_freq = [snd/sum(selected_num_dps) for snd in selected_num_dps]
+
+        logger.info("Num data points: {}".format(num_dps))
+        logger.info("Num selected data points: {}".format(selected_num_dps))
+        logger.info("The chosen ones are users: {}, which are global users: {}".format(selected_net_indx, [g_user_indices[ti] for ti in selected_net_indx]))
+        
+        aggregated_grad = np.average(vectorize_nets, weights=reconstructed_freq, axis=0).astype(np.float32)
+
+        aggregated_model = client_models[0] # slicing which doesn't really matter
+        load_model_weight(aggregated_model, torch.from_numpy(aggregated_grad).to(device))
+
+        # aggregated_w = self.weighted_average_oracle(vectorize_nets, reconstructed_freq)
+        # aggregated_model = client_models[0] # slicing which doesn't really matter
+        # load_model_weight(aggregated_model, torch.from_numpy(aggregated_w.astype(np.float32)).to(device))
+        neo_net_list = [aggregated_model]
+        neo_net_freq = [1.0]
+        return neo_net_list, neo_net_freq
+
+    def get_trustworthy_scores(self, trusted_models_idxs, weight_update):
+        score = np.zeros((len(weight_update), len(trusted_models_idxs)))
+        for m_idx, g_model_idx in enumerate(trusted_models_idxs):
+            base_model_update = weight_update[g_model_idx]
+            # print("base_model_update: ", base_model_update)
+            cs_dist = get_cs_on_base_net(weight_update, base_model_update)
+            for idx, cs in enumerate(cs_dist):
+                score[idx, m_idx] = cs
+        # print("raw score:= ", score)
+        score_avg = np.average(score, 1)
+        # print("score_avg:= ", score_avg)
+        norm_score = min_max_scale(score_avg)
+        final_score = [1.0 if norm_s > 0.5 else 0.0 for norm_s in norm_score]
+        return final_score
+    
+    def get_contribution_scores(self, trusted_models_idxs, weight_update, base_w_update):
+        # First, calculate the contribution threshold using the trusted client list
+
+        client_ed_list = get_ed_on_base_net(weight_update, base_w_update)
+        client_ed_list = np.asarray(client_ed_list)
+        b_h = np.average(client_ed_list[trusted_models_idxs])
+        contribution_s = (b_h - client_ed_list)/b_h
+        # print("contribution_s: ", contribution_s)
+        final_score = [1.0 if contribution_s[i] >= 0 else 0.0 for i in range(len(contribution_s))]
+        return final_score
+        # for cli_ind, weight_update in enumerate(weight_update):
+
+        
+    def weighted_average_oracle(self, points, weights):
+        """Computes weighted average of atoms with specified weights
+        Args:
+            points: list, whose weighted average we wish to calculate
+                Each element is a list_of_np.ndarray
+            weights: list of weights of the same length as atoms
+        """
+        ### original implementation in TFF
+        #tot_weights = np.sum(weights)
+        #weighted_updates = [np.zeros_like(v) for v in points[0]]
+        #for w, p in zip(weights, points):
+        #    for j, weighted_val in enumerate(weighted_updates):
+        #        weighted_val += (w / tot_weights) * p[j]
+        #return weighted_updates
+        ####
+        tot_weights = np.sum(weights)
+        weighted_updates = np.zeros(points[0].shape)
+        for w, p in zip(weights, points):
+            weighted_updates += (w * p / tot_weights)
+        return weighted_updates
+
 
 
 

@@ -851,11 +851,26 @@ def get_logging_items(net_list, selected_node_indices, avg_net_prev, avg_net, at
     logging_list.append(avg_item)
     return logging_list
         
-def extract_classifier_layer(net_list, global_avg_net):
+def extract_classifier_layer(net_list, global_avg_net, prev_net):
     bias_list = []
     weight_list = []
+    weight_update = []
     avg_bias = None
     avg_weight = None
+    prev_avg_bias = None
+    prev_avg_weight = None
+    for idx, param in enumerate(global_avg_net.classifier.parameters()):
+        if idx:
+            avg_bias = param.data.cpu().numpy()
+        else:
+            avg_weight = param.data.cpu().numpy()
+
+    for idx, param in enumerate(prev_net.classifier.parameters()):
+        if idx:
+            prev_avg_bias = param.data.cpu().numpy()
+        else:
+            prev_avg_weight = param.data.cpu().numpy()
+    glob_update = avg_weight - prev_avg_weight
     for net in net_list:
         bias = None
         weight = None
@@ -866,18 +881,15 @@ def extract_classifier_layer(net_list, global_avg_net):
                 weight = param.data.cpu().numpy()
         bias_list.append(bias)
         weight_list.append(weight)
-    for idx, param in enumerate(global_avg_net.classifier.parameters()):
-        if idx:
-            avg_bias = param.data.cpu().numpy()
-        else:
-            avg_weight = param.data.cpu().numpy()
-    return bias_list, weight_list, avg_bias, avg_weight
+        weight_update.append(weight-avg_weight)
 
-def get_distance_on_avg_net(weight_list, avg_weight, total_cli = 10):
+    return bias_list, weight_list, avg_bias, avg_weight, weight_update, glob_update
+
+def get_distance_on_avg_net(weight_list, avg_weight, weight_update, total_cli = 10):
     eucl_dis = []
     cs_dis = []
     for i in range(total_cli):
-        point = weight_list[i].flatten().reshape(-1,1)
+        point = weight_update[i].flatten().reshape(-1,1)
         base_p = avg_weight.flatten().reshape(-1,1)
         ds = point - base_p
         sum_sq = np.dot(ds.T, ds)
@@ -888,3 +900,39 @@ def get_distance_on_avg_net(weight_list, avg_weight, total_cli = 10):
         cs = dot(point, base_p)/(norm(point)*norm(base_p))
         cs_dis.append(float(cs.flatten()))
     return eucl_dis, cs_dis
+
+def get_cs_on_base_net(weight_update, avg_weight, total_cli = 10):
+    cs_list = []
+    for i in range(total_cli):
+        point = weight_update[i].flatten()
+        print("point: ", point)
+        base_p = avg_weight.flatten()
+        cs = dot(point, base_p)/(norm(point)*norm(base_p))
+        cs_list.append(float(cs.flatten()))
+    return cs_list
+
+def get_ed_on_base_net(weight_update, avg_weight, total_cli = 10):
+    ed_list = []
+    for i in range(total_cli):
+        point = weight_update[i].flatten().reshape(-1,1)
+        base_p = avg_weight.flatten().reshape(-1,1)
+        ds = point - base_p
+        sum_sq = np.dot(ds.T, ds)
+        ed_list.append(float(np.sqrt(sum_sq).flatten()))
+    return ed_list
+    
+# def get_distance_on_avg_net(weight_list, avg_weight, total_cli = 10):
+#     eucl_dis = []
+#     cs_dis = []
+#     for i in range(total_cli):
+#         point = weight_list[i].flatten().reshape(-1,1)
+#         base_p = avg_weight.flatten().reshape(-1,1)
+#         ds = point - base_p
+#         sum_sq = np.dot(ds.T, ds)
+#         eucl_dis.append(float(np.sqrt(sum_sq).flatten()))
+#     for i in range(total_cli):
+#         point = weight_list[i].flatten()
+#         base_p = avg_weight.flatten()
+#         cs = dot(point, base_p)/(norm(point)*norm(base_p))
+#         cs_dis.append(float(cs.flatten()))
+#     return eucl_dis, cs_dis
