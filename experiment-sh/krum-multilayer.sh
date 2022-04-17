@@ -2,7 +2,7 @@ python simulated_averaging.py \
 --lr 0.02 \
 --gamma 0.998 \
 --num_nets 200 \
---fl_round 1500 \
+--fl_round 500 \
 --part_nets_per_round 10 \
 --local_train_period 2 \
 --adversarial_local_training_period 2 \

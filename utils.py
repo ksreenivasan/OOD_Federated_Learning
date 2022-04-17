@@ -905,7 +905,7 @@ def get_cs_on_base_net(weight_update, avg_weight, total_cli = 10):
     cs_list = []
     for i in range(total_cli):
         point = weight_update[i].flatten()
-        print("point: ", point)
+        # print("point: ", point)
         base_p = avg_weight.flatten()
         cs = dot(point, base_p)/(norm(point)*norm(base_p))
         cs_list.append(float(cs.flatten()))

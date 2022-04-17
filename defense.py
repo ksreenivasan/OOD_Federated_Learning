@@ -480,7 +480,7 @@ class KmeansBased(Defense):
             norm_cs_data = min_max_scale(cs_dis)
             norm_eu_data = 1.0 - min_max_scale(eucl_dis)
             stack_dis = np.hstack((norm_cs_data,norm_eu_data))
-            print("stack_dis.shape: ", stack_dis.shape)
+            # print("stack_dis.shape: ", stack_dis.shape)
             kmeans = KMeans(n_clusters = 2)
             pred_labels = kmeans.fit_predict(stack_dis)
             print("pred_labels is: ", pred_labels)
@@ -551,7 +551,7 @@ class KrMLRFL(Defense):
         self.num_workers = num_workers
         self.s = num_adv
 
-    def exec(self, client_models, num_dps,net_freq, net_avg, g_user_indices, pseudo_avg_net, device, *args, **kwargs):
+    def exec(self, client_models, num_dps,net_freq, net_avg, g_user_indices, pseudo_avg_net, round, selected_attackers, device, *args, **kwargs):
         vectorize_nets = [vectorize_net(cm).detach().cpu().numpy() for cm in client_models]
         trusted_models = []
         neighbor_distances = []
@@ -622,10 +622,35 @@ class KrMLRFL(Defense):
         bias_list, weight_list, avg_bias, avg_weight, weight_update, glob_update = extract_classifier_layer(client_models, pseudo_avg_net, net_avg)
         t_score = self.get_trustworthy_scores(trusted_models, weight_update)
         c_score = self.get_contribution_scores(trusted_models, weight_update, glob_update)
+        
+        # print("trustworthy score is: ", t_score)
+        # print("contribution score is: ", c_score)
+        
         f_score = [t_score[i] + c_score[i] for i in range(len(t_score))]
-        print("f_score: ", f_score)
-        pred_attackers = pred_attackers_indx = np.argwhere(np.asarray(f_score) == 0).flatten()
+        # print("f_score: ", f_score)
+        # pred_attackers = pred_attackers_indx = np.argwhere(np.asarray(f_score) == 0).flatten()
+        # pred_attackers = pred_attackers_indx = np.argwhere(np.asarray(t_score) == 0).flatten()
+        pred_attackers_indx = np.argwhere(np.asarray(t_score) == 0).flatten()
+        participated_attackers = []
+        for in_, id_ in enumerate(g_user_indices):
+            if id_ in selected_attackers:
+                participated_attackers.append(in_)
+        print("At round: ", round)
         print("pred_attackers_indx: ", pred_attackers_indx)
+        print("real attackers indx: ", participated_attackers)
+        print("global_pred_attackers_indx: ", [g_user_indices[ind_] for ind_ in pred_attackers_indx])
+        global_pred_attackers_indx = [g_user_indices[ind_] for ind_ in pred_attackers_indx]
+
+        print("trustworthy score is: ", t_score)
+        print("contribution score is: ", c_score)
+        print("f_score: ", f_score)
+        log_data_r = f"At round: {round},\n, global_attackers: {selected_attackers},\n glob_predicted: {global_pred_attackers_indx},\n  pred_attackers_indx is: {pred_attackers_indx} \n, t_score is: {t_score}, \n c_score is: {c_score}, \n f_score is: {f_score}"
+        with open("logging/exper_log.txt", "a+") as lf_r:
+            lf_r.write(log_data_r)
+        
+        f_score = [t_score[i] + c_score[i] for i in range(len(t_score))]
+        print("f_score is: ", f_score)
+        
         neo_net_list = []
         neo_net_freq = []
         selected_net_indx = []
@@ -646,13 +671,13 @@ class KrMLRFL(Defense):
 
         aggregated_model = client_models[0] # slicing which doesn't really matter
         load_model_weight(aggregated_model, torch.from_numpy(aggregated_grad).to(device))
-
+        pred_g_attacker = [g_user_indices[i] for i in pred_attackers_indx]
         # aggregated_w = self.weighted_average_oracle(vectorize_nets, reconstructed_freq)
         # aggregated_model = client_models[0] # slicing which doesn't really matter
         # load_model_weight(aggregated_model, torch.from_numpy(aggregated_w.astype(np.float32)).to(device))
         neo_net_list = [aggregated_model]
         neo_net_freq = [1.0]
-        return neo_net_list, neo_net_freq
+        return neo_net_list, neo_net_freq, pred_g_attacker
 
     def get_trustworthy_scores(self, trusted_models_idxs, weight_update):
         score = np.zeros((len(weight_update), len(trusted_models_idxs)))
@@ -666,7 +691,7 @@ class KrMLRFL(Defense):
         score_avg = np.average(score, 1)
         # print("score_avg:= ", score_avg)
         norm_score = min_max_scale(score_avg)
-        final_score = [1.0 if norm_s > 0.5 else 0.0 for norm_s in norm_score]
+        final_score = [1.0 if norm_s > 0.25 else 0.0 for norm_s in norm_score]
         return final_score
     
     def get_contribution_scores(self, trusted_models_idxs, weight_update, base_w_update):
