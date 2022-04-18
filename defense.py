@@ -3,6 +3,7 @@ from utils import *
 from scipy.special import logit, expit
 
 from geometric_median import geometric_median
+import hdbscan
 
 def vectorize_net(net):
     return torch.cat([p.view(-1) for p in net.parameters()])
@@ -619,8 +620,8 @@ class KrMLRFL(Defense):
         # baseline_net = self.weighted_average_oracle(vectorize_nets, net_freq)
         # glob_model = client_models[0]
         # load_model_weight(glob_model, torch.from_numpy(baseline_net.astype(np.float32)).to(device)) 
-        bias_list, weight_list, avg_bias, avg_weight, weight_update, glob_update = extract_classifier_layer(client_models, pseudo_avg_net, net_avg)
-        t_score = self.get_trustworthy_scores(trusted_models, weight_update)
+        bias_list, weight_list, avg_bias, avg_weight, weight_update, glob_update, prev_avg_weight = extract_classifier_layer(client_models, pseudo_avg_net, net_avg)
+        t_score, raw_t_score = self.get_trustworthy_scores(trusted_models, weight_update)
         c_score = self.get_contribution_scores(trusted_models, weight_update, glob_update)
         
         # print("trustworthy score is: ", t_score)
@@ -630,27 +631,43 @@ class KrMLRFL(Defense):
         # print("f_score: ", f_score)
         # pred_attackers = pred_attackers_indx = np.argwhere(np.asarray(f_score) == 0).flatten()
         # pred_attackers = pred_attackers_indx = np.argwhere(np.asarray(t_score) == 0).flatten()
-        pred_attackers_indx = np.argwhere(np.asarray(t_score) == 0).flatten()
+        # pred_attackers_indx = np.argwhere(np.asarray(t_score) == 0).flatten()
         participated_attackers = []
         for in_, id_ in enumerate(g_user_indices):
             if id_ in selected_attackers:
                 participated_attackers.append(in_)
         print("At round: ", round)
-        print("pred_attackers_indx: ", pred_attackers_indx)
+        # print("pred_attackers_indx: ", pred_attackers_indx)
         print("real attackers indx: ", participated_attackers)
-        print("global_pred_attackers_indx: ", [g_user_indices[ind_] for ind_ in pred_attackers_indx])
-        global_pred_attackers_indx = [g_user_indices[ind_] for ind_ in pred_attackers_indx]
+        # print("global_pred_attackers_indx: ", [g_user_indices[ind_] for ind_ in pred_attackers_indx])
+        # global_pred_attackers_indx = [g_user_indices[ind_] for ind_ in pred_attackers_indx]
 
         print("trustworthy score is: ", t_score)
         print("contribution score is: ", c_score)
         print("f_score: ", f_score)
-        log_data_r = f"At round: {round},\n, global_attackers: {selected_attackers},\n glob_predicted: {global_pred_attackers_indx},\n  pred_attackers_indx is: {pred_attackers_indx} \n, t_score is: {t_score}, \n c_score is: {c_score}, \n f_score is: {f_score}"
-        with open("logging/exper_log.txt", "a+") as lf_r:
-            lf_r.write(log_data_r)
+
         
         f_score = [t_score[i] + c_score[i] for i in range(len(t_score))]
         print("f_score is: ", f_score)
-        
+        # self.get_predicted_attackers(weight_list, avg_weight, weight_update, 10)
+        temp_score = self.get_predicted_attackers(weight_list, prev_avg_weight, weight_update, 10)
+        print("raw_t_score: ", raw_t_score)
+        print("raw_temp_score: ", temp_score)
+        print("raw_sum: ", [raw_t_score[i] + temp_score[i] for i in range(10)])
+        raw_sum = [raw_t_score[i] + temp_score[i] for i in range(10)]
+        raw_sum = raw_sum/sum(raw_sum)
+        raw_sum = np.asarray(raw_sum)
+        # mean_sum = sum(raw_sum)/10
+        pred_att_idxs = (-raw_sum).argsort()[:2]
+        print("global_pred_attackers_indx: ", [g_user_indices[ind_] for ind_ in pred_att_idxs])
+        global_pred_attackers_indx = [g_user_indices[ind_] for ind_ in pred_att_idxs]
+        pred_attackers_indx = pred_att_idxs.copy()
+        log_data_r = f"\nAt round: {round},\n, global_attackers: {selected_attackers},\n glob_predicted: {global_pred_attackers_indx},\n  pred_attackers_indx is: {pred_attackers_indx} \n real attackers indx: {participated_attackers}, \n t_score is: {t_score}, \n c_score is: {c_score}, \n f_score is: {f_score}"
+        with open("logging/exper_log.txt", "a+") as lf_r:
+            lf_r.write(log_data_r)
+        # pred_att_idxs = np.argwhere(np.asarray(raw_sum) == 0).flatten()
+        #TRY TO COMBINE Trustworthy score and predicted abnormal score.
+
         neo_net_list = []
         neo_net_freq = []
         selected_net_indx = []
@@ -687,12 +704,12 @@ class KrMLRFL(Defense):
             cs_dist = get_cs_on_base_net(weight_update, base_model_update)
             for idx, cs in enumerate(cs_dist):
                 score[idx, m_idx] = cs
-        # print("raw score:= ", score)
+        print("raw score:= ", score)
         score_avg = np.average(score, 1)
         # print("score_avg:= ", score_avg)
         norm_score = min_max_scale(score_avg)
         final_score = [1.0 if norm_s > 0.25 else 0.0 for norm_s in norm_score]
-        return final_score
+        return final_score, 1.0 - norm_score
     
     def get_contribution_scores(self, trusted_models_idxs, weight_update, base_w_update):
         # First, calculate the contribution threshold using the trusted client list
@@ -706,6 +723,35 @@ class KrMLRFL(Defense):
         return final_score
         # for cli_ind, weight_update in enumerate(weight_update):
 
+    def get_predicted_attackers(self, weight_list, avg_weight, weight_update, total_client):
+        # from sklearn.cluster import KMeans
+        eucl_dis, cs_dis = get_distance_on_avg_net(weight_list, avg_weight, weight_update, total_client)
+        norm_cs_data = min_max_scale(cs_dis)
+        norm_eu_data = 1.0 - min_max_scale(eucl_dis)
+        # norm_eu_data = min_max_scale(eucl_dis)
+        stack_dis = np.hstack((norm_cs_data,norm_eu_data))
+        print("stack dis is: ", stack_dis)
+        temp_score = [0.5*norm_cs_data[i] + 0.5*norm_eu_data[i] for i in range(total_client)]
+        threshold = sum(temp_score)/total_client
+        abnormal_score = [1.0 if temp_score[i] > threshold else 0.0 for i in range(total_client)]
+        print("abnormal_score: ", abnormal_score)
+        
+        hb_clusterer = hdbscan.HDBSCAN(algorithm='best', alpha=1.0, approx_min_span_tree=True,
+                                gen_min_span_tree=False, leaf_size=40,
+                                metric='euclidean', min_cluster_size=2, min_samples=None, p=None)
+        hb_clusterer.fit(stack_dis)
+        print("hb_clusterer.labels_ is: ", hb_clusterer.labels_)
+        return temp_score
+
+        # print("stack_dis.shape: ", stack_dis.shape)
+        # kmeans = KMeans(n_clusters = 2)
+        # pred_labels = kmeans.fit_predict(stack_dis)
+        # print("pred_labels is: ", pred_labels)
+        # label_0 = np.count_nonzero(pred_labels == 0)
+        # label_1 = total_client - label_0
+        # cnt_pred_attackers = label_0 if label_0 <= label_1 else label_1
+        # label_att = 0 if label_0 <= label_1 else 1
+        # print("label_att: ", label_att)
         
     def weighted_average_oracle(self, points, weights):
         """Computes weighted average of atoms with specified weights

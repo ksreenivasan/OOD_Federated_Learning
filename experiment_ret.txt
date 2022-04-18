@@ -1,0 +1,3150 @@
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[-0.66822386]
+ [-0.10110161]
+ [ 0.99999988]
+ [ 0.43918464]
+ [-0.5548898 ]
+ [ 0.16673391]
+ [ 0.49665394]
+ [-0.46129045]
+ [ 0.33175746]
+ [-0.12961981]]
+At round:  1
+pred_attackers_indx:  [0 4 7]
+real attackers indx:  [0, 4, 7]
+global_pred_attackers_indx:  [138, 24, 109]
+trustworthy score is:  [0.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0]
+contribution score is:  [1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0]
+f_score:  [1.0, 1.0, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+f_score is:  [1.0, 1.0, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+stack dis is:  [[0.79706999 1.        ]
+ [0.53412914 0.45748685]
+ [1.         0.02014595]
+ [0.61671188 0.2494684 ]
+ [0.85686381 0.92460741]
+ [0.         0.        ]
+ [0.83163321 0.22494983]
+ [0.7440586  0.99332129]
+ [0.52023874 0.31097445]
+ [0.72495931 0.04718027]]
+abnormal_score:  [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0]
+hb_clusterer.labels_ is:  [ 1  0  0  0  1 -1  0  1  0  0]
+raw_t_score:  [[1.        ]
+ [0.66004425]
+ [0.        ]
+ [0.33617508]
+ [0.93206303]
+ [0.49949294]
+ [0.30172568]
+ [0.87595584]
+ [0.40057122]
+ [0.6771392 ]]
+raw_temp_score:  [array([0.898535]), array([0.49580799]), array([0.51007298]), array([0.43309014]), array([0.89073561]), array([0.]), array([0.52829152]), array([0.86868994]), array([0.4156066]), array([0.38606979])]
+raw_sum:  [array([1.898535]), array([1.15585224]), array([0.51007298]), array([0.76926522]), array([1.82279865]), array([0.49949294]), array([0.8300172]), array([1.74464579]), array([0.81617782]), array([1.06320899])]
+Selected Attackers in FL iteration-1: [138, 24, 109]
+Predicted Attackers in FL iteration-1: [138, 24, 109]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[ 0.54661113]
+ [-0.17551374]
+ [ 0.18217725]
+ [ 0.27564257]
+ [ 0.07766078]
+ [-0.36541101]
+ [-0.5122928 ]
+ [-0.29488325]
+ [ 0.21254852]
+ [ 0.99999994]]
+At round:  2
+pred_attackers_indx:  [1 5 6 7]
+real attackers indx:  [1, 5, 6, 7]
+global_pred_attackers_indx:  [159, 87, 123, 92]
+trustworthy score is:  [1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 1.0, 1.0]
+contribution score is:  [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+f_score:  [2.0, 1.0, 2.0, 2.0, 2.0, 1.0, 1.0, 1.0, 2.0, 2.0]
+f_score is:  [2.0, 1.0, 2.0, 2.0, 2.0, 1.0, 1.0, 1.0, 2.0, 2.0]
+stack dis is:  [[0.40817722 0.28293319]
+ [0.20470395 0.90764046]
+ [0.51907562 0.28614047]
+ [1.         0.1896471 ]
+ [0.         0.27052151]
+ [0.00779434 1.        ]
+ [0.06235471 0.94354165]
+ [0.52235745 0.95891624]
+ [0.46560919 0.58674934]
+ [0.76767401 0.        ]]
+abnormal_score:  [0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0]
+hb_clusterer.labels_ is:  [ 1  0  1 -1 -1  0  0  0  1 -1]
+raw_t_score:  [[0.29980228]
+ [0.77730564]
+ [0.54078332]
+ [0.4789796 ]
+ [0.60989459]
+ [0.90287476]
+ [1.        ]
+ [0.85623845]
+ [0.52070039]
+ [0.        ]]
+raw_temp_score:  [array([0.3455552]), array([0.55617221]), array([0.40260804]), array([0.59482355]), array([0.13526076]), array([0.50389717]), array([0.50294818]), array([0.74063684]), array([0.52617927]), array([0.383837])]
+raw_sum:  [array([0.64535748]), array([1.33347785]), array([0.94339137]), array([1.07380314]), array([0.74515534]), array([1.40677193]), array([1.50294818]), array([1.59687529]), array([1.04687965]), array([0.383837])]
+Selected Attackers in FL iteration-2: [159, 87, 123, 92]
+Predicted Attackers in FL iteration-2: [159, 87, 123, 92]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[-0.29124275]
+ [-0.28550404]
+ [ 1.00000012]
+ [-0.47363952]
+ [ 0.76479691]
+ [ 0.72661906]
+ [-0.13710189]
+ [ 0.12569013]
+ [ 0.74219149]
+ [ 0.36187318]]
+At round:  3
+pred_attackers_indx:  [0 1 3 6]
+real attackers indx:  [0, 1]
+global_pred_attackers_indx:  [34, 123, 135, 189]
+trustworthy score is:  [0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0]
+contribution score is:  [1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0]
+f_score:  [1.0, 1.0, 2.0, 0.0, 1.0, 1.0, 0.0, 1.0, 2.0, 1.0]
+f_score is:  [1.0, 1.0, 2.0, 0.0, 1.0, 1.0, 0.0, 1.0, 2.0, 1.0]
+stack dis is:  [[0.42668399 0.89544705]
+ [0.70094217 1.        ]
+ [1.         0.        ]
+ [0.         0.57242991]
+ [0.90654104 0.11102504]
+ [0.86728395 0.17344695]
+ [0.03135153 0.30048978]
+ [0.44179121 0.46957619]
+ [0.87697639 0.10275376]
+ [0.6302794  0.14487231]]
+abnormal_score:  [1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0]
+hb_clusterer.labels_ is:  [ 0 -1  1 -1  1  1 -1  0  1  1]
+raw_t_score:  [[0.87622702]
+ [0.87233278]
+ [0.        ]
+ [1.        ]
+ [0.159607  ]
+ [0.18551418]
+ [0.77162827]
+ [0.59329972]
+ [0.17494686]
+ [0.43302781]]
+raw_temp_score:  [array([0.66106552]), array([0.85047109]), array([0.5]), array([0.28621495]), array([0.50878304]), array([0.52036545]), array([0.16592065]), array([0.4556837]), array([0.48986508]), array([0.38757585])]
+raw_sum:  [array([1.53729254]), array([1.72280387]), array([0.5]), array([1.28621495]), array([0.66839004]), array([0.70587963]), array([0.93754893]), array([1.04898342]), array([0.66481194]), array([0.82060366])]
+Selected Attackers in FL iteration-3: [34, 123]
+Predicted Attackers in FL iteration-3: [34, 123, 135, 189]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[-0.27131367]
+ [ 0.18673067]
+ [-0.41084519]
+ [ 0.02399802]
+ [ 1.        ]
+ [ 0.010718  ]
+ [ 0.24609283]
+ [ 0.38769934]
+ [-0.19644298]
+ [ 0.04583485]]
+At round:  4
+pred_attackers_indx:  [0 2 8]
+real attackers indx:  [0, 2, 8]
+global_pred_attackers_indx:  [190, 87, 199]
+trustworthy score is:  [0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0]
+contribution score is:  [1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0]
+f_score:  [1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+f_score is:  [1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+stack dis is:  [[0.67374016 0.95008367]
+ [0.44744324 0.28717206]
+ [0.85392888 0.9631417 ]
+ [0.         0.28310823]
+ [1.         0.        ]
+ [0.85302237 0.41249328]
+ [0.86130454 0.03260025]
+ [0.87708599 0.14106855]
+ [0.79298694 1.        ]
+ [0.79578887 0.428644  ]]
+abnormal_score:  [1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0]
+hb_clusterer.labels_ is:  [ 0  1  0 -1  1  1  1  1  0  1]
+raw_t_score:  [[0.90110076]
+ [0.57644123]
+ [1.        ]
+ [0.69178531]
+ [0.        ]
+ [0.70119812]
+ [0.53436563]
+ [0.43399564]
+ [0.84803279]
+ [0.67630747]]
+raw_temp_score:  [array([0.81191191]), array([0.36730765]), array([0.90853529]), array([0.14155411]), array([0.5]), array([0.63275783]), array([0.4469524]), array([0.50907727]), array([0.89649347]), array([0.61221643])]
+raw_sum:  [array([1.71301267]), array([0.94374887]), array([1.90853529]), array([0.83333943]), array([0.5]), array([1.33395595]), array([0.98131802]), array([0.94307291]), array([1.74452625]), array([1.2885239])]
+Selected Attackers in FL iteration-4: [190, 87, 199]
+Predicted Attackers in FL iteration-4: [190, 87, 199]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[-0.17493461]
+ [-0.0319141 ]
+ [ 0.04122991]
+ [ 0.25189984]
+ [ 1.        ]
+ [-0.4247846 ]
+ [ 0.52305287]
+ [-0.05644439]
+ [-0.20270993]
+ [-0.14290459]]
+At round:  5
+pred_attackers_indx:  [0 5 8 9]
+real attackers indx:  [8]
+global_pred_attackers_indx:  [21, 50, 117, 122]
+trustworthy score is:  [0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 0.0, 0.0]
+contribution score is:  [0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+f_score:  [0.0, 1.0, 2.0, 1.0, 2.0, 0.0, 1.0, 1.0, 0.0, 0.0]
+f_score is:  [0.0, 1.0, 2.0, 1.0, 2.0, 0.0, 1.0, 1.0, 0.0, 0.0]
+stack dis is:  [[1.         0.27383071]
+ [0.         0.34156255]
+ [0.76937723 0.20937681]
+ [0.81430155 0.16994774]
+ [0.83088306 0.12415007]
+ [0.86281693 0.        ]
+ [0.78094572 0.15342686]
+ [0.96445098 0.3474816 ]
+ [0.90571676 1.        ]
+ [0.87872361 0.13726188]]
+abnormal_score:  [1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0]
+hb_clusterer.labels_ is:  [-1 -1 -1 -1 -1 -1 -1 -1 -1 -1]
+raw_t_score:  [[0.82464017]
+ [0.72425972]
+ [0.67292283]
+ [0.52506194]
+ [0.        ]
+ [1.        ]
+ [0.33475034]
+ [0.74147656]
+ [0.84413456]
+ [0.80215956]]
+raw_temp_score:  [array([0.63691535]), array([0.17078128]), array([0.48937702]), array([0.49212465]), array([0.47751657]), array([0.43140846]), array([0.46718629]), array([0.65596629]), array([0.95285838]), array([0.50799274])]
+raw_sum:  [array([1.46155552]), array([0.895041]), array([1.16229986]), array([1.01718658]), array([0.47751657]), array([1.43140846]), array([0.80193663]), array([1.39744285]), array([1.79699295]), array([1.31015231])]
+Selected Attackers in FL iteration-5: [117]
+Predicted Attackers in FL iteration-5: [21, 50, 117, 122]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[ 1.        ]
+ [ 0.36384109]
+ [ 0.29088005]
+ [-0.37758955]
+ [-0.52421898]
+ [ 0.12649158]
+ [ 0.14597632]
+ [ 0.17279845]
+ [-0.19672841]
+ [ 0.21995336]]
+At round:  6
+pred_attackers_indx:  [3 4 8]
+real attackers indx:  [2, 5]
+global_pred_attackers_indx:  [157, 189, 82]
+trustworthy score is:  [1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0]
+contribution score is:  [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0]
+f_score:  [2.0, 2.0, 2.0, 1.0, 1.0, 2.0, 1.0, 1.0, 0.0, 1.0]
+f_score is:  [2.0, 2.0, 2.0, 1.0, 1.0, 2.0, 1.0, 1.0, 0.0, 1.0]
+stack dis is:  [[0.96803886 0.23578472]
+ [1.         0.52280768]
+ [0.88914519 1.        ]
+ [0.26323027 0.29647964]
+ [0.         0.18560917]
+ [0.90975026 0.77049732]
+ [0.97114404 0.33757516]
+ [0.81333452 0.36681957]
+ [0.39404693 0.        ]
+ [0.96551036 0.39500128]]
+abnormal_score:  [1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0]
+hb_clusterer.labels_ is:  [0 0 0 1 1 0 0 0 1 0]
+raw_t_score:  [[0.        ]
+ [0.41736714]
+ [0.46523495]
+ [0.90380029]
+ [1.        ]
+ [0.57308591]
+ [0.56030248]
+ [0.54270519]
+ [0.78514205]
+ [0.51176809]]
+raw_temp_score:  [array([0.60191179]), array([0.76140384]), array([0.94457259]), array([0.27985496]), array([0.09280458]), array([0.84012379]), array([0.6543596]), array([0.59007704]), array([0.19702347]), array([0.68025582])]
+raw_sum:  [array([0.60191179]), array([1.17877098]), array([1.40980755]), array([1.18365525]), array([1.09280458]), array([1.4132097]), array([1.21466208]), array([1.13278223]), array([0.98216551]), array([1.19202391])]
+Selected Attackers in FL iteration-6: [130, 152]
+Predicted Attackers in FL iteration-6: [157, 189, 82]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[-0.54519624]
+ [ 1.00000012]
+ [-0.19992393]
+ [ 0.03251004]
+ [-0.24083653]
+ [-0.03604927]
+ [ 0.59372538]
+ [-0.00836734]
+ [-0.11976957]
+ [ 0.53357369]]
+At round:  7
+pred_attackers_indx:  [0 2 4]
+real attackers indx:  [3, 8]
+global_pred_attackers_indx:  [101, 58, 177]
+trustworthy score is:  [0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+contribution score is:  [1.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0]
+f_score:  [1.0, 2.0, 0.0, 2.0, 0.0, 2.0, 1.0, 2.0, 1.0, 1.0]
+f_score is:  [1.0, 2.0, 0.0, 2.0, 0.0, 2.0, 1.0, 2.0, 1.0, 1.0]
+stack dis is:  [[0.         0.11828807]
+ [1.         0.02252089]
+ [0.67271138 0.02145253]
+ [0.96700896 1.        ]
+ [0.66563251 0.08730583]
+ [0.28494647 0.25542189]
+ [0.58632292 0.12751864]
+ [0.6040638  0.        ]
+ [0.86200568 0.9588684 ]
+ [0.96949967 0.26574218]]
+abnormal_score:  [0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0]
+hb_clusterer.labels_ is:  [-1 -1 -1 -1 -1 -1 -1 -1 -1 -1]
+raw_t_score:  [[1.        ]
+ [0.        ]
+ [0.77655118]
+ [0.6261276 ]
+ [0.80302846]
+ [0.67049691]
+ [0.26292758]
+ [0.65258208]
+ [0.72467792]
+ [0.30185577]]
+raw_temp_score:  [array([0.05914404]), array([0.51126044]), array([0.34708196]), array([0.98350448]), array([0.37646917]), array([0.27018418]), array([0.35692078]), array([0.3020319]), array([0.91043704]), array([0.61762093])]
+raw_sum:  [array([1.05914404]), array([0.51126044]), array([1.12363314]), array([1.60963208]), array([1.17949763]), array([0.94068109]), array([0.61984836]), array([0.95461398]), array([1.63511496]), array([0.9194767])]
+Selected Attackers in FL iteration-7: [152, 71]
+Predicted Attackers in FL iteration-7: [101, 58, 177]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[ 0.42106757]
+ [ 0.02565362]
+ [-0.22620599]
+ [ 0.6426729 ]
+ [ 0.05370752]
+ [ 0.1444049 ]
+ [ 0.99999988]
+ [ 0.47685918]
+ [-0.23353051]
+ [-0.45730782]]
+At round:  8
+pred_attackers_indx:  [2 8 9]
+real attackers indx:  [2, 9]
+global_pred_attackers_indx:  [103, 128, 194]
+trustworthy score is:  [1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0]
+contribution score is:  [1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0]
+f_score:  [2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 2.0, 0.0, 1.0]
+f_score is:  [2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 2.0, 0.0, 1.0]
+stack dis is:  [[0.447306   0.22941187]
+ [0.45916638 0.02892999]
+ [0.61143115 0.86084485]
+ [0.56568395 0.05132516]
+ [0.87947588 0.12154409]
+ [0.89833955 0.12863358]
+ [1.         0.        ]
+ [0.78594827 0.11190654]
+ [0.         0.07746442]
+ [0.45747204 1.        ]]
+abnormal_score:  [0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0]
+hb_clusterer.labels_ is:  [ 0  0 -1  0  1  1  1  1 -1 -1]
+raw_t_score:  [[0.39726155]
+ [0.66859337]
+ [0.84141865]
+ [0.24519666]
+ [0.64934287]
+ [0.58710661]
+ [0.        ]
+ [0.35897752]
+ [0.84644471]
+ [1.        ]]
+raw_temp_score:  [array([0.33835893]), array([0.24404819]), array([0.736138]), array([0.30850456]), array([0.50050999]), array([0.51348656]), array([0.5]), array([0.4489274]), array([0.03873221]), array([0.72873602])]
+raw_sum:  [array([0.73562048]), array([0.91264156]), array([1.57755665]), array([0.55370122]), array([1.14985286]), array([1.10059317]), array([0.5]), array([0.80790492]), array([0.88517692]), array([1.72873602])]
+Selected Attackers in FL iteration-8: [103, 194]
+Predicted Attackers in FL iteration-8: [103, 128, 194]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[-0.25878081]
+ [-0.46003002]
+ [ 0.39855275]
+ [-0.21665752]
+ [-0.70313144]
+ [ 0.0377492 ]
+ [ 0.20351762]
+ [ 0.99999988]
+ [ 0.28595966]
+ [ 0.59367037]]
+At round:  9
+pred_attackers_indx:  [1 4]
+real attackers indx:  [1, 4]
+global_pred_attackers_indx:  [147, 9]
+trustworthy score is:  [1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+contribution score is:  [0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0]
+f_score:  [1.0, 1.0, 2.0, 2.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0]
+f_score is:  [1.0, 1.0, 2.0, 2.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0]
+stack dis is:  [[0.10083601 0.05700356]
+ [0.31909968 0.80790466]
+ [0.77942122 0.06089964]
+ [0.26315113 0.0468571 ]
+ [0.4577492  1.        ]
+ [0.26700965 0.12525783]
+ [0.38893891 0.19413713]
+ [1.         0.        ]
+ [0.24205788 0.12986228]
+ [0.         0.15686397]]
+abnormal_score:  [0.0, 1.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0]
+hb_clusterer.labels_ is:  [-1 -1 -1 -1 -1 -1 -1 -1 -1 -1]
+raw_t_score:  [[0.73909785]
+ [0.85726208]
+ [0.35314196]
+ [0.714365  ]
+ [1.        ]
+ [0.56498913]
+ [0.46765758]
+ [0.        ]
+ [0.41925142]
+ [0.23857791]]
+raw_temp_score:  [array([0.07891979]), array([0.56350217]), array([0.42016043]), array([0.15500411]), array([0.7288746]), array([0.19613374]), array([0.29153802]), array([0.5]), array([0.18596008]), array([0.07843199])]
+raw_sum:  [array([0.81801763]), array([1.42076425]), array([0.77330239]), array([0.86936911]), array([1.7288746]), array([0.76112286]), array([0.7591956]), array([0.5]), array([0.6052115]), array([0.3170099])]
+Selected Attackers in FL iteration-9: [147, 9]
+Predicted Attackers in FL iteration-9: [147, 9]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[-0.39148569]
+ [ 0.64036793]
+ [-0.59556931]
+ [ 0.26062161]
+ [ 0.1595432 ]
+ [ 0.46144536]
+ [-0.40105656]
+ [ 0.08085523]
+ [ 1.        ]
+ [ 0.03685684]]
+At round:  10
+pred_attackers_indx:  [0 2 6]
+real attackers indx:  [4]
+global_pred_attackers_indx:  [85, 79, 17]
+trustworthy score is:  [0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0]
+contribution score is:  [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0]
+f_score:  [0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 2.0, 2.0, 1.0]
+f_score is:  [0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 2.0, 2.0, 1.0]
+stack dis is:  [[0.01049756 0.3438221 ]
+ [0.59886396 0.16400766]
+ [0.         0.        ]
+ [1.         0.2936282 ]
+ [0.75       1.        ]
+ [0.42270636 0.20519366]
+ [0.83922922 0.19314221]
+ [0.71174863 0.29892985]
+ [0.9661346  0.16756664]
+ [0.19823123 0.10244956]]
+abnormal_score:  [0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 0.0]
+hb_clusterer.labels_ is:  [-1 -1 -1 -1 -1 -1 -1 -1 -1 -1]
+raw_t_score:  [[0.87209354]
+ [0.2253942 ]
+ [1.        ]
+ [0.46339472]
+ [0.52674415]
+ [0.33753133]
+ [0.87809194]
+ [0.5760607 ]
+ [0.        ]
+ [0.60363605]]
+raw_temp_score:  [array([0.17715983]), array([0.38143581]), array([0.]), array([0.6468141]), array([0.875]), array([0.31395001]), array([0.51618572]), array([0.50533924]), array([0.56685062]), array([0.1503404])]
+raw_sum:  [array([1.04925337]), array([0.60683001]), array([1.]), array([1.11020882]), array([1.40174415]), array([0.65148134]), array([1.39427766]), array([1.08139994]), array([0.56685062]), array([0.75397645])]
+Selected Attackers in FL iteration-10: [42]
+Predicted Attackers in FL iteration-10: [85, 79, 17]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[ 0.49129626]
+ [-0.34804261]
+ [-0.11785223]
+ [-0.08874138]
+ [ 0.06018729]
+ [-0.04263885]
+ [ 1.        ]
+ [ 0.11471288]
+ [-0.15091182]
+ [-0.11920337]]
+At round:  11
+pred_attackers_indx:  [1 2 3 5 8 9]
+real attackers indx:  [5]
+global_pred_attackers_indx:  [13, 108, 106, 129, 16, 168]
+trustworthy score is:  [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 0.0]
+contribution score is:  [0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0]
+f_score:  [1.0, 0.0, 1.0, 0.0, 1.0, 1.0, 2.0, 1.0, 0.0, 0.0]
+f_score is:  [1.0, 0.0, 1.0, 0.0, 1.0, 1.0, 2.0, 1.0, 0.0, 0.0]
+stack dis is:  [[0.8311676  0.0581417 ]
+ [0.41145784 0.09042197]
+ [0.75082993 0.25842822]
+ [0.92459452 0.09734316]
+ [0.45964147 0.00701421]
+ [0.76799772 1.        ]
+ [1.         0.0080003 ]
+ [0.56539884 0.28177793]
+ [0.78867495 0.21398006]
+ [0.         0.        ]]
+abnormal_score:  [1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 0.0]
+hb_clusterer.labels_ is:  [-1 -1 -1 -1 -1 -1 -1 -1 -1 -1]
+raw_t_score:  [[0.37736473]
+ [1.        ]
+ [0.82924102]
+ [0.80764612]
+ [0.6971684 ]
+ [0.77344651]
+ [0.        ]
+ [0.65672043]
+ [0.85376517]
+ [0.83024332]]
+raw_temp_score:  [array([0.44465465]), array([0.2509399]), array([0.50462908]), array([0.51096884]), array([0.23332784]), array([0.88399886]), array([0.50400015]), array([0.42358838]), array([0.5013275]), array([0.])]
+raw_sum:  [array([0.82201938]), array([1.2509399]), array([1.3338701]), array([1.31861496]), array([0.93049624]), array([1.65744537]), array([0.50400015]), array([1.08030881]), array([1.35509267]), array([0.83024332])]
+Selected Attackers in FL iteration-11: [129]
+Predicted Attackers in FL iteration-11: [13, 108, 106, 129, 16, 168]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[ 0.38775438]
+ [ 0.57864541]
+ [-0.07764929]
+ [-0.36191064]
+ [-0.41014072]
+ [ 0.32856578]
+ [-0.07232567]
+ [ 0.18580155]
+ [-0.22643039]
+ [ 0.99999994]]
+At round:  12
+pred_attackers_indx:  [2 3 4 6 8]
+real attackers indx:  [0, 5, 7]
+global_pred_attackers_indx:  [131, 22, 67, 6, 79]
+trustworthy score is:  [1.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0]
+contribution score is:  [0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0]
+f_score:  [1.0, 2.0, 1.0, 1.0, 1.0, 2.0, 1.0, 2.0, 0.0, 2.0]
+f_score is:  [1.0, 2.0, 1.0, 1.0, 1.0, 2.0, 1.0, 2.0, 0.0, 2.0]
+stack dis is:  [[0.85365338 1.        ]
+ [0.93441366 0.2819217 ]
+ [0.71920271 0.20389516]
+ [0.63757005 0.25016564]
+ [0.5488527  0.20688433]
+ [0.90771386 0.70599837]
+ [0.73939939 0.29272276]
+ [0.8480755  0.75062018]
+ [0.         0.        ]
+ [1.         0.16706984]]
+abnormal_score:  [1.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0]
+hb_clusterer.labels_ is:  [ 0  1  1  1  1  0  1  0 -1  1]
+raw_t_score:  [[4.34173395e-01]
+ [2.98803193e-01]
+ [7.64213994e-01]
+ [9.65797680e-01]
+ [1.00000000e+00]
+ [4.76146942e-01]
+ [7.60438754e-01]
+ [5.77388065e-01]
+ [8.69721978e-01]
+ [1.11022302e-16]]
+raw_temp_score:  [array([0.92682669]), array([0.60816768]), array([0.46154894]), array([0.44386785]), array([0.37786852]), array([0.80685611]), array([0.51606107]), array([0.79934784]), array([0.]), array([0.58353492])]
+raw_sum:  [array([1.36100008]), array([0.90697087]), array([1.22576293]), array([1.40966553]), array([1.37786852]), array([1.28300306]), array([1.27649983]), array([1.3767359]), array([0.86972198]), array([0.58353492])]
+Selected Attackers in FL iteration-12: [65, 53, 92]
+Predicted Attackers in FL iteration-12: [131, 22, 67, 6, 79]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[ 0.41985291]
+ [-0.41207632]
+ [ 0.99999988]
+ [-0.31749126]
+ [ 0.22587799]
+ [-0.30718172]
+ [ 0.44150203]
+ [ 0.51287508]
+ [ 0.4395529 ]
+ [-0.58726233]]
+At round:  13
+pred_attackers_indx:  [1 3 5 9]
+real attackers indx:  [4]
+global_pred_attackers_indx:  [70, 175, 141, 62]
+trustworthy score is:  [1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 0.0]
+contribution score is:  [0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0]
+f_score:  [1.0, 1.0, 2.0, 0.0, 2.0, 1.0, 2.0, 2.0, 1.0, 1.0]
+f_score is:  [1.0, 1.0, 2.0, 0.0, 2.0, 1.0, 2.0, 2.0, 1.0, 1.0]
+stack dis is:  [[0.80319492 0.41171142]
+ [0.59011758 0.18134582]
+ [1.         0.16315996]
+ [0.         0.        ]
+ [0.93084288 1.        ]
+ [0.83722776 0.31092006]
+ [0.92087116 0.35132548]
+ [0.90970879 0.18314048]
+ [0.84516545 0.19356658]
+ [0.55514213 0.18570427]]
+abnormal_score:  [1.0, 0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0]
+hb_clusterer.labels_ is:  [-1 -1 -1 -1 -1 -1 -1 -1 -1 -1]
+raw_t_score:  [[3.65501657e-01]
+ [8.89630077e-01]
+ [1.11022302e-16]
+ [8.30040010e-01]
+ [4.87708892e-01]
+ [8.23544835e-01]
+ [3.51862371e-01]
+ [3.06896237e-01]
+ [3.53090355e-01]
+ [1.00000000e+00]]
+raw_temp_score:  [array([0.60745317]), array([0.3857317]), array([0.58157998]), array([0.]), array([0.96542144]), array([0.57407391]), array([0.63609832]), array([0.54642463]), array([0.51936602]), array([0.3704232])]
+raw_sum:  [array([0.97295483]), array([1.27536178]), array([0.58157998]), array([0.83004001]), array([1.45313033]), array([1.39761875]), array([0.98796069]), array([0.85332087]), array([0.87245637]), array([1.3704232])]
+Selected Attackers in FL iteration-13: [178]
+Predicted Attackers in FL iteration-13: [70, 175, 141, 62]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[ 0.30460942]
+ [ 0.42239597]
+ [-0.04362873]
+ [ 0.08740979]
+ [ 0.56521207]
+ [ 1.        ]
+ [-0.18585455]
+ [-0.45482758]
+ [-0.02978617]
+ [-0.22924906]]
+At round:  14
+pred_attackers_indx:  [6 7 9]
+real attackers indx:  [2, 6, 8]
+global_pred_attackers_indx:  [190, 14, 192]
+trustworthy score is:  [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0]
+contribution score is:  [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 0.0]
+f_score:  [1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 0.0, 2.0, 0.0]
+f_score is:  [1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 0.0, 2.0, 0.0]
+stack dis is:  [[0.43730337 0.        ]
+ [0.53060674 0.06026258]
+ [0.86660674 1.        ]
+ [0.48350562 0.35428403]
+ [0.89330337 0.57804834]
+ [1.         0.18739778]
+ [0.61213483 0.99179993]
+ [0.         0.39737416]
+ [0.75613483 0.8563738 ]
+ [0.23802247 0.08329548]]
+abnormal_score:  [0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0, 0.0]
+hb_clusterer.labels_ is:  [ 1  1  0  1  0 -1  0 -1  0  1]
+raw_t_score:  [[0.47798831]
+ [0.39702576]
+ [0.71735561]
+ [0.6272841 ]
+ [0.29885873]
+ [0.        ]
+ [0.81511691]
+ [1.        ]
+ [0.7078407 ]
+ [0.84494484]]
+raw_temp_score:  [array([0.21865169]), array([0.29543466]), array([0.93330337]), array([0.41889482]), array([0.73567585]), array([0.59369889]), array([0.80196738]), array([0.19868708]), array([0.80625431]), array([0.16065897])]
+raw_sum:  [array([0.69664]), array([0.69246042]), array([1.65065898]), array([1.04617892]), array([1.03453459]), array([0.59369889]), array([1.61708429]), array([1.19868708]), array([1.51409501]), array([1.00560382])]
+Selected Attackers in FL iteration-14: [123, 190, 65]
+Predicted Attackers in FL iteration-14: [190, 14, 192]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[ 0.59719181]
+ [ 1.00000012]
+ [-0.19515856]
+ [-0.325277  ]
+ [ 0.18723032]
+ [ 0.11364634]
+ [-0.20212132]
+ [-0.22696055]
+ [-0.21205947]
+ [ 0.32017016]]
+At round:  15
+pred_attackers_indx:  [2 3 6 7 8]
+real attackers indx:  [2, 6, 7, 8]
+global_pred_attackers_indx:  [18, 4, 199, 182, 71]
+trustworthy score is:  [1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 1.0]
+contribution score is:  [0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0]
+f_score:  [1.0, 2.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0]
+f_score is:  [1.0, 2.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0]
+stack dis is:  [[0.50363854 0.        ]
+ [1.         0.03522722]
+ [0.82766893 0.96058021]
+ [0.         0.31509325]
+ [0.74882047 0.0650812 ]
+ [0.89716114 0.19521951]
+ [0.71995202 0.97744687]
+ [0.9187525  1.        ]
+ [0.67461016 0.93511156]
+ [0.90411835 0.05643102]]
+abnormal_score:  [0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0.0]
+hb_clusterer.labels_ is:  [ 0  0  1 -1  0  0  1  1  1  0]
+raw_t_score:  [[0.3039427 ]
+ [0.        ]
+ [0.90181793]
+ [1.        ]
+ [0.6132829 ]
+ [0.66880637]
+ [0.90707175]
+ [0.92581442]
+ [0.91457067]
+ [0.51297192]]
+raw_temp_score:  [array([0.25181927]), array([0.51761361]), array([0.89412457]), array([0.15754662]), array([0.40695084]), array([0.54619032]), array([0.84869944]), array([0.95937625]), array([0.80486086]), array([0.48027468])]
+raw_sum:  [array([0.55576197]), array([0.51761361]), array([1.79594251]), array([1.15754662]), array([1.02023374]), array([1.21499669]), array([1.75577119]), array([1.88519067]), array([1.71943153]), array([0.99324661])]
+Selected Attackers in FL iteration-15: [18, 199, 182, 71]
+Predicted Attackers in FL iteration-15: [18, 4, 199, 182, 71]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[ 0.24381219]
+ [-0.12516002]
+ [ 0.36852288]
+ [ 1.        ]
+ [-0.35749272]
+ [-0.19328557]
+ [ 0.05812194]
+ [ 0.33030719]
+ [-0.07519288]
+ [-0.27731758]]
+At round:  16
+pred_attackers_indx:  [1 4 5 8 9]
+real attackers indx:  [0, 5, 8]
+global_pred_attackers_indx:  [57, 114, 130, 170, 175]
+trustworthy score is:  [1.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0]
+contribution score is:  [0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0]
+f_score:  [1.0, 0.0, 1.0, 2.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0.0]
+f_score is:  [1.0, 0.0, 1.0, 2.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0.0]
+stack dis is:  [[0.7754173  0.85136251]
+ [0.98512898 0.29350325]
+ [0.74294385 0.23070056]
+ [1.         0.17820876]
+ [0.96783005 0.24583212]
+ [0.87192716 1.        ]
+ [0.90918058 0.23956078]
+ [0.97109256 0.2206798 ]
+ [0.9530349  0.74756176]
+ [0.         0.        ]]
+abnormal_score:  [1.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0]
+hb_clusterer.labels_ is:  [ 1  0  0  0  0  1  0  0  1 -1]
+raw_t_score:  [[0.55704742]
+ [0.82885161]
+ [0.46517901]
+ [0.        ]
+ [1.        ]
+ [0.87903644]
+ [0.69383655]
+ [0.49333069]
+ [0.7920432 ]
+ [0.94093881]]
+raw_temp_score:  [array([0.8133899]), array([0.63931612]), array([0.48682221]), array([0.58910438]), array([0.60683108]), array([0.93596358]), array([0.57437068]), array([0.59588618]), array([0.85029833]), array([0.])]
+raw_sum:  [array([1.37043732]), array([1.46816773]), array([0.95200122]), array([0.58910438]), array([1.60683108]), array([1.81500003]), array([1.26820723]), array([1.08921687]), array([1.64234153]), array([0.94093881])]
+Selected Attackers in FL iteration-16: [98, 130, 170]
+Predicted Attackers in FL iteration-16: [57, 114, 130, 170, 175]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[-0.14488287]
+ [ 0.05991486]
+ [ 0.01368674]
+ [ 0.32842663]
+ [-0.32844597]
+ [ 0.11941715]
+ [ 1.00000012]
+ [ 0.21923573]
+ [-0.39291018]
+ [ 0.089729  ]]
+At round:  17
+pred_attackers_indx:  [0 4 8]
+real attackers indx:  [0, 1, 2, 4]
+global_pred_attackers_indx:  [98, 18, 137]
+trustworthy score is:  [0.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0]
+contribution score is:  [1.0, 1.0, 1.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0]
+f_score:  [1.0, 2.0, 2.0, 1.0, 1.0, 1.0, 2.0, 2.0, 0.0, 2.0]
+f_score is:  [1.0, 2.0, 2.0, 1.0, 1.0, 1.0, 2.0, 2.0, 0.0, 2.0]
+stack dis is:  [[0.90356578 0.90962897]
+ [0.96451783 0.86431911]
+ [0.7554892  0.95916642]
+ [0.3990866  0.39523028]
+ [0.92745477 1.        ]
+ [0.70209029 0.31455784]
+ [1.         0.19892072]
+ [0.91709116 0.09788123]
+ [0.         0.        ]
+ [0.96205867 0.27511688]]
+abnormal_score:  [1.0, 1.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+hb_clusterer.labels_ is:  [ 0  0  0  1  0  1  1  1 -1  1]
+raw_t_score:  [[0.82193591]
+ [0.67490725]
+ [0.7080954 ]
+ [0.48213693]
+ [0.95371977]
+ [0.63218929]
+ [0.        ]
+ [0.5605274 ]
+ [1.        ]
+ [0.65350304]]
+raw_temp_score:  [array([0.90659737]), array([0.91441847]), array([0.85732781]), array([0.39715844]), array([0.96372738]), array([0.50832406]), array([0.59946036]), array([0.5074862]), array([0.]), array([0.61858777])]
+raw_sum:  [array([1.72853328]), array([1.58932572]), array([1.56542321]), array([0.87929536]), array([1.91744715]), array([1.14051335]), array([0.59946036]), array([1.06801359]), array([1.]), array([1.27209081])]
+Selected Attackers in FL iteration-17: [98, 182, 138, 18]
+Predicted Attackers in FL iteration-17: [98, 18, 137]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[-0.13934004]
+ [-0.18508084]
+ [ 0.08542302]
+ [-0.26315266]
+ [ 0.4419392 ]
+ [-0.1712857 ]
+ [ 0.4231382 ]
+ [ 0.43179634]
+ [-0.55216569]
+ [ 0.99999988]]
+At round:  18
+pred_attackers_indx:  [1 3 5 8]
+real attackers indx:  [2, 7]
+global_pred_attackers_indx:  [148, 28, 50, 77]
+trustworthy score is:  [1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0]
+contribution score is:  [0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0]
+f_score:  [1.0, 1.0, 2.0, 1.0, 1.0, 0.0, 2.0, 1.0, 0.0, 2.0]
+f_score is:  [1.0, 1.0, 2.0, 1.0, 1.0, 0.0, 2.0, 1.0, 0.0, 2.0]
+stack dis is:  [[0.69158731 0.37562348]
+ [0.58692059 0.19672592]
+ [0.82899189 0.94293388]
+ [0.79082396 0.21974677]
+ [1.         0.24862514]
+ [0.21570788 0.25136207]
+ [0.56905643 0.27530375]
+ [0.89399544 1.        ]
+ [0.         0.        ]
+ [0.90005509 0.21793068]]
+abnormal_score:  [1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0]
+hb_clusterer.labels_ is:  [ 0 -1 -1  1 -1 -1  0 -1 -1  1]
+raw_t_score:  [[0.73403247]
+ [0.76350149]
+ [0.58922635]
+ [0.81380013]
+ [0.35953682]
+ [0.75461382]
+ [0.37164958]
+ [0.36607147]
+ [1.        ]
+ [0.        ]]
+raw_temp_score:  [array([0.5336054]), array([0.39182326]), array([0.88596289]), array([0.50528536]), array([0.62431257]), array([0.23353497]), array([0.42218009]), array([0.94699772]), array([0.]), array([0.55899288])]
+raw_sum:  [array([1.26763787]), array([1.15532475]), array([1.47518924]), array([1.31908549]), array([0.98384939]), array([0.98814879]), array([0.79382967]), array([1.31306919]), array([1.]), array([0.55899288])]
+Selected Attackers in FL iteration-18: [87, 130]
+Predicted Attackers in FL iteration-18: [148, 28, 50, 77]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[ 0.22181362]
+ [-0.3900235 ]
+ [-0.34105757]
+ [ 0.99999994]
+ [-0.0297419 ]
+ [ 0.06861977]
+ [ 0.5965839 ]
+ [-0.09650815]
+ [-0.1749419 ]
+ [ 0.02311089]]
+At round:  19
+pred_attackers_indx:  [1 2 7 8]
+real attackers indx:  [2, 4, 7]
+global_pred_attackers_indx:  [70, 138, 140, 89]
+trustworthy score is:  [1.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0]
+contribution score is:  [0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 0.0]
+f_score:  [1.0, 0.0, 1.0, 2.0, 2.0, 2.0, 1.0, 1.0, 1.0, 1.0]
+f_score is:  [1.0, 0.0, 1.0, 2.0, 2.0, 2.0, 1.0, 1.0, 1.0, 1.0]
+stack dis is:  [[0.48402948 0.08258286]
+ [0.         0.        ]
+ [0.83068048 0.94526485]
+ [0.7132785  0.38312009]
+ [0.7132785  1.        ]
+ [0.84157675 0.32067686]
+ [0.66606132 0.48540137]
+ [0.7944664  0.97251564]
+ [0.36748211 0.39386468]
+ [1.         0.27370169]]
+abnormal_score:  [0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0]
+hb_clusterer.labels_ is:  [ 0 -1  1  0  1  0  0  1  0  0]
+raw_t_score:  [[0.55983683]
+ [1.        ]
+ [0.96477331]
+ [0.        ]
+ [0.74080897]
+ [0.67004638]
+ [0.29022247]
+ [0.78884144]
+ [0.84526764]
+ [0.70278603]]
+raw_temp_score:  [array([0.28330617]), array([0.]), array([0.88797267]), array([0.54819929]), array([0.85663925]), array([0.58112681]), array([0.57573134]), array([0.88349102]), array([0.38067339]), array([0.63685085])]
+raw_sum:  [array([0.843143]), array([1.]), array([1.85274597]), array([0.54819929]), array([1.59744822]), array([1.25117319]), array([0.86595381]), array([1.67233246]), array([1.22594104]), array([1.33963687])]
+Selected Attackers in FL iteration-19: [138, 139, 140]
+Predicted Attackers in FL iteration-19: [70, 138, 140, 89]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[ 0.12332144]
+ [ 0.01673483]
+ [ 0.1429355 ]
+ [ 1.        ]
+ [ 0.02601856]
+ [-0.49833059]
+ [-0.06596591]
+ [-0.02448381]
+ [ 0.29630697]
+ [ 0.36356685]]
+At round:  20
+pred_attackers_indx:  [5]
+real attackers indx:  [2, 4, 7]
+global_pred_attackers_indx:  [162]
+trustworthy score is:  [1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0]
+contribution score is:  [0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0]
+f_score:  [1.0, 2.0, 2.0, 2.0, 2.0, 0.0, 2.0, 2.0, 1.0, 2.0]
+f_score is:  [1.0, 2.0, 2.0, 2.0, 2.0, 0.0, 2.0, 2.0, 1.0, 2.0]
+stack dis is:  [[0.70166347 0.38961333]
+ [0.85201457 0.49533961]
+ [1.         0.78779907]
+ [0.96902107 0.28515705]
+ [0.97686906 1.        ]
+ [0.         0.        ]
+ [0.77169464 0.51878898]
+ [0.96091022 0.83970972]
+ [0.84319027 0.3750085 ]
+ [0.94217266 0.36974714]]
+abnormal_score:  [0.0, 1.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0]
+hb_clusterer.labels_ is:  [ 0  0  1  0  1 -1  0  1  0  0]
+raw_t_score:  [[0.58510355]
+ [0.65624047]
+ [0.57201295]
+ [0.        ]
+ [0.65004442]
+ [1.        ]
+ [0.71143573]
+ [0.68375018]
+ [0.46965138]
+ [0.4247615 ]]
+raw_temp_score:  [array([0.5456384]), array([0.67367709]), array([0.89389954]), array([0.62708906]), array([0.98843453]), array([0.]), array([0.64524181]), array([0.90030997]), array([0.60909939]), array([0.6559599])]
+raw_sum:  [array([1.13074196]), array([1.32991756]), array([1.46591248]), array([0.62708906]), array([1.63847895]), array([1.]), array([1.35667754]), array([1.58406015]), array([1.07875077]), array([1.0807214])]
+Selected Attackers in FL iteration-20: [152, 150, 90]
+Predicted Attackers in FL iteration-20: [162]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[-0.09554692]
+ [ 0.41300261]
+ [ 0.34374824]
+ [ 1.00000012]
+ [-0.19064447]
+ [ 0.35329536]
+ [-0.62811977]
+ [-0.05541284]
+ [-0.12100021]
+ [-0.26984677]]
+At round:  21
+pred_attackers_indx:  [6 9]
+real attackers indx:  [0, 4, 8]
+global_pred_attackers_indx:  [189, 192]
+trustworthy score is:  [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 0.0]
+contribution score is:  [1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0]
+f_score:  [2.0, 2.0, 1.0, 2.0, 2.0, 2.0, 0.0, 2.0, 2.0, 1.0]
+f_score is:  [2.0, 2.0, 1.0, 2.0, 2.0, 2.0, 0.0, 2.0, 2.0, 1.0]
+stack dis is:  [[0.94720435 0.88205284]
+ [0.93692379 0.51059672]
+ [0.5811501  0.38549202]
+ [0.90800557 0.35668418]
+ [0.97632155 1.        ]
+ [1.         0.38432448]
+ [0.         0.        ]
+ [0.7622206  0.46427574]
+ [0.90734231 0.84527526]
+ [0.65782317 0.41176172]]
+abnormal_score:  [1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0]
+hb_clusterer.labels_ is:  [ 0  1  1  1  0  1 -1  1  0  1]
+raw_t_score:  [[0.67289089]
+ [0.36053703]
+ [0.40307344]
+ [0.        ]
+ [0.73130032]
+ [0.39720955]
+ [1.        ]
+ [0.64824032]
+ [0.68852444]
+ [0.77994679]]
+raw_temp_score:  [array([0.9146286]), array([0.72376025]), array([0.48332106]), array([0.63234488]), array([0.98816077]), array([0.69216224]), array([0.]), array([0.61324817]), array([0.87630879]), array([0.53479245])]
+raw_sum:  [array([1.58751949]), array([1.08429728]), array([0.88639449]), array([0.63234488]), array([1.71946109]), array([1.08937179]), array([1.]), array([1.26148849]), array([1.56483322]), array([1.31473924])]
+Selected Attackers in FL iteration-21: [98, 41, 190]
+Predicted Attackers in FL iteration-21: [189, 192]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[ 1.        ]
+ [ 0.14104776]
+ [-0.0684009 ]
+ [-0.17909868]
+ [-0.31999394]
+ [-0.01014279]
+ [-0.12559031]
+ [-0.25579399]
+ [ 0.30918983]
+ [ 0.22317967]]
+At round:  22
+pred_attackers_indx:  [2 3 4 5 6 7]
+real attackers indx:  [2, 3, 5, 7]
+global_pred_attackers_indx:  [190, 90, 8, 9, 168, 103]
+trustworthy score is:  [1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0]
+contribution score is:  [1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0]
+f_score:  [2.0, 1.0, 1.0, 1.0, 0.0, 1.0, 0.0, 1.0, 1.0, 1.0]
+f_score is:  [2.0, 1.0, 1.0, 1.0, 0.0, 1.0, 0.0, 1.0, 1.0, 1.0]
+stack dis is:  [[1.         0.20976642]
+ [0.         0.08631386]
+ [0.62233672 0.83234697]
+ [0.97395906 1.        ]
+ [0.24425567 0.23561197]
+ [0.91505361 0.80381393]
+ [0.14009191 0.12173714]
+ [0.9409553  0.7405152 ]
+ [0.59142181 0.30345656]
+ [0.29954045 0.        ]]
+abnormal_score:  [1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0]
+hb_clusterer.labels_ is:  [-1  0  1  1  0  1  0  1  0  0]
+raw_t_score:  [[0.        ]
+ [0.65072438]
+ [0.80939833]
+ [0.89326068]
+ [1.        ]
+ [0.7652632 ]
+ [0.85272384]
+ [0.95136345]
+ [0.52334344]
+ [0.58850295]]
+raw_temp_score:  [array([0.60488321]), array([0.04315693]), array([0.72734185]), array([0.98697953]), array([0.23993382]), array([0.85943377]), array([0.13091453]), array([0.84073525]), array([0.44743918]), array([0.14977023])]
+raw_sum:  [array([0.60488321]), array([0.69388131]), array([1.53674018]), array([1.8802402]), array([1.23993382]), array([1.62469698]), array([0.98363837]), array([1.7920987]), array([0.97078262]), array([0.73827318])]
+Selected Attackers in FL iteration-22: [190, 90, 9, 103]
+Predicted Attackers in FL iteration-22: [190, 90, 8, 9, 168, 103]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[ 0.39472216]
+ [-0.13977703]
+ [-0.01539285]
+ [ 0.36782372]
+ [ 0.53033108]
+ [ 0.99999988]
+ [ 0.1339366 ]
+ [-0.08387716]
+ [ 0.14188322]
+ [-0.32031387]]
+At round:  23
+pred_attackers_indx:  [1 2 7 9]
+real attackers indx:  [6]
+global_pred_attackers_indx:  [133, 33, 36, 112]
+trustworthy score is:  [1.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 0.0]
+contribution score is:  [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0]
+f_score:  [1.0, 0.0, 0.0, 1.0, 1.0, 2.0, 1.0, 0.0, 1.0, 0.0]
+f_score is:  [1.0, 0.0, 0.0, 1.0, 1.0, 2.0, 1.0, 0.0, 1.0, 0.0]
+stack dis is:  [[1.         0.10961527]
+ [0.66808929 0.30445254]
+ [0.90342561 0.18486383]
+ [0.98372172 0.12128698]
+ [0.70804849 0.03936886]
+ [0.93605771 0.09639968]
+ [0.86138913 1.        ]
+ [0.         0.13987525]
+ [0.84741474 0.06465757]
+ [0.73913208 0.        ]]
+abnormal_score:  [1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0]
+hb_clusterer.labels_ is:  [-1 -1 -1 -1 -1 -1 -1 -1 -1 -1]
+raw_t_score:  [[0.45843476]
+ [0.86326217]
+ [0.76905412]
+ [0.47880753]
+ [0.35572515]
+ [0.        ]
+ [0.65595263]
+ [0.82092385]
+ [0.64993389]
+ [1.        ]]
+raw_temp_score:  [array([0.55480763]), array([0.48627091]), array([0.54414472]), array([0.55250435]), array([0.37370868]), array([0.51622869]), array([0.93069457]), array([0.06993763]), array([0.45603615]), array([0.36956604])]
+raw_sum:  [array([1.01324239]), array([1.34953308]), array([1.31319885]), array([1.03131187]), array([0.72943383]), array([0.51622869]), array([1.5866472]), array([0.89086147]), array([1.10597005]), array([1.36956604])]
+Selected Attackers in FL iteration-23: [27]
+Predicted Attackers in FL iteration-23: [133, 33, 36, 112]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[-0.15169249]
+ [-0.65792066]
+ [ 0.22389956]
+ [-0.31508422]
+ [ 0.39732531]
+ [ 0.46734661]
+ [-0.32893255]
+ [ 0.19158716]
+ [ 0.20432854]
+ [ 0.99999988]]
+At round:  24
+pred_attackers_indx:  [1 3 6]
+real attackers indx:  [0, 1, 6]
+global_pred_attackers_indx:  [42, 30, 15]
+trustworthy score is:  [1.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0]
+contribution score is:  [1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0]
+f_score:  [2.0, 0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0]
+f_score is:  [2.0, 0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0]
+stack dis is:  [[0.9056142  0.750843  ]
+ [0.608689   1.        ]
+ [0.70093315 0.15011145]
+ [0.73061037 0.        ]
+ [0.73504666 0.31599703]
+ [0.38916934 0.0834143 ]
+ [0.78751721 0.79147854]
+ [0.62077406 0.23626907]
+ [0.         0.07895639]
+ [1.         0.04426473]]
+abnormal_score:  [1.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0]
+hb_clusterer.labels_ is:  [ 0  0  1  1  1  1  0  1 -1  1]
+raw_t_score:  [[0.69466078]
+ [1.        ]
+ [0.46811672]
+ [0.79321298]
+ [0.36351234]
+ [0.32127793]
+ [0.80156582]
+ [0.48760643]
+ [0.47992128]
+ [0.        ]]
+raw_temp_score:  [array([0.8282286]), array([0.8043445]), array([0.4255223]), array([0.36530519]), array([0.52552184]), array([0.23629182]), array([0.78949787]), array([0.42852157]), array([0.0394782]), array([0.52213237])]
+raw_sum:  [array([1.52288938]), array([1.8043445]), array([0.89363902]), array([1.15851817]), array([0.88903418]), array([0.55756975]), array([1.59106369]), array([0.916128]), array([0.51939947]), array([0.52213237])]
+Selected Attackers in FL iteration-24: [104, 42, 15]
+Predicted Attackers in FL iteration-24: [42, 30, 15]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[ 0.33965161]
+ [-0.63928121]
+ [ 0.02272551]
+ [-0.56822878]
+ [ 1.        ]
+ [ 0.52939147]
+ [ 0.36164129]
+ [ 0.83958012]
+ [ 0.57928687]
+ [-0.82462972]]
+At round:  25
+pred_attackers_indx:  [1 3 9]
+real attackers indx:  [2, 6]
+global_pred_attackers_indx:  [23, 14, 89]
+trustworthy score is:  [1.0, 0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0]
+contribution score is:  [0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0]
+f_score:  [1.0, 1.0, 2.0, 1.0, 2.0, 1.0, 2.0, 1.0, 1.0, 1.0]
+f_score is:  [1.0, 1.0, 2.0, 1.0, 2.0, 1.0, 2.0, 1.0, 1.0, 1.0]
+stack dis is:  [[0.33641101 0.        ]
+ [0.40003657 0.59077346]
+ [0.76780327 0.82405203]
+ [0.06865344 0.28678714]
+ [1.         0.09917189]
+ [0.55279276 0.25517149]
+ [0.90200201 1.        ]
+ [0.82192157 0.13430784]
+ [0.61422433 0.11124149]
+ [0.         0.25617729]]
+abnormal_score:  [0.0, 1.0, 1.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 0.0]
+hb_clusterer.labels_ is:  [-1 -1 -1 -1 -1 -1 -1 -1 -1 -1]
+raw_t_score:  [[0.36190816]
+ [0.89841856]
+ [0.53560154]
+ [0.85947782]
+ [0.        ]
+ [0.25792002]
+ [0.34985658]
+ [0.08791914]
+ [0.23057452]
+ [1.        ]]
+raw_temp_score:  [array([0.1682055]), array([0.49540501]), array([0.79592765]), array([0.17772029]), array([0.54958595]), array([0.40398212]), array([0.95100101]), array([0.4781147]), array([0.36273291]), array([0.12808864])]
+raw_sum:  [array([0.53011366]), array([1.39382358]), array([1.33152919]), array([1.03719811]), array([0.54958595]), array([0.66190214]), array([1.30085758]), array([0.56603385]), array([0.59330744]), array([1.12808864])]
+Selected Attackers in FL iteration-25: [42, 0]
+Predicted Attackers in FL iteration-25: [23, 14, 89]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[ 0.33627331]
+ [-0.10704948]
+ [ 1.        ]
+ [-0.02980311]
+ [-0.34859225]
+ [ 0.69009328]
+ [-0.08924574]
+ [ 0.00621032]
+ [ 0.09262219]
+ [-0.22103336]]
+At round:  26
+pred_attackers_indx:  [1 3 4 6 9]
+real attackers indx:  [4, 6]
+global_pred_attackers_indx:  [75, 11, 152, 194, 51]
+trustworthy score is:  [1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0]
+contribution score is:  [0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 0.0]
+f_score:  [1.0, 0.0, 2.0, 0.0, 1.0, 1.0, 1.0, 2.0, 1.0, 0.0]
+f_score is:  [1.0, 0.0, 2.0, 0.0, 1.0, 1.0, 1.0, 2.0, 1.0, 0.0]
+stack dis is:  [[0.61816305 0.31702749]
+ [0.48583878 0.06839464]
+ [1.         0.        ]
+ [0.         0.08626114]
+ [0.63387226 0.71615851]
+ [0.8285747  0.06195221]
+ [0.67698658 1.        ]
+ [0.69521844 0.02700577]
+ [0.53617704 0.33328339]
+ [0.2413714  0.148513  ]]
+abnormal_score:  [1.0, 0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0, 0.0]
+hb_clusterer.labels_ is:  [-1 -1 -1 -1 -1 -1 -1 -1 -1 -1]
+raw_t_score:  [[0.49216261]
+ [0.82089266]
+ [0.        ]
+ [0.7636134 ]
+ [1.        ]
+ [0.22980016]
+ [0.80769094]
+ [0.73690893]
+ [0.67283333]
+ [0.9054133 ]]
+raw_temp_score:  [array([0.46759527]), array([0.27711671]), array([0.5]), array([0.04313057]), array([0.67501539]), array([0.44526346]), array([0.83849329]), array([0.3611121]), array([0.43473022]), array([0.1949422])]
+raw_sum:  [array([0.95975789]), array([1.09800937]), array([0.5]), array([0.80674397]), array([1.67501539]), array([0.67506362]), array([1.64618423]), array([1.09802104]), array([1.10756354]), array([1.1003555])]
+Selected Attackers in FL iteration-26: [152, 194]
+Predicted Attackers in FL iteration-26: [75, 11, 152, 194, 51]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[ 1.        ]
+ [ 0.18017209]
+ [-0.42640656]
+ [-0.39163092]
+ [-0.29430577]
+ [ 0.23105244]
+ [ 0.37131721]
+ [ 0.24762377]
+ [-0.25345209]
+ [ 0.56385195]]
+At round:  27
+pred_attackers_indx:  [2 3 4 8]
+real attackers indx:  [2, 4]
+global_pred_attackers_indx:  [80, 46, 152, 107]
+trustworthy score is:  [1.0, 1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0]
+contribution score is:  [1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0]
+f_score:  [2.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 2.0, 0.0, 1.0]
+f_score is:  [2.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 2.0, 0.0, 1.0]
+stack dis is:  [[0.9707321  0.1723879 ]
+ [0.88292839 0.19049009]
+ [0.83690161 0.80930136]
+ [0.37719509 0.18252346]
+ [0.95966643 1.        ]
+ [0.         0.01134515]
+ [0.99991981 0.15803962]
+ [1.         0.09205422]
+ [0.68470852 0.01005214]
+ [0.70996712 0.        ]]
+abnormal_score:  [1.0, 1.0, 1.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 0.0]
+hb_clusterer.labels_ is:  [-1 -1 -1 -1 -1 -1 -1 -1 -1 -1]
+raw_t_score:  [[0.        ]
+ [0.57475052]
+ [1.        ]
+ [0.9756201 ]
+ [0.9073891 ]
+ [0.53908022]
+ [0.44074586]
+ [0.52746268]
+ [0.87874813]
+ [0.30576699]]
+raw_temp_score:  [array([0.57156]), array([0.53670924]), array([0.82310148]), array([0.27985928]), array([0.97983321]), array([0.00567258]), array([0.57897972]), array([0.54602711]), array([0.34738033]), array([0.35498356])]
+raw_sum:  [array([0.57156]), array([1.11145976]), array([1.82310148]), array([1.25547938]), array([1.88722232]), array([0.54475279]), array([1.01972558]), array([1.07348979]), array([1.22612846]), array([0.66075056])]
+Selected Attackers in FL iteration-27: [80, 152]
+Predicted Attackers in FL iteration-27: [80, 46, 152, 107]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[-0.10744521]
+ [-0.21118069]
+ [-0.06490185]
+ [ 1.00000012]
+ [ 0.02743239]
+ [-0.38076156]
+ [ 0.16387673]
+ [-0.03686457]
+ [ 0.35153726]
+ [-0.32856545]]
+At round:  28
+pred_attackers_indx:  [0 1 2 5 7 9]
+real attackers indx:  [2, 5, 6, 7, 9]
+global_pred_attackers_indx:  [142, 127, 172, 69, 92, 60]
+trustworthy score is:  [0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0]
+contribution score is:  [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+f_score:  [1.0, 1.0, 1.0, 2.0, 2.0, 1.0, 2.0, 1.0, 2.0, 1.0]
+f_score is:  [1.0, 1.0, 1.0, 2.0, 2.0, 1.0, 2.0, 1.0, 2.0, 1.0]
+stack dis is:  [[0.         0.27089365]
+ [0.44016642 0.        ]
+ [0.76355687 1.        ]
+ [1.         0.15389564]
+ [0.3699316  0.03728366]
+ [0.54417883 0.99517468]
+ [0.68295607 0.87383388]
+ [0.74846626 0.96442128]
+ [0.59001481 0.0825452 ]
+ [0.51160003 0.85234511]]
+abnormal_score:  [0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0]
+hb_clusterer.labels_ is:  [0 0 1 0 0 1 1 1 0 1]
+raw_t_score:  [[0.80205393]
+ [0.87718309]
+ [0.77124241]
+ [0.        ]
+ [0.70437045]
+ [1.        ]
+ [0.60555228]
+ [0.75093675]
+ [0.46964141]
+ [0.96219759]]
+raw_temp_score:  [array([0.13544682]), array([0.22008321]), array([0.88177844]), array([0.57694782]), array([0.20360763]), array([0.76967675]), array([0.77839497]), array([0.85644377]), array([0.33628]), array([0.68197257])]
+raw_sum:  [array([0.93750075]), array([1.0972663]), array([1.65302085]), array([0.57694782]), array([0.90797808]), array([1.76967675]), array([1.38394726]), array([1.60738052]), array([0.80592141]), array([1.64417016])]
+Selected Attackers in FL iteration-28: [172, 69, 102, 92, 60]
+Predicted Attackers in FL iteration-28: [142, 127, 172, 69, 92, 60]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[ 0.20760667]
+ [ 0.40404242]
+ [-0.76316226]
+ [ 0.40536988]
+ [-0.39087355]
+ [ 0.32829282]
+ [ 1.        ]
+ [ 0.40882492]
+ [ 0.44041514]
+ [ 0.38704103]]
+At round:  29
+pred_attackers_indx:  [2 4]
+real attackers indx:  [4]
+global_pred_attackers_indx:  [31, 90]
+trustworthy score is:  [1.0, 1.0, 0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+contribution score is:  [1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0]
+f_score:  [2.0, 2.0, 1.0, 2.0, 1.0, 1.0, 2.0, 2.0, 1.0, 2.0]
+f_score is:  [2.0, 2.0, 1.0, 2.0, 1.0, 1.0, 2.0, 2.0, 1.0, 2.0]
+stack dis is:  [[0.78001061 0.49489538]
+ [0.90241028 0.12381876]
+ [0.         0.        ]
+ [0.87760033 0.17705872]
+ [0.68383523 1.        ]
+ [0.37627438 0.14811846]
+ [1.         0.15600742]
+ [0.59343509 0.41765103]
+ [0.8598621  0.44595849]
+ [0.83634864 0.32914276]]
+abnormal_score:  [1.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 0.0, 1.0, 1.0]
+hb_clusterer.labels_ is:  [-1  1 -1  1 -1 -1  1 -1  0  0]
+raw_t_score:  [[0.449416  ]
+ [0.33800495]
+ [1.        ]
+ [0.33725207]
+ [0.78885171]
+ [0.38096731]
+ [0.        ]
+ [0.3352925 ]
+ [0.3173757 ]
+ [0.34764751]]
+raw_temp_score:  [array([0.63745299]), array([0.51311452]), array([0.]), array([0.52732953]), array([0.84191761]), array([0.26219642]), array([0.57800371]), array([0.50554306]), array([0.65291029]), array([0.5827457])]
+raw_sum:  [array([1.08686899]), array([0.85111948]), array([1.]), array([0.8645816]), array([1.63076932]), array([0.64316373]), array([0.57800371]), array([0.84083556]), array([0.970286]), array([0.93039321])]
+Selected Attackers in FL iteration-29: [90]
+Predicted Attackers in FL iteration-29: [31, 90]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[-0.59640014]
+ [-0.32558438]
+ [ 0.41831926]
+ [-0.29780176]
+ [ 0.45498157]
+ [ 1.        ]
+ [ 0.48690513]
+ [-0.14679134]
+ [ 0.08670416]
+ [ 0.67895716]]
+At round:  30
+pred_attackers_indx:  [0 1 3]
+real attackers indx:  [3, 7]
+global_pred_attackers_indx:  [50, 101, 69]
+trustworthy score is:  [0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+contribution score is:  [0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 0.0]
+f_score:  [0.0, 0.0, 1.0, 1.0, 1.0, 2.0, 2.0, 2.0, 1.0, 1.0]
+f_score is:  [0.0, 0.0, 1.0, 1.0, 1.0, 2.0, 2.0, 2.0, 1.0, 1.0]
+stack dis is:  [[0.         0.        ]
+ [0.33345815 0.1534707 ]
+ [0.95904325 0.42276966]
+ [0.80542033 0.77149764]
+ [0.87652125 0.35349373]
+ [1.         0.2820076 ]
+ [0.94794982 0.24505583]
+ [0.79020783 1.        ]
+ [0.69083505 0.47413376]
+ [0.66293765 0.30127777]]
+abnormal_score:  [0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0]
+hb_clusterer.labels_ is:  [-1 -1 -1 -1 -1 -1 -1 -1 -1 -1]
+raw_t_score:  [[1.        ]
+ [0.83035847]
+ [0.36437027]
+ [0.81295518]
+ [0.34140465]
+ [0.        ]
+ [0.32140743]
+ [0.71836084]
+ [0.57209706]
+ [0.20110424]]
+raw_temp_score:  [array([0.]), array([0.24346443]), array([0.69090645]), array([0.78845899]), array([0.61500749]), array([0.6410038]), array([0.59650283]), array([0.89510391]), array([0.58248441]), array([0.48210771])]
+raw_sum:  [array([1.]), array([1.0738229]), array([1.05527672]), array([1.60141417]), array([0.95641214]), array([0.6410038]), array([0.91791026]), array([1.61346475]), array([1.15458147]), array([0.68321195])]
+Selected Attackers in FL iteration-30: [69, 73]
+Predicted Attackers in FL iteration-30: [50, 101, 69]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[-0.55322134]
+ [ 0.32573467]
+ [ 0.07442266]
+ [-0.08970033]
+ [ 0.01368641]
+ [ 0.00600136]
+ [ 0.63935894]
+ [-0.34177831]
+ [-0.4168174 ]
+ [ 1.        ]]
+At round:  31
+pred_attackers_indx:  [0 7 8]
+real attackers indx:  [3, 8]
+global_pred_attackers_indx:  [118, 195, 42]
+trustworthy score is:  [0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0]
+contribution score is:  [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0]
+f_score:  [0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 2.0]
+f_score is:  [0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 2.0]
+stack dis is:  [[1.         0.24676185]
+ [0.         0.16513043]
+ [0.09622541 0.16597385]
+ [0.81889066 0.71188023]
+ [0.72718412 0.33068257]
+ [0.84662414 0.2111573 ]
+ [0.23888003 0.        ]
+ [0.61979444 0.13024881]
+ [0.60606061 1.        ]
+ [0.52737905 0.10578951]]
+abnormal_score:  [1.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0]
+hb_clusterer.labels_ is:  [ 1  0  0 -1  1  1  0  1 -1  1]
+raw_t_score:  [[1.        ]
+ [0.43410769]
+ [0.5959082 ]
+ [0.7015744 ]
+ [0.63501161]
+ [0.63995943]
+ [0.2321891 ]
+ [0.86386806]
+ [0.91217997]
+ [0.        ]]
+raw_temp_score:  [array([0.62338093]), array([0.08256521]), array([0.13109963]), array([0.76538545]), array([0.52893335]), array([0.52889072]), array([0.11944001]), array([0.37502162]), array([0.8030303]), array([0.31658428])]
+raw_sum:  [array([1.62338093]), array([0.5166729]), array([0.72700783]), array([1.46695984]), array([1.16394496]), array([1.16885014]), array([0.35162911]), array([1.23888968]), array([1.71521027]), array([0.31658428])]
+Selected Attackers in FL iteration-31: [109, 42]
+Predicted Attackers in FL iteration-31: [118, 195, 42]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[ 0.30058143]
+ [-0.12462939]
+ [ 0.07774593]
+ [-0.11562395]
+ [ 0.74511945]
+ [-0.52604723]
+ [ 1.        ]
+ [-0.10758739]
+ [-0.43758896]
+ [ 0.18027382]]
+At round:  32
+pred_attackers_indx:  [5 8]
+real attackers indx:  [0, 1, 9]
+global_pred_attackers_indx:  [25, 195]
+trustworthy score is:  [1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0]
+contribution score is:  [1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0]
+f_score:  [2.0, 2.0, 2.0, 1.0, 2.0, 1.0, 2.0, 1.0, 1.0, 2.0]
+f_score is:  [2.0, 2.0, 2.0, 1.0, 2.0, 1.0, 2.0, 1.0, 1.0, 2.0]
+stack dis is:  [[1.         1.        ]
+ [0.9475462  0.7013036 ]
+ [0.88952911 0.31183533]
+ [0.         0.        ]
+ [0.70623882 0.11502573]
+ [0.59129744 0.3315952 ]
+ [0.88376714 0.19969125]
+ [0.63153189 0.14377358]
+ [0.31333201 0.33921098]
+ [0.83379694 0.85300172]]
+abnormal_score:  [1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0]
+hb_clusterer.labels_ is:  [ 0  0  1 -1  1  1  1  1  1  0]
+raw_t_score:  [[0.4583204 ]
+ [0.73695582]
+ [0.60434176]
+ [0.73105467]
+ [0.16702009]
+ [1.        ]
+ [0.        ]
+ [0.72578841]
+ [0.94203438]
+ [0.5371565 ]]
+raw_temp_score:  [array([1.]), array([0.8244249]), array([0.60068222]), array([0.]), array([0.41063228]), array([0.46144632]), array([0.54172919]), array([0.38765274]), array([0.32627149]), array([0.84339933])]
+raw_sum:  [array([1.4583204]), array([1.56138072]), array([1.20502398]), array([0.73105467]), array([0.57765237]), array([1.46144632]), array([0.54172919]), array([1.11344115]), array([1.26830588]), array([1.38055582])]
+Selected Attackers in FL iteration-32: [182, 150, 138]
+Predicted Attackers in FL iteration-32: [25, 195]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[-0.33642742]
+ [ 0.01291258]
+ [-0.52713537]
+ [-0.39767146]
+ [-0.05811904]
+ [ 0.99999994]
+ [ 0.39460137]
+ [ 0.27709678]
+ [-0.06941124]
+ [ 0.12562323]]
+At round:  33
+pred_attackers_indx:  [0 2 3]
+real attackers indx:  [0, 1, 2]
+global_pred_attackers_indx:  [91, 73, 110]
+trustworthy score is:  [0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+contribution score is:  [1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 0.0, 1.0, 1.0, 1.0]
+f_score:  [1.0, 2.0, 1.0, 1.0, 1.0, 2.0, 1.0, 2.0, 2.0, 2.0]
+f_score is:  [1.0, 2.0, 1.0, 1.0, 1.0, 2.0, 1.0, 2.0, 2.0, 2.0]
+stack dis is:  [[0.89823686 0.68537786]
+ [1.         0.93218491]
+ [0.75203285 1.        ]
+ [0.60751952 0.21898947]
+ [0.42492553 0.19338359]
+ [0.87368167 0.18696654]
+ [0.         0.        ]
+ [0.96538121 0.30705252]
+ [0.84341035 0.43539343]
+ [0.83149505 0.39274812]]
+abnormal_score:  [1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0]
+hb_clusterer.labels_ is:  [-1 -1 -1 -1 -1 -1 -1 -1 -1 -1]
+raw_t_score:  [[0.87512046]
+ [0.64636535]
+ [1.        ]
+ [0.91522434]
+ [0.69287834]
+ [0.        ]
+ [0.39642759]
+ [0.47337204]
+ [0.70027271]
+ [0.57256008]]
+raw_temp_score:  [array([0.79180736]), array([0.96609246]), array([0.87601642]), array([0.4132545]), array([0.30915456]), array([0.53032411]), array([0.]), array([0.63621686]), array([0.63940189]), array([0.61212158])]
+raw_sum:  [array([1.66692782]), array([1.61245781]), array([1.87601642]), array([1.32847883]), array([1.0020329]), array([0.53032411]), array([0.39642759]), array([1.10958891]), array([1.3396746]), array([1.18468166])]
+Selected Attackers in FL iteration-33: [91, 92, 73]
+Predicted Attackers in FL iteration-33: [91, 73, 110]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[-0.25595048]
+ [-0.2930977 ]
+ [-0.30208358]
+ [ 0.05048721]
+ [ 1.00000012]
+ [-0.24562746]
+ [ 0.28697088]
+ [ 0.48350242]
+ [ 0.13856301]
+ [ 0.12870358]]
+At round:  34
+pred_attackers_indx:  [0 1 2 5]
+real attackers indx:  []
+global_pred_attackers_indx:  [44, 118, 175, 64]
+trustworthy score is:  [0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0]
+contribution score is:  [0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0]
+f_score:  [0.0, 1.0, 0.0, 2.0, 2.0, 1.0, 2.0, 1.0, 1.0, 1.0]
+f_score is:  [0.0, 1.0, 0.0, 2.0, 2.0, 1.0, 2.0, 1.0, 1.0, 1.0]
+stack dis is:  [[0.         0.        ]
+ [0.69429649 0.67744505]
+ [0.13004882 0.1124562 ]
+ [0.84798047 0.79364447]
+ [1.         0.09397897]
+ [0.61218375 0.57844855]
+ [0.86407013 0.34493469]
+ [0.73635153 0.46798343]
+ [0.53295606 0.34987257]
+ [0.71105193 1.        ]]
+abnormal_score:  [0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0]
+hb_clusterer.labels_ is:  [-1 -1 -1 -1 -1 -1 -1 -1 -1 -1]
+raw_t_score:  [[0.96456979]
+ [0.99309885]
+ [1.        ]
+ [0.72922571]
+ [0.        ]
+ [0.95664171]
+ [0.5476063 ]
+ [0.39667012]
+ [0.66158352]
+ [0.66915555]]
+raw_temp_score:  [array([0.]), array([0.68587077]), array([0.12125251]), array([0.82081247]), array([0.54698949]), array([0.59531615]), array([0.60450241]), array([0.60216748]), array([0.44141431]), array([0.85552597])]
+raw_sum:  [array([0.96456979]), array([1.67896962]), array([1.12125251]), array([1.55003818]), array([0.54698949]), array([1.55195787]), array([1.15210871]), array([0.99883761]), array([1.10299783]), array([1.52468152])]
+Selected Attackers in FL iteration-34: []
+Predicted Attackers in FL iteration-34: [44, 118, 175, 64]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[ 0.08325865]
+ [ 0.24297662]
+ [-0.73926479]
+ [ 0.01889243]
+ [ 1.        ]
+ [ 0.88018811]
+ [-0.38877305]
+ [ 0.90031642]
+ [ 0.48659286]
+ [ 0.62594551]]
+At round:  35
+pred_attackers_indx:  [2 6]
+real attackers indx:  [1]
+global_pred_attackers_indx:  [49, 134]
+trustworthy score is:  [1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0]
+contribution score is:  [0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0]
+f_score:  [1.0, 2.0, 0.0, 2.0, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+f_score is:  [1.0, 2.0, 0.0, 2.0, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+stack dis is:  [[0.91601302 0.49589536]
+ [0.96555875 1.        ]
+ [0.         0.        ]
+ [0.93958204 0.57596643]
+ [1.         0.50511548]
+ [0.9906702  0.50456411]
+ [0.81340406 0.28276052]
+ [0.9874913  0.55274766]
+ [0.96040479 0.50352264]
+ [0.92889792 0.57345463]]
+abnormal_score:  [1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0]
+hb_clusterer.labels_ is:  [-1 -1 -1 -1 -1 -1 -1 -1 -1 -1]
+raw_t_score:  [[0.52708556]
+ [0.43525482]
+ [1.        ]
+ [0.56409328]
+ [0.        ]
+ [0.06888652]
+ [0.79848282]
+ [0.05731363]
+ [0.2951863 ]
+ [0.21506472]]
+raw_temp_score:  [array([0.70595419]), array([0.98277938]), array([0.]), array([0.75777423]), array([0.75255774]), array([0.74761716]), array([0.54808229]), array([0.77011948]), array([0.73196371]), array([0.75117628])]
+raw_sum:  [array([1.23303975]), array([1.4180342]), array([1.]), array([1.32186751]), array([0.75255774]), array([0.81650367]), array([1.34656511]), array([0.82743311]), array([1.02715002]), array([0.96624099])]
+Selected Attackers in FL iteration-35: [178]
+Predicted Attackers in FL iteration-35: [49, 134]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[ 0.49499378]
+ [ 0.52385318]
+ [-0.44987547]
+ [-0.38132358]
+ [ 1.        ]
+ [-0.27046761]
+ [ 0.06312443]
+ [-0.48755822]
+ [ 0.58705729]
+ [ 0.71675915]]
+At round:  36
+pred_attackers_indx:  [2 3 5 7]
+real attackers indx:  [0, 1, 8]
+global_pred_attackers_indx:  [47, 43, 13, 11]
+trustworthy score is:  [1.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 1.0]
+contribution score is:  [0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+f_score:  [1.0, 1.0, 0.0, 0.0, 2.0, 0.0, 1.0, 0.0, 1.0, 1.0]
+f_score is:  [1.0, 1.0, 0.0, 0.0, 2.0, 0.0, 1.0, 0.0, 1.0, 1.0]
+stack dis is:  [[0.95436913 0.63348061]
+ [0.94324214 0.84280805]
+ [0.39597795 0.17373589]
+ [0.36902817 0.25532646]
+ [1.         0.07236132]
+ [0.52715394 0.        ]
+ [0.84238465 0.06696122]
+ [0.         0.28777614]
+ [0.90935076 1.        ]
+ [0.93272764 0.31909671]]
+abnormal_score:  [1.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 1.0]
+hb_clusterer.labels_ is:  [ 1  1  0  0  2  0  2 -1 -1  2]
+raw_t_score:  [[0.3394867 ]
+ [0.32008617]
+ [0.97466806]
+ [0.92858455]
+ [0.        ]
+ [0.85406245]
+ [0.62980767]
+ [1.        ]
+ [0.27759768]
+ [0.19040657]]
+raw_temp_score:  [array([0.79392487]), array([0.8930251]), array([0.28485692]), array([0.31217732]), array([0.53618066]), array([0.26357697]), array([0.45467293]), array([0.14388807]), array([0.95467538]), array([0.62591218])]
+raw_sum:  [array([1.13341157]), array([1.21311127]), array([1.25952497]), array([1.24076187]), array([0.53618066]), array([1.11763942]), array([1.0844806]), array([1.14388807]), array([1.23227306]), array([0.81631875])]
+Selected Attackers in FL iteration-36: [109, 170, 182]
+Predicted Attackers in FL iteration-36: [47, 43, 13, 11]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[-0.71611744]
+ [ 0.55604178]
+ [-0.72036582]
+ [-0.60711354]
+ [ 0.20813243]
+ [ 1.00000012]
+ [ 0.25069365]
+ [ 0.07747129]
+ [ 0.47823435]
+ [ 0.3082017 ]]
+At round:  37
+pred_attackers_indx:  [0 2 3]
+real attackers indx:  [8, 9]
+global_pred_attackers_indx:  [3, 12, 198]
+trustworthy score is:  [0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+contribution score is:  [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0]
+f_score:  [0.0, 1.0, 0.0, 0.0, 1.0, 2.0, 1.0, 1.0, 1.0, 1.0]
+f_score is:  [0.0, 1.0, 0.0, 0.0, 1.0, 2.0, 1.0, 1.0, 1.0, 1.0]
+stack dis is:  [[0.11593023 0.11945374]
+ [0.42825581 0.19556299]
+ [0.12348837 0.21132462]
+ [0.         0.15847997]
+ [0.72639535 0.15426968]
+ [1.         0.        ]
+ [0.73686047 0.11027745]
+ [0.6977907  0.0705495 ]
+ [0.91895349 1.        ]
+ [0.81523256 0.96178344]]
+abnormal_score:  [0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0]
+hb_clusterer.labels_ is:  [ 1  0  1  1  0 -1  0  0 -1 -1]
+raw_t_score:  [[0.99753054]
+ [0.25806041]
+ [1.        ]
+ [0.93416966]
+ [0.46029026]
+ [0.        ]
+ [0.43555063]
+ [0.53623988]
+ [0.30328766]
+ [0.40212283]]
+raw_temp_score:  [array([0.11769199]), array([0.3119094]), array([0.1674065]), array([0.07923999]), array([0.44033251]), array([0.5]), array([0.42356896]), array([0.3841701]), array([0.95947674]), array([0.888508])]
+raw_sum:  [array([1.11522252]), array([0.56996981]), array([1.1674065]), array([1.01340964]), array([0.90062277]), array([0.5]), array([0.85911959]), array([0.92040998]), array([1.26276441]), array([1.29063083])]
+Selected Attackers in FL iteration-37: [130, 96]
+Predicted Attackers in FL iteration-37: [3, 12, 198]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[-6.16597235e-01]
+ [-2.25109622e-01]
+ [ 3.09505612e-01]
+ [ 1.00000000e+00]
+ [ 1.66661918e-01]
+ [-4.58391441e-04]
+ [-2.19363570e-01]
+ [-1.44590572e-01]
+ [-3.03330980e-02]
+ [ 5.09198010e-01]]
+At round:  38
+pred_attackers_indx:  [0 1 6]
+real attackers indx:  [2, 3, 4, 8]
+global_pred_attackers_indx:  [4, 107, 17]
+trustworthy score is:  [0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0]
+contribution score is:  [0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0]
+f_score:  [0.0, 0.0, 1.0, 2.0, 1.0, 1.0, 0.0, 1.0, 2.0, 1.0]
+f_score is:  [0.0, 0.0, 1.0, 2.0, 1.0, 1.0, 0.0, 1.0, 2.0, 1.0]
+stack dis is:  [[0.         1.        ]
+ [0.47442775 0.        ]
+ [1.         0.86388343]
+ [0.97120887 0.7064878 ]
+ [0.94760372 0.69607957]
+ [0.81437768 0.25685209]
+ [0.66720315 0.06649705]
+ [0.60193133 0.0880074 ]
+ [0.92471388 0.68821557]
+ [0.35085837 0.65398404]]
+abnormal_score:  [0.0, 0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0]
+hb_clusterer.labels_ is:  [-1  1  0  0  0  1  1  1  0 -1]
+raw_t_score:  [[1.        ]
+ [0.75783231]
+ [0.42712827]
+ [0.        ]
+ [0.51548899]
+ [0.61886682]
+ [0.7542779 ]
+ [0.70802458]
+ [0.63734681]
+ [0.3036019 ]]
+raw_temp_score:  [array([0.5]), array([0.23721388]), array([0.93194171]), array([0.83884833]), array([0.82184164]), array([0.53561488]), array([0.3668501]), array([0.34496937]), array([0.80646472]), array([0.5024212])]
+raw_sum:  [array([1.5]), array([0.99504619]), array([1.35906999]), array([0.83884833]), array([1.33733064]), array([1.15448171]), array([1.121128]), array([1.05299394]), array([1.44381154]), array([0.8060231])]
+Selected Attackers in FL iteration-38: [73, 129, 103, 83]
+Predicted Attackers in FL iteration-38: [4, 107, 17]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[ 5.30036390e-02]
+ [ 2.78204709e-01]
+ [ 1.44560695e-01]
+ [ 7.48987794e-02]
+ [ 2.33902156e-01]
+ [ 1.00000000e+00]
+ [-6.34658732e-04]
+ [ 3.25599641e-01]
+ [-8.09406936e-01]
+ [-1.51647165e-01]]
+At round:  39
+pred_attackers_indx:  [8]
+real attackers indx:  [1, 2, 3, 6]
+global_pred_attackers_indx:  [162]
+trustworthy score is:  [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0]
+contribution score is:  [1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0]
+f_score:  [2.0, 2.0, 2.0, 2.0, 1.0, 2.0, 2.0, 1.0, 0.0, 2.0]
+f_score is:  [2.0, 2.0, 2.0, 2.0, 1.0, 2.0, 2.0, 1.0, 0.0, 2.0]
+stack dis is:  [[0.8532037  0.39031057]
+ [0.99657316 0.6732174 ]
+ [1.         0.84740091]
+ [0.97473701 0.86879683]
+ [0.65588142 0.42542061]
+ [0.83256296 0.39228993]
+ [0.948438   1.        ]
+ [0.64576028 0.27268015]
+ [0.         0.        ]
+ [0.52598024 0.23950233]]
+abnormal_score:  [0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0]
+hb_clusterer.labels_ is:  [ 0  1  1  1  0  0  1  0 -1  0]
+raw_t_score:  [[0.5233739 ]
+ [0.39891264]
+ [0.47277331]
+ [0.51127317]
+ [0.42339721]
+ [0.        ]
+ [0.55301803]
+ [0.37271901]
+ [1.        ]
+ [0.6364777 ]]
+raw_temp_score:  [array([0.62175713]), array([0.83489528]), array([0.92370046]), array([0.92176692]), array([0.54065101]), array([0.61242644]), array([0.974219]), array([0.45922021]), array([0.]), array([0.38274128])]
+raw_sum:  [array([1.14513103]), array([1.23380792]), array([1.39647377]), array([1.43304009]), array([0.96404822]), array([0.61242644]), array([1.52723703]), array([0.83193922]), array([1.]), array([1.01921898])]
+Selected Attackers in FL iteration-39: [152, 123, 91, 172]
+Predicted Attackers in FL iteration-39: [162]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[ 0.13900185]
+ [-0.39064622]
+ [ 0.44782034]
+ [-0.39193049]
+ [ 0.06436016]
+ [-0.55883312]
+ [-0.35283706]
+ [ 1.00000012]
+ [ 0.60838681]
+ [ 0.25564495]]
+At round:  40
+pred_attackers_indx:  [1 3 5 6]
+real attackers indx:  [3, 6, 9]
+global_pred_attackers_indx:  [86, 41, 14, 34]
+trustworthy score is:  [1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0]
+contribution score is:  [0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0]
+f_score:  [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 2.0]
+f_score is:  [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 2.0]
+stack dis is:  [[0.86865407 0.16552542]
+ [0.69613341 0.0704157 ]
+ [0.95365998 0.        ]
+ [0.87470484 0.43554214]
+ [0.40746753 0.25491993]
+ [0.         0.11225535]
+ [0.75059032 1.        ]
+ [1.         0.06038712]
+ [0.71546635 0.1228231 ]
+ [0.91927391 0.42761633]]
+abnormal_score:  [1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0]
+hb_clusterer.labels_ is:  [-1 -1 -1 -1 -1 -1 -1 -1 -1 -1]
+raw_t_score:  [[0.55233507]
+ [0.89210719]
+ [0.35422633]
+ [0.89293105]
+ [0.60021812]
+ [1.        ]
+ [0.8678524 ]
+ [0.        ]
+ [0.25122206]
+ [0.47750789]]
+raw_temp_score:  [array([0.51708975]), array([0.38327456]), array([0.47682999]), array([0.65512349]), array([0.33119373]), array([0.05612768]), array([0.87529516]), array([0.53019356]), array([0.41914472]), array([0.67344512])]
+raw_sum:  [array([1.06942482]), array([1.27538174]), array([0.83105632]), array([1.54805454]), array([0.93141186]), array([1.05612768]), array([1.74314756]), array([0.53019356]), array([0.67036679]), array([1.15095301])]
+Selected Attackers in FL iteration-40: [41, 34, 92]
+Predicted Attackers in FL iteration-40: [86, 41, 14, 34]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[ 0.23817913]
+ [-0.32155469]
+ [-0.42263931]
+ [-0.44446662]
+ [-0.05042552]
+ [ 0.40549964]
+ [ 0.16107804]
+ [ 0.46331832]
+ [-0.21379203]
+ [ 1.        ]]
+At round:  41
+pred_attackers_indx:  [1 2 3 8]
+real attackers indx:  [8]
+global_pred_attackers_indx:  [46, 77, 75, 27]
+trustworthy score is:  [1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0]
+contribution score is:  [1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0]
+f_score:  [2.0, 1.0, 0.0, 0.0, 1.0, 1.0, 2.0, 1.0, 1.0, 2.0]
+f_score is:  [2.0, 1.0, 0.0, 0.0, 1.0, 1.0, 2.0, 1.0, 1.0, 2.0]
+stack dis is:  [[0.42534023 0.2909814 ]
+ [0.68391796 0.5858048 ]
+ [0.         0.        ]
+ [0.63638106 0.49467511]
+ [0.79930995 0.22094904]
+ [0.63379337 0.12523591]
+ [0.80716887 0.04313831]
+ [0.67490895 0.09537611]
+ [1.         1.        ]
+ [0.72627947 0.07670531]]
+abnormal_score:  [0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0]
+hb_clusterer.labels_ is:  [-1 -1 -1 -1 -1 -1 -1 -1 -1 -1]
+raw_t_score:  [[0.52740635]
+ [0.91490843]
+ [0.98488902]
+ [1.        ]
+ [0.7272065 ]
+ [0.41157086]
+ [0.58078321]
+ [0.37154315]
+ [0.84030466]
+ [0.        ]]
+raw_temp_score:  [array([0.35816082]), array([0.63486138]), array([0.]), array([0.56552809]), array([0.5101295]), array([0.37951464]), array([0.42515359]), array([0.38514253]), array([1.]), array([0.40149239])]
+raw_sum:  [array([0.88556716]), array([1.54976981]), array([0.98488902]), array([1.56552809]), array([1.237336]), array([0.7910855]), array([1.0059368]), array([0.75668568]), array([1.84030466]), array([0.40149239])]
+Selected Attackers in FL iteration-41: [27]
+Predicted Attackers in FL iteration-41: [46, 77, 75, 27]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[-0.60395509]
+ [ 0.06392243]
+ [ 0.08505142]
+ [-0.24869663]
+ [ 0.58225679]
+ [-0.70312864]
+ [-0.21959087]
+ [ 1.        ]
+ [-0.25411648]
+ [ 0.33578607]]
+At round:  42
+pred_attackers_indx:  [0 5]
+real attackers indx:  [5]
+global_pred_attackers_indx:  [142, 96]
+trustworthy score is:  [0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0]
+contribution score is:  [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0]
+f_score:  [0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 2.0, 1.0, 2.0]
+f_score is:  [0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 2.0, 1.0, 2.0]
+stack dis is:  [[0.56579485 0.29300896]
+ [0.48365345 0.46965429]
+ [1.         0.25961588]
+ [0.88383735 0.55549296]
+ [0.         0.        ]
+ [0.90263588 1.        ]
+ [0.71148345 0.46299616]
+ [0.74090723 0.20225352]
+ [0.62893339 0.2640717 ]
+ [0.29434001 0.13321383]]
+abnormal_score:  [0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0]
+hb_clusterer.labels_ is:  [-1 -1 -1 -1 -1 -1 -1 -1 -1 -1]
+raw_t_score:  [[0.94176979]
+ [0.54962236]
+ [0.53721637]
+ [0.7331781 ]
+ [0.24527989]
+ [1.        ]
+ [0.71608852]
+ [0.        ]
+ [0.7363604 ]
+ [0.38999633]]
+raw_temp_score:  [array([0.42940191]), array([0.47665387]), array([0.62980794]), array([0.71966515]), array([0.]), array([0.95131794]), array([0.5872398]), array([0.47158038]), array([0.44650255]), array([0.21377692])]
+raw_sum:  [array([1.37117169]), array([1.02627623]), array([1.1670243]), array([1.45284326]), array([0.24527989]), array([1.95131794]), array([1.30332833]), array([0.47158038]), array([1.18286294]), array([0.60377325])]
+Selected Attackers in FL iteration-42: [96]
+Predicted Attackers in FL iteration-42: [142, 96]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[ 0.42018482]
+ [-0.64328414]
+ [ 0.5832296 ]
+ [ 1.        ]
+ [ 0.63140672]
+ [ 0.25515959]
+ [-0.30821976]
+ [ 0.40339062]
+ [ 0.21804565]
+ [ 0.50108856]]
+At round:  43
+pred_attackers_indx:  [1 6]
+real attackers indx:  [7, 8]
+global_pred_attackers_indx:  [163, 176]
+trustworthy score is:  [1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0]
+contribution score is:  [0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0]
+f_score:  [1.0, 0.0, 1.0, 2.0, 2.0, 2.0, 1.0, 2.0, 2.0, 1.0]
+f_score is:  [1.0, 0.0, 1.0, 2.0, 2.0, 2.0, 1.0, 2.0, 2.0, 1.0]
+stack dis is:  [[0.9551199  0.3553426 ]
+ [0.         0.24422534]
+ [0.91166883 0.00758877]
+ [1.         0.        ]
+ [0.94998437 0.15404642]
+ [0.95328897 0.13676397]
+ [0.80145581 0.4669584 ]
+ [0.95052025 1.        ]
+ [0.98186933 0.93363984]
+ [0.89157326 0.16379549]]
+abnormal_score:  [1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0.0]
+hb_clusterer.labels_ is:  [-1 -1 -1 -1 -1 -1 -1 -1 -1 -1]
+raw_t_score:  [[0.35283927]
+ [1.        ]
+ [0.25362041]
+ [0.        ]
+ [0.22430283]
+ [0.45326331]
+ [0.79610076]
+ [0.36305917]
+ [0.47584853]
+ [0.30360631]]
+raw_temp_score:  [array([0.65523125]), array([0.12211267]), array([0.4596288]), array([0.5]), array([0.55201539]), array([0.54502647]), array([0.63420711]), array([0.97526013]), array([0.95775459]), array([0.52768438])]
+raw_sum:  [array([1.00807052]), array([1.12211267]), array([0.71324921]), array([0.5]), array([0.77631822]), array([0.99828979]), array([1.43030787]), array([1.3383193]), array([1.43360312]), array([0.83129069])]
+Selected Attackers in FL iteration-43: [104, 60]
+Predicted Attackers in FL iteration-43: [163, 176]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[-0.36572874]
+ [-0.13794588]
+ [-0.17037085]
+ [-0.34535366]
+ [ 0.32550406]
+ [ 0.14414924]
+ [-0.27866778]
+ [ 1.        ]
+ [-0.06086316]
+ [ 0.14971417]]
+At round:  44
+pred_attackers_indx:  [0 1 2 3 6 8]
+real attackers indx:  [1, 6, 8]
+global_pred_attackers_indx:  [161, 169, 196, 31, 123, 83]
+trustworthy score is:  [0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 0.0, 1.0]
+contribution score is:  [0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0.0]
+f_score:  [0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0]
+f_score is:  [0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0]
+stack dis is:  [[0.95226521 0.11778811]
+ [0.97530624 0.80504287]
+ [0.67159246 0.32001163]
+ [0.80789423 0.77902921]
+ [0.18598094 0.        ]
+ [0.         0.13239355]
+ [0.97054248 1.        ]
+ [0.85728174 0.10608923]
+ [1.         0.97296905]
+ [0.81975501 0.47260573]]
+abnormal_score:  [0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0]
+hb_clusterer.labels_ is:  [-1  1  0  1 -1 -1  1  0  1  0]
+raw_t_score:  [[1.        ]
+ [0.83321515]
+ [0.85695703]
+ [0.98508117]
+ [0.49387255]
+ [0.62666233]
+ [0.93625311]
+ [0.        ]
+ [0.77677443]
+ [0.62258764]]
+raw_temp_score:  [array([0.53502666]), array([0.89017456]), array([0.49580204]), array([0.79346172]), array([0.09299047]), array([0.06619677]), array([0.98527124]), array([0.48168549]), array([0.98648452]), array([0.64618037])]
+raw_sum:  [array([1.53502666]), array([1.72338971]), array([1.35275908]), array([1.77854289]), array([0.58686302]), array([0.69285911]), array([1.92152435]), array([0.48168549]), array([1.76325895]), array([1.268768])]
+Selected Attackers in FL iteration-44: [169, 123, 83]
+Predicted Attackers in FL iteration-44: [161, 169, 196, 31, 123, 83]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[-0.03640418]
+ [-0.12545222]
+ [-0.19166009]
+ [ 0.3617743 ]
+ [ 0.16598159]
+ [-0.4483335 ]
+ [ 0.14070988]
+ [ 0.12174127]
+ [ 1.00000012]
+ [-0.39142492]]
+At round:  45
+pred_attackers_indx:  [1 2 5 9]
+real attackers indx:  [1, 2, 5]
+global_pred_attackers_indx:  [15, 80, 27, 66]
+trustworthy score is:  [1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 0.0]
+contribution score is:  [0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 1.0]
+f_score:  [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 2.0, 1.0]
+f_score is:  [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 2.0, 1.0]
+stack dis is:  [[0.         0.        ]
+ [0.60201221 0.84396688]
+ [0.48243444 0.97330442]
+ [0.18637638 0.11880915]
+ [0.65957447 0.28454259]
+ [0.66089395 1.        ]
+ [0.51921491 0.3113959 ]
+ [0.32442685 0.53048107]
+ [1.         0.1805205 ]
+ [0.630381   0.32062303]]
+abnormal_score:  [0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0]
+hb_clusterer.labels_ is:  [-1  1  1  0  0  1  0  0  0  0]
+raw_t_score:  [[0.71558395]
+ [0.77706705]
+ [0.82278019]
+ [0.44066216]
+ [0.57584697]
+ [1.        ]
+ [0.59329579]
+ [0.60639264]
+ [0.        ]
+ [0.96070755]]
+raw_temp_score:  [array([0.]), array([0.72298954]), array([0.72786943]), array([0.15259276]), array([0.47205853]), array([0.83044697]), array([0.4153054]), array([0.42745396]), array([0.59026025]), array([0.47550201])]
+raw_sum:  [array([0.71558395]), array([1.50005659]), array([1.55064962]), array([0.59325493]), array([1.0479055]), array([1.83044697]), array([1.0086012]), array([1.03384661]), array([0.59026025]), array([1.43620956])]
+Selected Attackers in FL iteration-45: [15, 80, 27]
+Predicted Attackers in FL iteration-45: [15, 80, 27, 66]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[ 0.39694181]
+ [-0.4223983 ]
+ [ 0.14236687]
+ [ 0.05332349]
+ [-0.58749694]
+ [ 0.26618379]
+ [ 0.60689664]
+ [-0.12831385]
+ [-0.40093714]
+ [ 1.        ]]
+At round:  46
+pred_attackers_indx:  [1 4 8]
+real attackers indx:  [0, 1, 2, 5, 7]
+global_pred_attackers_indx:  [83, 82, 162]
+trustworthy score is:  [1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0]
+contribution score is:  [1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0]
+f_score:  [2.0, 1.0, 2.0, 2.0, 0.0, 2.0, 1.0, 2.0, 0.0, 2.0]
+f_score is:  [2.0, 1.0, 2.0, 2.0, 0.0, 2.0, 1.0, 2.0, 0.0, 2.0]
+stack dis is:  [[1.         1.        ]
+ [0.86366722 0.86070187]
+ [0.9631533  0.7975768 ]
+ [0.81760884 0.38405563]
+ [0.12489091 0.09660537]
+ [0.88451469 0.76717927]
+ [0.85271017 0.48567946]
+ [0.86163095 0.94253862]
+ [0.         0.        ]
+ [0.90031998 0.26257304]]
+abnormal_score:  [1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0.0, 0.0]
+hb_clusterer.labels_ is:  [ 0  0  0  1 -1  0  1  0 -1  1]
+raw_t_score:  [[0.37987991]
+ [0.89600066]
+ [0.54024238]
+ [0.59633281]
+ [1.        ]
+ [0.46224732]
+ [0.24762464]
+ [0.71075026]
+ [0.88248179]
+ [0.        ]]
+raw_temp_score:  [array([1.]), array([0.86218454]), array([0.88036505]), array([0.60083224]), array([0.11074814]), array([0.82584698]), array([0.66919482]), array([0.90208479]), array([0.]), array([0.58144651])]
+raw_sum:  [array([1.37987991]), array([1.7581852]), array([1.42060743]), array([1.19716505]), array([1.11074814]), array([1.2880943]), array([0.91681946]), array([1.61283504]), array([0.88248179]), array([0.58144651])]
+Selected Attackers in FL iteration-46: [170, 83, 32, 69, 104]
+Predicted Attackers in FL iteration-46: [83, 82, 162]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[-0.08385236]
+ [-0.40614983]
+ [-0.46796533]
+ [-0.18796979]
+ [ 1.        ]
+ [ 0.60033345]
+ [ 0.57469928]
+ [-0.36998287]
+ [ 0.18627657]
+ [-0.04153131]]
+At round:  47
+pred_attackers_indx:  [1 2 3 7]
+real attackers indx:  [6, 8]
+global_pred_attackers_indx:  [82, 81, 132, 70]
+trustworthy score is:  [1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0]
+contribution score is:  [1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 0.0]
+f_score:  [2.0, 0.0, 1.0, 1.0, 2.0, 1.0, 2.0, 1.0, 2.0, 1.0]
+f_score is:  [2.0, 0.0, 1.0, 1.0, 2.0, 1.0, 2.0, 1.0, 2.0, 1.0]
+stack dis is:  [[0.12295877 0.17954156]
+ [0.         0.        ]
+ [0.45707357 0.2087446 ]
+ [0.69967664 0.51537646]
+ [0.86079224 0.46064116]
+ [0.60687146 0.28387307]
+ [1.         0.75556734]
+ [0.35772029 0.42201648]
+ [0.88496362 1.        ]
+ [0.52190784 0.54670038]]
+abnormal_score:  [0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 0.0, 1.0, 1.0]
+hb_clusterer.labels_ is:  [-1 -1  0  1 -1 -1 -1  0 -1  1]
+raw_t_score:  [[0.73833648]
+ [0.95789035]
+ [1.        ]
+ [0.80926284]
+ [0.        ]
+ [0.27225885]
+ [0.28972123]
+ [0.93325287]
+ [0.5543206 ]
+ [0.70950675]]
+raw_temp_score:  [array([0.15125017]), array([0.]), array([0.33290908]), array([0.60752655]), array([0.6607167]), array([0.44537227]), array([0.87778367]), array([0.38986838]), array([0.94248181]), array([0.53430411])]
+raw_sum:  [array([0.88958665]), array([0.95789035]), array([1.33290908]), array([1.41678938]), array([0.6607167]), array([0.71763111]), array([1.1675049]), array([1.32312126]), array([1.49680241]), array([1.24381086])]
+Selected Attackers in FL iteration-47: [159, 5]
+Predicted Attackers in FL iteration-47: [82, 81, 132, 70]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[-0.27382931]
+ [-0.25203365]
+ [-0.34852552]
+ [ 0.99999994]
+ [-0.5424118 ]
+ [ 0.351161  ]
+ [-0.16469087]
+ [-0.08008046]
+ [ 0.40422714]
+ [ 0.40082195]]
+At round:  48
+pred_attackers_indx:  [0 1 2 4 6]
+real attackers indx:  [8, 9]
+global_pred_attackers_indx:  [47, 25, 134, 137, 36]
+trustworthy score is:  [0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 1.0, 1.0]
+contribution score is:  [1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 0.0]
+f_score:  [1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 1.0, 2.0, 2.0, 1.0]
+f_score is:  [1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 1.0, 2.0, 2.0, 1.0]
+stack dis is:  [[0.78837662 0.56895661]
+ [0.62584416 0.15076188]
+ [0.61175325 0.06863378]
+ [0.94506494 0.3317407 ]
+ [0.34207792 0.11854339]
+ [0.9011039  0.60343492]
+ [0.         0.        ]
+ [0.68383117 0.44834711]
+ [0.985      1.        ]
+ [1.         0.91741994]]
+abnormal_score:  [1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 1.0, 1.0]
+hb_clusterer.labels_ is:  [ 1  0  0  1  0  1 -1  1 -1 -1]
+raw_t_score:  [[0.82586849]
+ [0.81173759]
+ [0.87429668]
+ [0.        ]
+ [1.        ]
+ [0.42066519]
+ [0.75511018]
+ [0.70025426]
+ [0.38626055]
+ [0.38846825]]
+raw_temp_score:  [array([0.67866662]), array([0.38830302]), array([0.34019351]), array([0.63840282]), array([0.23031066]), array([0.75226941]), array([0.]), array([0.56608914]), array([0.9925]), array([0.95870997])]
+raw_sum:  [array([1.5045351]), array([1.20004061]), array([1.21449019]), array([0.63840282]), array([1.23031066]), array([1.1729346]), array([0.75511018]), array([1.2663434]), array([1.37876055]), array([1.34717822])]
+Selected Attackers in FL iteration-48: [178, 93]
+Predicted Attackers in FL iteration-48: [47, 25, 134, 137, 36]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[-0.45535782]
+ [ 0.04369492]
+ [ 1.        ]
+ [ 0.48513758]
+ [ 0.20762357]
+ [-0.24972525]
+ [-0.16690309]
+ [ 0.26536033]
+ [ 0.54139501]
+ [-0.0746557 ]]
+At round:  49
+pred_attackers_indx:  [0 5 6]
+real attackers indx:  [0, 5, 9]
+global_pred_attackers_indx:  [130, 15, 124]
+trustworthy score is:  [0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0]
+contribution score is:  [0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+f_score:  [0.0, 1.0, 2.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0]
+f_score is:  [0.0, 1.0, 2.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0]
+stack dis is:  [[0.79674035 0.77708841]
+ [0.33064818 0.59594505]
+ [1.         0.33314868]
+ [0.85443987 0.20385553]
+ [0.         0.        ]
+ [0.87186212 1.        ]
+ [0.55470214 0.30223798]
+ [0.70756838 0.32062929]
+ [0.91607344 0.85120762]
+ [0.92487823 0.98282739]]
+abnormal_score:  [1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0]
+hb_clusterer.labels_ is:  [ 0 -1  1  1 -1  0  1  1  0  0]
+raw_t_score:  [[1.        ]
+ [0.65709275]
+ [0.        ]
+ [0.35377033]
+ [0.54445472]
+ [0.85870652]
+ [0.80179807]
+ [0.50478285]
+ [0.31511494]
+ [0.73841339]]
+raw_temp_score:  [array([0.78691438]), array([0.46329662]), array([0.66657434]), array([0.5291477]), array([0.]), array([0.93593106]), array([0.42847006]), array([0.51409884]), array([0.88364053]), array([0.95385281])]
+raw_sum:  [array([1.78691438]), array([1.12038937]), array([0.66657434]), array([0.88291803]), array([0.54445472]), array([1.79463758]), array([1.23026813]), array([1.01888169]), array([1.19875547]), array([1.6922662])]
+Selected Attackers in FL iteration-49: [130, 15, 169]
+Predicted Attackers in FL iteration-49: [130, 15, 124]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[-0.64279336]
+ [-0.31350577]
+ [ 0.35093966]
+ [-0.03978093]
+ [ 1.00000012]
+ [ 0.39557895]
+ [-0.10554806]
+ [ 0.34303483]
+ [ 0.21932246]
+ [-0.69103557]]
+At round:  50
+pred_attackers_indx:  [0 1 9]
+real attackers indx:  [2, 5]
+global_pred_attackers_indx:  [62, 48, 8]
+trustworthy score is:  [0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0]
+contribution score is:  [0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0]
+f_score:  [0.0, 0.0, 2.0, 1.0, 2.0, 2.0, 1.0, 1.0, 1.0, 0.0]
+f_score is:  [0.0, 0.0, 2.0, 1.0, 2.0, 2.0, 1.0, 1.0, 1.0, 0.0]
+stack dis is:  [[0.25132342 0.28655846]
+ [0.50768843 0.72715096]
+ [1.         1.        ]
+ [0.24930678 0.24369682]
+ [0.85833123 0.06271667]
+ [0.79480716 0.80909234]
+ [0.62616587 0.26410337]
+ [0.         0.        ]
+ [0.60574742 0.40064608]
+ [0.56591883 0.31279546]]
+abnormal_score:  [0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0]
+hb_clusterer.labels_ is:  [ 1  0 -1  1 -1  0  1 -1  1  1]
+raw_t_score:  [[0.9714718 ]
+ [0.7767464 ]
+ [0.38382422]
+ [0.61487824]
+ [0.        ]
+ [0.35742662]
+ [0.65376987]
+ [0.38849877]
+ [0.46165653]
+ [1.        ]]
+raw_temp_score:  [array([0.26894094]), array([0.6174197]), array([1.]), array([0.2465018]), array([0.46052395]), array([0.80194975]), array([0.44513462]), array([0.]), array([0.50319675]), array([0.43935715])]
+raw_sum:  [array([1.24041274]), array([1.3941661]), array([1.38382422]), array([0.86138004]), array([0.46052395]), array([1.15937637]), array([1.09890449]), array([0.38849877]), array([0.96485327]), array([1.43935715])]
+Selected Attackers in FL iteration-50: [182, 0]
+Predicted Attackers in FL iteration-50: [62, 48, 8]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[ 0.67525625]
+ [ 0.53209579]
+ [-0.60097188]
+ [-0.09600452]
+ [ 0.72592533]
+ [-0.23059843]
+ [ 0.99999994]
+ [ 0.02429132]
+ [ 0.04078057]
+ [ 0.04088445]]
+At round:  51
+pred_attackers_indx:  [2 5]
+real attackers indx:  [0]
+global_pred_attackers_indx:  [135, 136]
+trustworthy score is:  [1.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0]
+contribution score is:  [0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0]
+f_score:  [1.0, 1.0, 0.0, 2.0, 1.0, 1.0, 2.0, 1.0, 2.0, 2.0]
+f_score is:  [1.0, 1.0, 0.0, 2.0, 1.0, 1.0, 2.0, 1.0, 2.0, 2.0]
+stack dis is:  [[1.         1.        ]
+ [0.97399929 0.83337425]
+ [0.         0.        ]
+ [0.94539573 0.84536071]
+ [0.96314165 0.87496931]
+ [0.97606299 0.86858649]
+ [0.98489412 0.85264012]
+ [0.92521427 0.80327466]
+ [0.88140257 0.82912615]
+ [0.93042929 0.8539423 ]]
+abnormal_score:  [1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+hb_clusterer.labels_ is:  [-1 -1 -1 -1 -1 -1 -1 -1 -1 -1]
+raw_t_score:  [[0.2028416 ]
+ [0.29226258]
+ [1.        ]
+ [0.68458698]
+ [0.17119265]
+ [0.76865711]
+ [0.        ]
+ [0.60944772]
+ [0.59914819]
+ [0.59908331]]
+raw_temp_score:  [array([1.]), array([0.90368677]), array([0.]), array([0.89537822]), array([0.91905548]), array([0.92232474]), array([0.91876712]), array([0.86424447]), array([0.85526436]), array([0.89218579])]
+raw_sum:  [array([1.2028416]), array([1.19594935]), array([1.]), array([1.5799652]), array([1.09024814]), array([1.69098185]), array([0.91876712]), array([1.47369219]), array([1.45441255]), array([1.4912691])]
+Selected Attackers in FL iteration-51: [103]
+Predicted Attackers in FL iteration-51: [135, 136]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[ 0.39372197]
+ [ 0.44167814]
+ [-0.29652947]
+ [ 1.        ]
+ [-0.70981389]
+ [ 0.44622564]
+ [ 0.22421503]
+ [ 0.40343639]
+ [ 0.53548121]
+ [-0.46842581]]
+At round:  52
+pred_attackers_indx:  [2 4 9]
+real attackers indx:  [2, 9]
+global_pred_attackers_indx:  [182, 14, 42]
+trustworthy score is:  [1.0, 1.0, 0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0]
+contribution score is:  [0.0, 0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0]
+f_score:  [1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0]
+f_score is:  [1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0]
+stack dis is:  [[0.26419516 0.2269595 ]
+ [0.94396506 0.05450585]
+ [0.68008949 0.88520873]
+ [1.         0.05810697]
+ [0.         0.18876984]
+ [0.92500266 0.10238741]
+ [0.91637371 0.2476326 ]
+ [0.72664323 0.00244521]
+ [0.34441249 0.        ]
+ [0.5082561  1.        ]]
+abnormal_score:  [0.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0]
+hb_clusterer.labels_ is:  [ 1  0 -1  0 -1  0  0  0  1 -1]
+raw_t_score:  [[0.35458715]
+ [0.32653955]
+ [0.7582869 ]
+ [0.        ]
+ [1.        ]
+ [0.3238799 ]
+ [0.4537248 ]
+ [0.34890558]
+ [0.27167798]
+ [0.85882201]]
+raw_temp_score:  [array([0.24557733]), array([0.49923545]), array([0.78264911]), array([0.52905348]), array([0.09438492]), array([0.51369504]), array([0.58200315]), array([0.36454422]), array([0.17220624]), array([0.75412805])]
+raw_sum:  [array([0.60016448]), array([0.825775]), array([1.54093601]), array([0.52905348]), array([1.09438492]), array([0.83757494]), array([1.03572795]), array([0.7134498]), array([0.44388422]), array([1.61295006])]
+Selected Attackers in FL iteration-52: [182, 42]
+Predicted Attackers in FL iteration-52: [182, 14, 42]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+raw score:=  [[ 0.52606946]
+ [ 1.        ]
+ [ 0.13524546]
+ [ 0.41211107]
+ [ 0.24374248]
+ [-0.23118404]
+ [-0.19417667]
+ [-0.67868114]
+ [ 0.31394786]
+ [ 0.35352281]]
+At round:  53
+pred_attackers_indx:  [7]
+real attackers indx:  [0, 3]
+global_pred_attackers_indx:  [79]
+trustworthy score is:  [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0]
+contribution score is:  [1.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+f_score:  [2.0, 2.0, 1.0, 2.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0]
+f_score is:  [2.0, 2.0, 1.0, 2.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0]
+stack dis is:  [[0.9207879  1.        ]
+ [0.9981006  0.48375912]
+ [0.95075624 0.51779523]
+ [0.9425255  0.95879   ]
+ [0.95202251 0.65501574]
+ [0.69975378 0.51002351]
+ [1.         0.50316847]
+ [0.         0.        ]
+ [0.75589166 0.4427484 ]
+ [0.91846641 0.45063967]]
+abnormal_score:  [1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0]
+hb_clusterer.labels_ is:  [-1 -1 -1 -1 -1 -1 -1 -1 -1 -1]
+raw_t_score:  [[0.28232315]
+ [0.        ]
+ [0.51513925]
+ [0.35020881]
+ [0.45050695]
+ [0.73342341]
+ [0.71137791]
+ [1.        ]
+ [0.4086852 ]
+ [0.38511018]]
+raw_temp_score:  [array([0.96039395]), array([0.74092986]), array([0.73427573]), array([0.95065775]), array([0.80351913]), array([0.60488865]), array([0.75158423]), array([0.]), array([0.59932003]), array([0.68455304])]
+raw_sum:  [array([1.2427171]), array([0.74092986]), array([1.24941499]), array([1.30086656]), array([1.25402608]), array([1.33831205]), array([1.46296214]), array([1.]), array([1.00800523]), array([1.06966322])]
+Selected Attackers in FL iteration-53: [91, 0]
+Predicted Attackers in FL iteration-53: [79]
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified

@@ -883,18 +883,20 @@ def extract_classifier_layer(net_list, global_avg_net, prev_net):
         weight_list.append(weight)
         weight_update.append(weight-avg_weight)
 
-    return bias_list, weight_list, avg_bias, avg_weight, weight_update, glob_update
+    return bias_list, weight_list, avg_bias, avg_weight, weight_update, glob_update, prev_avg_weight
 
 def get_distance_on_avg_net(weight_list, avg_weight, weight_update, total_cli = 10):
     eucl_dis = []
     cs_dis = []
     for i in range(total_cli):
+        # euclidean distance btw weight updates
         point = weight_update[i].flatten().reshape(-1,1)
         base_p = avg_weight.flatten().reshape(-1,1)
         ds = point - base_p
         sum_sq = np.dot(ds.T, ds)
         eucl_dis.append(float(np.sqrt(sum_sq).flatten()))
     for i in range(total_cli):
+        # cosine similarity
         point = weight_list[i].flatten()
         base_p = avg_weight.flatten()
         cs = dot(point, base_p)/(norm(point)*norm(base_p))

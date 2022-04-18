@@ -740,7 +740,7 @@ class FixedPoolFederatedLearningTrainer(FederatedLearningTrainer):
         elif arguments["defense_technique"] == "kmeans-based":
             self._defender = KmeansBased(num_workers=self.part_nets_per_round, num_adv=1)
         elif arguments["defense_technique"] == "krum-multilayer":
-            self._defender = KrMLRFL(num_workers=self.part_nets_per_round, num_adv=1, num_valid=2)
+            self._defender = KrMLRFL(num_workers=self.part_nets_per_round, num_adv=1, num_valid=1)
 
         else:
             NotImplementedError("Unsupported defense method !")
