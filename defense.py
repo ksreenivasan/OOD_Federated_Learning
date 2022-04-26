@@ -551,8 +551,13 @@ class KrMLRFL(Defense):
         self.num_valid = num_valid
         self.num_workers = num_workers
         self.s = num_adv
+        self.choosing_frequencies = {}
 
     def exec(self, client_models, num_dps,net_freq, net_avg, g_user_indices, pseudo_avg_net, round, selected_attackers, device, *args, **kwargs):
+        # increase the frequency of the selected choosen clients
+        for cli in g_user_indices:
+            self.choosing_frequencies[cli] = self.choosing_frequencies.get(cli, 0) + 1
+        
         vectorize_nets = [vectorize_net(cm).detach().cpu().numpy() for cm in client_models]
         trusted_models = []
         neighbor_distances = []
@@ -580,6 +585,7 @@ class KrMLRFL(Defense):
             topk_ind = np.argpartition(dists, nb_in_score)[:nb_in_score]
             scores.append(sum(np.take(dists, topk_ind)))
         
+        # use krum as the baseline to improve, mark the one chosen by krum as trusted
         if self.num_valid == 1:
             i_star = scores.index(min(scores))
             logger.info("@@@@ The chosen trusted worker is user: {}, which is global user: {}".format(scores.index(min(scores)), g_user_indices[scores.index(min(scores))]))
@@ -615,7 +621,6 @@ class KrMLRFL(Defense):
                 trusted_models.append(ind)
         
         # From now on, trusted_models contain the index base models treated as valid users.
-        vectorize_nets = [vectorize_net(cm).detach().cpu().numpy() for cm in client_models]
         # pseudo_avg_w = vectorize_net(pseudo_avg_net).detach().cpu().numpy()
         # baseline_net = self.weighted_average_oracle(vectorize_nets, net_freq)
         # glob_model = client_models[0]
