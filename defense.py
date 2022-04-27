@@ -552,12 +552,9 @@ class KrMLRFL(Defense):
         self.num_workers = num_workers
         self.s = num_adv
         self.choosing_frequencies = {}
+        self.accumulate_t_scores = {}
 
     def exec(self, client_models, num_dps,net_freq, net_avg, g_user_indices, pseudo_avg_net, round, selected_attackers, device, *args, **kwargs):
-        # increase the frequency of the selected choosen clients
-        for cli in g_user_indices:
-            self.choosing_frequencies[cli] = self.choosing_frequencies.get(cli, 0) + 1
-        
         vectorize_nets = [vectorize_net(cm).detach().cpu().numpy() for cm in client_models]
         trusted_models = []
         neighbor_distances = []
@@ -621,58 +618,31 @@ class KrMLRFL(Defense):
                 trusted_models.append(ind)
         
         # From now on, trusted_models contain the index base models treated as valid users.
-        # pseudo_avg_w = vectorize_net(pseudo_avg_net).detach().cpu().numpy()
-        # baseline_net = self.weighted_average_oracle(vectorize_nets, net_freq)
-        # glob_model = client_models[0]
-        # load_model_weight(glob_model, torch.from_numpy(baseline_net.astype(np.float32)).to(device)) 
         bias_list, weight_list, avg_bias, avg_weight, weight_update, glob_update, prev_avg_weight = extract_classifier_layer(client_models, pseudo_avg_net, net_avg)
-        t_score, raw_t_score = self.get_trustworthy_scores(trusted_models, weight_update)
-        c_score = self.get_contribution_scores(trusted_models, weight_update, glob_update)
+        raw_t_score = self.get_trustworthy_scores(glob_update, weight_update)
+        t_score = []
+        for idx, cli in g_user_indices:
+            # increase the frequency of the selected choosen clients
+            self.choosing_frequencies[cli] = self.choosing_frequencies.get(cli, 0) + 1
+            # update the accumulator
+            self.accumulate_t_scores[cli] = ((self.choosing_frequencies[cli] - 1) / self.choosing_frequencies[cli]) * self.accumulate_t_scores.get(cli, 0) + (1 / self.choosing_frequencies[cli]) *  raw_t_score[idx]
+            t_score.append(self.accumulate_t_scores[cli])
         
-        # print("trustworthy score is: ", t_score)
-        # print("contribution score is: ", c_score)
-        
-        f_score = [t_score[i] + c_score[i] for i in range(len(t_score))]
-        # print("f_score: ", f_score)
-        # pred_attackers = pred_attackers_indx = np.argwhere(np.asarray(f_score) == 0).flatten()
-        # pred_attackers = pred_attackers_indx = np.argwhere(np.asarray(t_score) == 0).flatten()
-        # pred_attackers_indx = np.argwhere(np.asarray(t_score) == 0).flatten()
+        t_score = np.array(t_score)
+        threshold = np.median(t_score)
         participated_attackers = []
         for in_, id_ in enumerate(g_user_indices):
             if id_ in selected_attackers:
                 participated_attackers.append(in_)
         print("At round: ", round)
-        # print("pred_attackers_indx: ", pred_attackers_indx)
         print("real attackers indx: ", participated_attackers)
-        # print("global_pred_attackers_indx: ", [g_user_indices[ind_] for ind_ in pred_attackers_indx])
-        # global_pred_attackers_indx = [g_user_indices[ind_] for ind_ in pred_attackers_indx]
-
         print("trustworthy score is: ", t_score)
-        print("contribution score is: ", c_score)
-        print("f_score: ", f_score)
-
         
-        f_score = [t_score[i] + c_score[i] for i in range(len(t_score))]
-        print("f_score is: ", f_score)
-        # self.get_predicted_attackers(weight_list, avg_weight, weight_update, 10)
-        temp_score = self.get_predicted_attackers(weight_list, prev_avg_weight, weight_update, 10)
-        print("raw_t_score: ", raw_t_score)
-        print("raw_temp_score: ", temp_score)
-        print("raw_sum: ", [raw_t_score[i] + temp_score[i] for i in range(10)])
-        raw_sum = [raw_t_score[i] + temp_score[i] for i in range(10)]
-        raw_sum = raw_sum/sum(raw_sum)
-        raw_sum = np.asarray(raw_sum)
-        # mean_sum = sum(raw_sum)/10
-        pred_att_idxs = (-raw_sum).argsort()[:2]
-        print("global_pred_attackers_indx: ", [g_user_indices[ind_] for ind_ in pred_att_idxs])
-        global_pred_attackers_indx = [g_user_indices[ind_] for ind_ in pred_att_idxs]
-        pred_attackers_indx = pred_att_idxs.copy()
-        log_data_r = f"\nAt round: {round},\n, global_attackers: {selected_attackers},\n glob_predicted: {global_pred_attackers_indx},\n  pred_attackers_indx is: {pred_attackers_indx} \n real attackers indx: {participated_attackers}, \n t_score is: {t_score}, \n c_score is: {c_score}, \n f_score is: {f_score}"
-        with open("logging/exper_log.txt", "a+") as lf_r:
-            lf_r.write(log_data_r)
-        # pred_att_idxs = np.argwhere(np.asarray(raw_sum) == 0).flatten()
-        #TRY TO COMBINE Trustworthy score and predicted abnormal score.
+        attacker_local_idxs = [ind_ for ind_ in range(len(g_user_indices)) if t_score[ind_] > threshold]
+        global_pred_attackers_indx = [g_user_indices[ind_] for ind_ in attacker_local_idxs]
+        print("global_pred_attackers_indx: ", global_pred_attackers_indx)
 
+        # NOW CHECK FOR ROUND 50
         neo_net_list = []
         neo_net_freq = []
         selected_net_indx = []
@@ -701,31 +671,14 @@ class KrMLRFL(Defense):
         neo_net_freq = [1.0]
         return neo_net_list, neo_net_freq, pred_g_attacker
 
-    def get_trustworthy_scores(self, trusted_models_idxs, weight_update):
-        score = np.zeros((len(weight_update), len(trusted_models_idxs)))
-        for m_idx, g_model_idx in enumerate(trusted_models_idxs):
-            base_model_update = weight_update[g_model_idx]
-            # print("base_model_update: ", base_model_update)
-            cs_dist = get_cs_on_base_net(weight_update, base_model_update)
-            for idx, cs in enumerate(cs_dist):
-                score[idx, m_idx] = cs
-        print("raw score:= ", score)
-        score_avg = np.average(score, 1)
+    def get_trustworthy_scores(self, global_update, weight_update):
+        # print("base_model_update: ", base_model_update)
+        cs_dist = get_cs_on_base_net(weight_update, global_update)
+        score = np.array(cs_dist)
         # print("score_avg:= ", score_avg)
-        norm_score = min_max_scale(score_avg)
-        final_score = [1.0 if norm_s > 0.25 else 0.0 for norm_s in norm_score]
-        return final_score, 1.0 - norm_score
-    
-    def get_contribution_scores(self, trusted_models_idxs, weight_update, base_w_update):
-        # First, calculate the contribution threshold using the trusted client list
-
-        client_ed_list = get_ed_on_base_net(weight_update, base_w_update)
-        client_ed_list = np.asarray(client_ed_list)
-        b_h = np.average(client_ed_list[trusted_models_idxs])
-        contribution_s = (b_h - client_ed_list)/b_h
-        # print("contribution_s: ", contribution_s)
-        final_score = [1.0 if contribution_s[i] >= 0 else 0.0 for i in range(len(contribution_s))]
-        return final_score
+        norm_score = min_max_scale(score)
+        
+        return norm_score
         # for cli_ind, weight_update in enumerate(weight_update):
 
     def get_predicted_attackers(self, weight_list, avg_weight, weight_update, total_client):
@@ -757,31 +710,6 @@ class KrMLRFL(Defense):
         # cnt_pred_attackers = label_0 if label_0 <= label_1 else label_1
         # label_att = 0 if label_0 <= label_1 else 1
         # print("label_att: ", label_att)
-        
-    def weighted_average_oracle(self, points, weights):
-        """Computes weighted average of atoms with specified weights
-        Args:
-            points: list, whose weighted average we wish to calculate
-                Each element is a list_of_np.ndarray
-            weights: list of weights of the same length as atoms
-        """
-        ### original implementation in TFF
-        #tot_weights = np.sum(weights)
-        #weighted_updates = [np.zeros_like(v) for v in points[0]]
-        #for w, p in zip(weights, points):
-        #    for j, weighted_val in enumerate(weighted_updates):
-        #        weighted_val += (w / tot_weights) * p[j]
-        #return weighted_updates
-        ####
-        tot_weights = np.sum(weights)
-        weighted_updates = np.zeros(points[0].shape)
-        for w, p in zip(weights, points):
-            weighted_updates += (w * p / tot_weights)
-        return weighted_updates
-
-
-
-
     
 if __name__ == "__main__":
     # some tests here
