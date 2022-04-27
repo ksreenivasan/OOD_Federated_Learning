@@ -22,4 +22,4 @@ python simulated_averaging.py \
 --poison_type southwest \
 --norm_bound 2 \
 --attacker_percent 0.25 \
---device=cuda:3
+--device=cuda:2
