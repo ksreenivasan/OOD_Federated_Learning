@@ -564,6 +564,8 @@ class KrMLRFL(Defense):
         vectorize_nets = [vectorize_net(cm).detach().cpu().numpy() for cm in client_models]
         trusted_models = []
         neighbor_distances = []
+        bias_list, weight_list, avg_bias, avg_weight, weight_update, glob_update, prev_avg_weight = extract_classifier_layer(client_models, pseudo_avg_net, net_avg)
+        
         for i, g_i in enumerate(vectorize_nets):
             distance = []
             for j in range(i+1, len(vectorize_nets)):
@@ -615,8 +617,8 @@ class KrMLRFL(Defense):
         for i, g_i in enumerate(g_user_indices):
             for j, g_j in enumerate(g_user_indices):
                 # if i != j:
-                point = vectorize_nets[i].flatten()
-                base_p = vectorize_nets[j].flatten()
+                point = weight_list[i].flatten()
+                base_p = weight_list[j].flatten()
                 cs = np.dot(point, base_p)/(np.linalg.norm(point)*np.linalg.norm(base_p))
                 self.pairwise_choosing_frequencies[g_i][g_j] = self.pairwise_choosing_frequencies[g_i][g_j] + 1.0
                 # print("freq_appear: ", freq_appear)
@@ -637,7 +639,6 @@ class KrMLRFL(Defense):
         # print(self.pairwise_choosing_frequencies) 
         
         # From now on, trusted_models contain the index base models treated as valid users.
-        bias_list, weight_list, avg_bias, avg_weight, weight_update, glob_update, prev_avg_weight = extract_classifier_layer(client_models, pseudo_avg_net, net_avg)
         raw_t_score = self.get_trustworthy_scores(glob_update, weight_update)
         t_score = []
         for idx, cli in enumerate(g_user_indices):
