@@ -556,8 +556,11 @@ class KrMLRFL(Defense):
         self.choosing_frequencies = {}
         self.accumulate_t_scores = {}
         self.pairwise_cs = np.zeros((total_workers+1, total_workers+1))
+        self.pairwise_eu = np.zeros((total_workers+1, total_workers+1))
+        
         # print(self.pairwise_cs.shape)
         self.pairwise_choosing_frequencies = np.zeros((total_workers, total_workers))
+        
 
     def exec(self, client_models, num_dps,net_freq, net_avg, g_user_indices, pseudo_avg_net, round, selected_attackers, device, *args, **kwargs):
         from sklearn.cluster import KMeans
@@ -613,25 +616,33 @@ class KrMLRFL(Defense):
         
         total_client = len(g_user_indices)
         round_cs_pairwise = np.zeros((total_client, total_client))
+        round_eu_pairwise = np.zeros((total_client, total_client))
+        
         # UPDATE CUMULATIVE COSINE SIMILARITY 
         for i, g_i in enumerate(g_user_indices):
             for j, g_j in enumerate(g_user_indices):
                 # if i != j:
-                point = weight_list[i].flatten()
-                base_p = weight_list[j].flatten()
+                point = vectorize_nets[i].flatten()
+                base_p = vectorize_nets[j].flatten()
                 cs = np.dot(point, base_p)/(np.linalg.norm(point)*np.linalg.norm(base_p))
                 self.pairwise_choosing_frequencies[g_i][g_j] = self.pairwise_choosing_frequencies[g_i][g_j] + 1.0
                 # print("freq_appear: ", freq_appear)
+                ds = point - base_p
+                sum_sq = float(np.sqrt(np.dot(ds.T, ds)).flatten())
                 round_cs_pairwise[i][j] = cs.flatten()
+                round_eu_pairwise[i][j] = 1.0 - sum_sq
 
         # round_cs_pairwise = normalize(round_cs_pairwise, norm='max', axis=0)
         scaler = MinMaxScaler()
         round_cs_pairwise = scaler.fit_transform(round_cs_pairwise)
+        round_eu_pairwise = scaler.fit_transform(round_eu_pairwise)
         # print(f"round_cs_pairwise is: {round_cs_pairwise}")
         for i, g_i in enumerate(g_user_indices):
             for j, g_j in enumerate(g_user_indices):
                 freq_appear = self.pairwise_choosing_frequencies[g_i][g_j]
                 self.pairwise_cs[g_i][g_j] = (freq_appear - 1)/freq_appear*self.pairwise_cs[g_i][g_j] +  1/freq_appear*round_cs_pairwise[i][j]
+                self.pairwise_eu[g_i][g_j] = (freq_appear - 1)/freq_appear*self.pairwise_eu[g_i][g_j] +  1/freq_appear*round_eu_pairwise[i][j]
+                
                 # print("self.pairwise_cs[g_i][g_j]: ", self.pairwise_cs[g_i][g_j])
                 # self.pairwise_cs[g_i][g_j]
         
@@ -672,10 +683,16 @@ class KrMLRFL(Defense):
             print("self.pairwise_cs.shape: ", self.pairwise_cs.shape)
             
             cummulative_cs = self.pairwise_cs[np.ix_(g_user_indices, g_user_indices)]
-            print("cummulative_cs: ", cummulative_cs)
+            cummulative_eu = self.pairwise_eu[np.ix_(g_user_indices, g_user_indices)]
+            
+            # print("cummulative_cs: ", cummulative_cs)
+            # print("cummulative_eu: ", cummulative_eu)
+            
+            saved_pairwise_sim = np.hstack((cummulative_cs, cummulative_eu))
+            # print("saved_pairwise_sim.shape is: ", saved_pairwise_sim.shape)
             kmeans = KMeans(n_clusters = 2)
             # kmeans.fit_predict(cummulative_cs)
-            pred_labels = kmeans.fit_predict(cummulative_cs)
+            pred_labels = kmeans.fit_predict(saved_pairwise_sim)
             print("pred_labels is: ", pred_labels)
             
             label_0 = np.count_nonzero(pred_labels == 0)
