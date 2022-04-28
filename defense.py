@@ -617,8 +617,8 @@ class KrMLRFL(Defense):
         for i, g_i in enumerate(g_user_indices):
             for j, g_j in enumerate(g_user_indices):
                 # if i != j:
-                point = weight_list[i].flatten()
-                base_p = weight_list[j].flatten()
+                point = vectorize_nets[i].flatten()
+                base_p = vectorize_nets[j].flatten()
                 cs = np.dot(point, base_p)/(np.linalg.norm(point)*np.linalg.norm(base_p))
                 self.pairwise_choosing_frequencies[g_i][g_j] = self.pairwise_choosing_frequencies[g_i][g_j] + 1.0
                 # print("freq_appear: ", freq_appear)
@@ -650,7 +650,7 @@ class KrMLRFL(Defense):
         
         t_score = np.array(t_score)
         # threshold = np.quantile(t_score, 0.5)
-        threshold = 0.5
+        threshold = min(0.5, np.median(t_score))
         
         
         participated_attackers = []
@@ -659,33 +659,34 @@ class KrMLRFL(Defense):
                 participated_attackers.append(in_)
         print("At round: ", round)
         print("real attackers indx: ", participated_attackers)
-        print("trustworthy score is: ", t_score)
+        print(f'[T_SCORE] median score: {np.median(t_score)}')
+        print("[T_SCORE] trustworthy score is: ", t_score)
         
         attacker_local_idxs = [ind_ for ind_ in range(len(g_user_indices)) if t_score[ind_] > threshold]
-        print("attacker_local_idxs is: ", attacker_local_idxs)
+        print("[T_SCORE] attacker_local_idxs is: ", attacker_local_idxs)
         global_pred_attackers_indx = [g_user_indices[ind_] for ind_ in attacker_local_idxs]
-        print("global_pred_attackers_indx: ", global_pred_attackers_indx)
+        print("[T_SCORE] global_pred_attackers_indx: ", global_pred_attackers_indx)
 
         # NOW CHECK FOR ROUND 50
-        if round >= 50: 
-            #TODO: find dynamic threshold
-            print("self.pairwise_cs.shape: ", self.pairwise_cs.shape)
+        # if round >= 50: 
+        #     # TODO: find dynamic threshold
+        #     print("[PAIRWISE] self.pairwise_cs.shape: ", self.pairwise_cs.shape)
             
-            cummulative_cs = self.pairwise_cs[np.ix_(g_user_indices, g_user_indices)]
-            print("cummulative_cs: ", cummulative_cs)
-            kmeans = KMeans(n_clusters = 2)
-            # kmeans.fit_predict(cummulative_cs)
-            pred_labels = kmeans.fit_predict(cummulative_cs)
-            print("pred_labels is: ", pred_labels)
+        #     cummulative_cs = self.pairwise_cs[np.ix_(g_user_indices, g_user_indices)]
+        #     print("cummulative_cs: ", cummulative_cs)
+        #     kmeans = KMeans(n_clusters = 2)
+        #     # kmeans.fit_predict(cummulative_cs)
+        #     pred_labels = kmeans.fit_predict(cummulative_cs)
+        #     # print("pred_slabels is: ", pred_labels)
             
-            label_0 = np.count_nonzero(pred_labels == 0)
-            label_1 = total_client - label_0
-            cnt_pred_attackers = label_0 if label_0 <= label_1 else label_1
-            label_att = 0 if label_0 <= label_1 else 1
-            print("label_att: ", label_att)
-            pred_attackers_indx = np.argwhere(np.asarray(pred_labels) == label_att).flatten()
-            print("pred_attackers_indx: ", pred_attackers_indx)
-            attacker_local_idxs = pred_attackers_indx
+        #     label_0 = np.count_nonzero(pred_labels == 0)
+        #     label_1 = total_client - label_0
+        #     cnt_pred_attackers = label_0 if label_0 <= label_1 else label_1
+        #     label_att = 0 if label_0 <= label_1 else 1
+        #     # print("label_att: ", label_att)
+        #     pred_attackers_indx = np.argwhere(np.asarray(pred_labels) == label_att).flatten()
+        #     print("[PAIRWISE] pred_attackers_indx: ", pred_attackers_indx)
+        #     attacker_local_idxs = np.intersect1d(attacker_local_idxs, pred_attackers_indx)
 
         neo_net_list = []
         neo_net_freq = []
