@@ -60,11 +60,11 @@ class MNIST_truncated(data.Dataset):
         mnist_dataobj = MNIST(self.root, self.train, self.transform, self.target_transform, self.download)
 
         if self.train:
-            data = mnist_dataobj.train_data
-            target = mnist_dataobj.train_labels
+            data = mnist_dataobj.data
+            target = mnist_dataobj.targets
         else:
-            data = mnist_dataobj.test_data
-            target = mnist_dataobj.test_labels
+            data = mnist_dataobj.data
+            target = mnist_dataobj.targets
 
         if self.dataidxs is not None:
             data = data[self.dataidxs]

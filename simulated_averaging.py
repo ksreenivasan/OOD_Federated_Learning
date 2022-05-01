@@ -168,11 +168,13 @@ if __name__ == "__main__":
     test(net_avg, device, targetted_task_test_loader, test_batch_size=args.test_batch_size, criterion=criterion, mode="targetted-task", dataset=args.dataset, poison_type=args.poison_type)
 
     # let's remain a copy of the global model for measuring the norm distance:
+    group_name = args.dataset
+    instance_name = f"{args.defense_method}"
     vanilla_model = copy.deepcopy(net_avg)
     wandb_ins = wandb.init(project="Backdoor attack in FL",
                entity="aiotlab",
-               name=f"idea-{args.defense_method}-v1.3.0",
-               group="CIFAR-10",
+               name=instance_name,
+               group=group_name,
                config={
             #"poisoned_emnist_dataset":poisoned_emnist_dataset,
             "vanilla_model":vanilla_model,
