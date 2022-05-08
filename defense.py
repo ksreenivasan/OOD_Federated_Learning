@@ -569,6 +569,7 @@ class KrMLRFL(Defense):
             "missed_idxs_1",
             "missed_idxs_2",
             "freq",
+            "t_score",
             "saved_pairwise_sim"])
             writer.writeheader()
         
@@ -788,6 +789,7 @@ class KrMLRFL(Defense):
             missed_attacker_idxs_by_thre,
             missed_attacker_idxs_by_kmeans,
             freq_participated_attackers,
+            t_score,
             saved_pairwise_sim
         )
         
@@ -803,6 +805,10 @@ class KrMLRFL(Defense):
                 neo_net_list.append(net)
                 neo_net_freq.append(1.0)
                 selected_net_indx.append(idx)
+        if len(neo_net_list) == 0:
+            neo_net_list.append(client_models[i_star])
+            selected_net_indx.append(i_star)
+            return [client_models[i_star]], [1.0], attacker_local_idxs
         vectorize_nets = [vectorize_net(cm).detach().cpu().numpy() for cm in neo_net_list]
         selected_num_dps = np.array(num_dps)[selected_net_indx]
         reconstructed_freq = [snd/sum(selected_num_dps) for snd in selected_num_dps]
