@@ -562,7 +562,9 @@ class KrMLRFL(Defense):
         # print(self.pairwise_cs.shape)
         self.pairwise_choosing_frequencies = np.zeros((total_workers, total_workers))
         with open('combined_file_klfrl.csv', 'w', newline='') as outcsv:
-            writer = csv.DictWriter(outcsv, fieldnames = ["flr", "pred_idxs_1", 
+            writer = csv.DictWriter(outcsv, fieldnames = ["flr", 
+                                                          "attacker_idxs",
+                                                          "pred_idxs_1", 
            "pred_idxs_2",
             "true_positive_1",
             "true_positive_2",
@@ -570,6 +572,7 @@ class KrMLRFL(Defense):
             "missed_idxs_2",
             "freq",
             "t_score",
+            "num_dps",
             "saved_pairwise_sim"])
             writer.writeheader()
         
@@ -782,6 +785,7 @@ class KrMLRFL(Defense):
         #             })
         logging_per_round = (
             round,
+            participated_attackers,
             attacker_local_idxs,
             attacker_local_idxs_2,
             true_positive_pred_layer1_val,
@@ -790,6 +794,7 @@ class KrMLRFL(Defense):
             missed_attacker_idxs_by_kmeans,
             freq_participated_attackers,
             t_score,
+            num_dps,
             saved_pairwise_sim
         )
         
