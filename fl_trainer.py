@@ -923,11 +923,12 @@ class FixedPoolFederatedLearningTrainer(FederatedLearningTrainer):
             
             # ADDITIONAL TRAINING FOR AN INVESTIGATING CLIENT (Without D_edge data)
             custom_data_loader = self.clean_train_loader
-            custom_criterion = nn.CrossEntropyLoss()
-            custom_optimizer = optim.SGD(net.parameters(), lr=self.args_lr*self.args_gamma**(flr-1), momentum=0.9, weight_decay=1e-4) # epoch, net, train_loader, optimizer, criterion
-            custom_adv_optimizer = optim.SGD(net.parameters(), lr=self.adv_lr*self.args_gamma**(flr-1), momentum=0.9, weight_decay=1e-4) # looks like adversary needs same lr to hide with others
-            custom_prox_optimizer = optim.SGD(wg_clone.parameters(), lr=self.args_lr*self.args_gamma**(flr-1), momentum=0.9, weight_decay=1e-4)
             custom_net = copy.deepcopy(self.net_avg)
+            
+            custom_criterion = nn.CrossEntropyLoss()
+            custom_optimizer = optim.SGD(custom_net.parameters(), lr=self.args_lr*self.args_gamma**(flr-1), momentum=0.9, weight_decay=1e-4) # epoch, net, train_loader, optimizer, criterion
+            custom_adv_optimizer = optim.SGD(custom_net.parameters(), lr=self.adv_lr*self.args_gamma**(flr-1), momentum=0.9, weight_decay=1e-4) # looks like adversary needs same lr to hide with others
+            custom_prox_optimizer = optim.SGD(wg_clone.parameters(), lr=self.args_lr*self.args_gamma**(flr-1), momentum=0.9, weight_decay=1e-4)
             for param_group in custom_optimizer.param_groups:
                 logger.info("Effective lr in FL round: {} is {}".format(flr, param_group['lr']))
             for e_ in range(1, self.local_training_period+1):
@@ -1027,7 +1028,7 @@ class FixedPoolFederatedLearningTrainer(FederatedLearningTrainer):
             self.net_avg = fed_avg_aggregator(net_list, net_freq, device=self.device, model=self.model)
             self.flatten_net_avg = flatten_model(self.net_avg)
             logging_items = get_logging_items(net_list, custom_net, selected_node_indices, prev_avg, self.net_avg, selected_attackers, flr)
-            with open('logging/new_benchmark_01.csv', 'a+') as lf:
+            with open('logging/new_benchmark_01_200.csv', 'a+') as lf:
                 write = csv.writer(lf)
                 write.writerows(logging_items)
 

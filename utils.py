@@ -16,6 +16,8 @@ from torch.autograd import Variable
 from torchvision import datasets, transforms
 from sklearn.metrics.pairwise import cosine_similarity
 
+import matplotlib.pyplot as plt
+
 from itertools import product
 import math
 import copy
@@ -495,7 +497,30 @@ def load_poisoned_dataset(args):
             clean_trainset = copy.deepcopy(poisoned_trainset)
             ########################################################
             # benign_train_data_loader = torch.utils.data.DataLoader(clean_trainset, batch_size=args.batch_size, shuffle=True)
-
+            print("clean data target: ", poisoned_trainset.targets)
+            print("clean data target's shape: ", poisoned_trainset.targets.shape)
+            labels_clean_set = poisoned_trainset.targets
+            unique, counts = np.unique(labels_clean_set, return_counts=True)
+            cnt_clean_label = dict(zip(unique, counts))
+            cnt_clean_label["southwest"] = 200
+            print(cnt_clean_label)
+            # df = pd.DataFrame(cnt_clean_label)
+            # print(df)
+            labs= list(cnt_clean_label.keys())
+            labs = list(map(str, labs))
+            cnts = list(cnt_clean_label.values())
+            print("labs: ", labs)
+            print("cnts: ", cnts)
+            fig = plt.figure(figsize = (10, 5))
+            
+            # creating the bar plot
+            plt.bar(labs, cnts, color ='maroon')
+            
+            plt.xlabel("Label distribution")
+            plt.ylabel("No. of sample per label")
+            plt.title("Poison client data's distribution")
+            plt.savefig("distribution_label_200_sample.png")
+            
             poisoned_trainset.data = np.append(poisoned_trainset.data, saved_southwest_dataset_train, axis=0)
             poisoned_trainset.targets = np.append(poisoned_trainset.targets, sampled_targets_array_train, axis=0)
 
@@ -823,7 +848,7 @@ def get_logging_items(net_list, additional_net, selected_node_indices, avg_net_p
     
     for i,param in enumerate(additional_net.classifier.parameters()):
         if i == 0:
-            with open('logging/weight_benchmark_01.csv', 'a+') as w_f:
+            with open('logging/weight_benchmark_01_200.csv', 'a+') as w_f:
                 write = csv.writer(w_f)
                 write.writerow(param.data.cpu().numpy())
     additional_item = [fl_round, 0, -3, list(additional_net.classifier.parameters())[1].data.cpu().numpy()]
