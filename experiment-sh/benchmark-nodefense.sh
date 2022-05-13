@@ -2,7 +2,7 @@ python simulated_averaging.py \
 --lr 0.02 \
 --gamma 0.998 \
 --num_nets 200 \
---fl_round 1500 \
+--fl_round 300 \
 --part_nets_per_round 10 \
 --local_train_period 2 \
 --adversarial_local_training_period 2 \
@@ -22,4 +22,4 @@ python simulated_averaging.py \
 --poison_type southwest \
 --norm_bound 2 \
 --attacker_percent 0.25 \
---device=cuda:2
+--device=cuda:3

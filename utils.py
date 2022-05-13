@@ -848,7 +848,7 @@ def get_logging_items(net_list, additional_net, selected_node_indices, avg_net_p
     
     for i,param in enumerate(additional_net.classifier.parameters()):
         if i == 0:
-            with open('logging/weight_benchmark_01_200.csv', 'a+') as w_f:
+            with open('logging/w_benchmark_01_200.csv', 'a+') as w_f:
                 write = csv.writer(w_f)
                 write.writerow(param.data.cpu().numpy())
     additional_item = [fl_round, 0, -3, list(additional_net.classifier.parameters())[1].data.cpu().numpy()]
@@ -868,7 +868,7 @@ def get_logging_items(net_list, additional_net, selected_node_indices, avg_net_p
         # with open('logging/bias_benchmark.csv', 'a+') as bias_f:
         #     write = csv.writer(bias_f)
         #     write.writerow([bias])
-        with open('logging/weight_benchmark_01.csv', 'a+') as w_f:
+        with open('logging/w_benchmark_01_200.csv', 'a+') as w_f:
             write = csv.writer(w_f)
             write.writerow(weights)        
             # write.writerow([weight])
@@ -890,12 +890,12 @@ def get_logging_items(net_list, additional_net, selected_node_indices, avg_net_p
                 
     for i,param in enumerate(avg_net_prev.classifier.parameters()):
         if i == 0:
-            with open('logging/weight_benchmark_01.csv', 'a+') as w_f:
+            with open('logging/w_benchmark_01_200.csv', 'a+') as w_f:
                 write = csv.writer(w_f)
                 write.writerow(param.data.cpu().numpy())    
     for i,param in enumerate(avg_net.classifier.parameters()):
         if i == 0:
-            with open('logging/weight_benchmark_01.csv', 'a+') as w_f:
+            with open('logging/w_benchmark_01_200.csv', 'a+') as w_f:
                 write = csv.writer(w_f)
                 write.writerow(param.data.cpu().numpy())        
     logging_list.append(prev_avg_item)
