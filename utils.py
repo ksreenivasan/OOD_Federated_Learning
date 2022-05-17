@@ -91,6 +91,13 @@ def record_net_data_stats(y_train, net_dataidx_map):
         tmp = {unq[i]: unq_cnt[i] for i in range(len(unq))}
         net_cls_counts[net_i] = tmp
     logging.debug('Data statistics: %s' % str(net_cls_counts))
+    fields = [i for i in range(10)]
+    fields.insert(0, 'id')
+    w = csv.DictWriter(open('client_data_distribution.csv', 'w'), fields)
+    for key,val in sorted(net_cls_counts.items()):
+        row = {'id': key}
+        row.update(val)
+        w.writerow(row)
     return net_cls_counts
 
 
@@ -824,6 +831,136 @@ def load_poisoned_dataset(args):
     return poisoned_train_loader, vanilla_test_loader, targetted_task_test_loader, num_dps_poisoned_dataset, clean_train_loader
 
 
+def load_poisoned_dataset_test(idxs, batch_size, dataset="cifar10", poison_type="southwest"):
+    use_cuda = True
+    kwargs = {'num_workers': 1, 'pin_memory': True} if use_cuda else {}
+    # benign_train_data_loader = None
+
+
+    # transform_train = transforms.Compose([
+    #     transforms.RandomCrop(32, padding=4),
+    #     transforms.RandomHorizontalFlip(),
+    #     transforms.ToTensor(),
+    #     transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
+    # ])
+    normalize = transforms.Normalize(mean=[x/255.0 for x in [125.3, 123.0, 113.9]],
+                        std=[x/255.0 for x in [63.0, 62.1, 66.7]])
+    transform_train = transforms.Compose([
+        transforms.ToTensor(),
+        transforms.Lambda(lambda x: F.pad(
+                            Variable(x.unsqueeze(0), requires_grad=False),
+                            (4,4,4,4),mode='reflect').data.squeeze()),
+        transforms.ToPILImage(),
+        transforms.RandomCrop(32),
+        transforms.RandomHorizontalFlip(),
+        transforms.ToTensor(),
+        normalize,
+        ])
+
+    transform_test = transforms.Compose([
+        transforms.ToTensor(),
+        transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),])
+
+    trainset = torchvision.datasets.CIFAR10(root='./data', train=True, download=True, transform=transform_train)
+
+    poisoned_trainset = copy.deepcopy(trainset)
+
+    with open('./saved_datasets/southwest_images_new_train.pkl', 'rb') as train_f:
+        saved_southwest_dataset_train = pickle.load(train_f)
+
+    with open('./saved_datasets/southwest_images_new_test.pkl', 'rb') as test_f:
+        saved_southwest_dataset_test = pickle.load(test_f)        
+
+    #
+    logger.info("OOD (Southwest Airline) train-data shape we collected: {}".format(saved_southwest_dataset_train.shape))
+    #sampled_targets_array_train = 2 * np.ones((saved_southwest_dataset_train.shape[0],), dtype =int) # southwest airplane -> label as bird
+    sampled_targets_array_train = 9 * np.ones((saved_southwest_dataset_train.shape[0],), dtype =int) # southwest airplane -> label as truck
+    
+    logger.info("OOD (Southwest Airline) test-data shape we collected: {}".format(saved_southwest_dataset_test.shape))
+    #sampled_targets_array_test = 2 * np.ones((saved_southwest_dataset_test.shape[0],), dtype =int) # southwest airplane -> label as bird
+    sampled_targets_array_test = 9 * np.ones((saved_southwest_dataset_test.shape[0],), dtype =int) # southwest airplane -> label as truck
+
+
+
+    # downsample the poisoned dataset #################
+    num_sampled_poisoned_data_points = 400 # N
+    samped_poisoned_data_indices = np.random.choice(saved_southwest_dataset_train.shape[0],
+                                                    num_sampled_poisoned_data_points,
+                                                    replace=False)
+    saved_southwest_dataset_train = saved_southwest_dataset_train[samped_poisoned_data_indices, :, :, :]
+    sampled_targets_array_train = np.array(sampled_targets_array_train)[samped_poisoned_data_indices]
+    logger.info("!!!!!!!!!!!Num poisoned data points in the mixed dataset: {}".format(num_sampled_poisoned_data_points))
+
+            ######################################################
+
+
+    # downsample the raw cifar10 dataset #################
+    num_sampled_data_points = 400 # M
+    # samped_data_indices = np.random.choice(poisoned_trainset.data.shape[0], num_sampled_data_points, replace=False)
+    samped_data_indices = idxs
+    print(f"idxs: {idxs}")
+    poisoned_trainset.data = poisoned_trainset.data[samped_data_indices, :, :, :]
+    poisoned_trainset.targets = np.array(poisoned_trainset.targets)[samped_data_indices]
+    logger.info("!!!!!!!!!!!Num clean data points in the mixed dataset: {}".format(num_sampled_data_points))
+    # keep a copy of clean data
+    clean_trainset = copy.deepcopy(poisoned_trainset)
+    ########################################################
+    # benign_train_data_loader = torch.utils.data.DataLoader(clean_trainset, batch_size=args.batch_size, shuffle=True)
+    print("clean data target: ", poisoned_trainset.targets)
+    print("clean data target's shape: ", poisoned_trainset.targets.shape)
+    labels_clean_set = poisoned_trainset.targets
+    unique, counts = np.unique(labels_clean_set, return_counts=True)
+    cnt_clean_label = dict(zip(unique, counts))
+    cnt_clean_label["southwest"] = 400
+    print(cnt_clean_label)
+    # df = pd.DataFrame(cnt_clean_label)
+    # print(df)
+    labs= list(cnt_clean_label.keys())
+    labs = list(map(str, labs))
+    cnts = list(cnt_clean_label.values())
+    print("labs: ", labs)
+    print("cnts: ", cnts)
+    fig = plt.figure(figsize = (10, 5))
+    
+    # creating the bar plot
+    plt.bar(labs, cnts, color ='maroon')
+    
+    plt.xlabel("Label distribution")
+    plt.ylabel("No. of sample per label")
+    plt.title("Poison client data's distribution")
+    plt.savefig("distribution_label_400_sample.png")
+    
+    poisoned_trainset.data = np.append(poisoned_trainset.data, saved_southwest_dataset_train, axis=0)
+    poisoned_trainset.targets = np.append(poisoned_trainset.targets, sampled_targets_array_train, axis=0)
+
+    logger.info("{}".format(poisoned_trainset.data.shape))
+    logger.info("{}".format(poisoned_trainset.targets.shape))
+    logger.info("{}".format(sum(poisoned_trainset.targets)))
+
+
+    #poisoned_train_loader = torch.utils.data.DataLoader(poisoned_trainset, batch_size=args.batch_size, shuffle=True, num_workers=2)
+    #trainloader = torch.utils.data.DataLoader(trainset, batch_size=args.batch_size, shuffle=True, num_workers=2)
+    poisoned_train_loader = torch.utils.data.DataLoader(poisoned_trainset, batch_size=batch_size, shuffle=True)
+    
+    # trainloader = torch.utils.data.DataLoader(trainset, batch_size=args.batch_size, shuffle=True)
+    # clean_train_loader = torch.utils.data.DataLoader(clean_trainset, batch_size=args.batch_size, shuffle=True)
+
+    # testset = torchvision.datasets.CIFAR10(root='./data', train=False, download=True, transform=transform_test)
+
+    # poisoned_testset = copy.deepcopy(testset)
+    # poisoned_testset.data = saved_southwest_dataset_test
+    # poisoned_testset.targets = sampled_targets_array_test
+
+    # vanilla_test_loader = torch.utils.data.DataLoader(testset, batch_size=args.test_batch_size, shuffle=False, num_workers=2)
+    # targetted_task_test_loader = torch.utils.data.DataLoader(poisoned_testset, batch_size=args.test_batch_size, shuffle=False, num_workers=2)
+    # vanilla_test_loader = torch.utils.data.DataLoader(testset, batch_size=args.test_batch_size, shuffle=False)
+    # targetted_task_test_loader = torch.utils.data.DataLoader(poisoned_testset, batch_size=args.test_batch_size, shuffle=False)
+
+    # num_dps_poisoned_dataset = poisoned_trainset.data.shape[0]
+    
+    return poisoned_train_loader
+
+
 def seed_experiment(seed=0):
     # seed = 1234
     random.seed(seed)
@@ -838,7 +975,7 @@ def seed_experiment(seed=0):
     logger.info("Seeded everything")
 
 
-def get_logging_items(net_list, additional_net, selected_node_indices, avg_net_prev, avg_net, attackers_idxs, fl_round):
+def get_logging_items(net_list, additional_net, custom_net_2, selected_node_indices, avg_net_prev, avg_net, attackers_idxs, fl_round):
     logging_list = []
     recorded_w_list = []
     recorded_w_list.append(vectorize_net(additional_net))
@@ -848,11 +985,21 @@ def get_logging_items(net_list, additional_net, selected_node_indices, avg_net_p
     
     for i,param in enumerate(additional_net.classifier.parameters()):
         if i == 0:
-            with open('logging/w_benchmark_01_200.csv', 'a+') as w_f:
+            with open('logging/w_benchmark_01_400.csv', 'a+') as w_f:
                 write = csv.writer(w_f)
                 write.writerow(param.data.cpu().numpy())
     additional_item = [fl_round, 0, -3, list(additional_net.classifier.parameters())[1].data.cpu().numpy()]
     logging_list.append(additional_item)
+    
+    #CUSTOM NET 2
+    for i,param in enumerate(custom_net_2.classifier.parameters()):
+        if i == 0:
+            with open('logging/w_benchmark_01_400.csv', 'a+') as w_f:
+                write = csv.writer(w_f)
+                write.writerow(param.data.cpu().numpy())
+    additional_item_2 = [fl_round, 0, -4, list(custom_net_2.classifier.parameters())[1].data.cpu().numpy()]
+    logging_list.append(additional_item_2)
+    
     for net_idx, global_user_idx in enumerate(selected_node_indices):
         #round id weights bias is-attacker
         net = net_list[net_idx]
@@ -868,7 +1015,7 @@ def get_logging_items(net_list, additional_net, selected_node_indices, avg_net_p
         # with open('logging/bias_benchmark.csv', 'a+') as bias_f:
         #     write = csv.writer(bias_f)
         #     write.writerow([bias])
-        with open('logging/w_benchmark_01_200.csv', 'a+') as w_f:
+        with open('logging/w_benchmark_01_400.csv', 'a+') as w_f:
             write = csv.writer(w_f)
             write.writerow(weights)        
             # write.writerow([weight])
@@ -890,12 +1037,12 @@ def get_logging_items(net_list, additional_net, selected_node_indices, avg_net_p
                 
     for i,param in enumerate(avg_net_prev.classifier.parameters()):
         if i == 0:
-            with open('logging/w_benchmark_01_200.csv', 'a+') as w_f:
+            with open('logging/w_benchmark_01_400.csv', 'a+') as w_f:
                 write = csv.writer(w_f)
                 write.writerow(param.data.cpu().numpy())    
     for i,param in enumerate(avg_net.classifier.parameters()):
         if i == 0:
-            with open('logging/w_benchmark_01_200.csv', 'a+') as w_f:
+            with open('logging/w_benchmark_01_400.csv', 'a+') as w_f:
                 write = csv.writer(w_f)
                 write.writerow(param.data.cpu().numpy())        
     logging_list.append(prev_avg_item)

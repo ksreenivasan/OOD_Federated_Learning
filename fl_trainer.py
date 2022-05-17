@@ -799,10 +799,14 @@ class FixedPoolFederatedLearningTrainer(FederatedLearningTrainer):
             v0 = torch.nn.utils.parameters_to_vector(model_original)
             wg_norm_list.append(torch.norm(v0).item())
 
-
+            
+            selected_investigate_client = 5
+            g_selected_cli = None
             #     # start the FL process
             for net_idx, global_user_idx in enumerate(selected_node_indices):
                 net  = net_list[net_idx]
+                if net_idx == selected_investigate_client:
+                    g_selected_cli = global_user_idx
                 if global_user_idx in selected_attackers:
                     pass
                 else:
@@ -929,11 +933,28 @@ class FixedPoolFederatedLearningTrainer(FederatedLearningTrainer):
             custom_optimizer = optim.SGD(custom_net.parameters(), lr=self.args_lr*self.args_gamma**(flr-1), momentum=0.9, weight_decay=1e-4) # epoch, net, train_loader, optimizer, criterion
             custom_adv_optimizer = optim.SGD(custom_net.parameters(), lr=self.adv_lr*self.args_gamma**(flr-1), momentum=0.9, weight_decay=1e-4) # looks like adversary needs same lr to hide with others
             custom_prox_optimizer = optim.SGD(wg_clone.parameters(), lr=self.args_lr*self.args_gamma**(flr-1), momentum=0.9, weight_decay=1e-4)
+            
+            
+            # custom_data_loader = self.clean_train_loader
+            print(f"g_selected_cli is: {g_selected_cli}")
+            poisoned_train_loader = load_poisoned_dataset_test(self.net_dataidx_map[g_selected_cli], self.batch_size) #choose random a client to duplicate
+            
+            custom_net_2 = copy.deepcopy(self.net_avg)
+            custom_criterion_2 = nn.CrossEntropyLoss()
+            custom_optimizer_2 = optim.SGD(custom_net_2.parameters(), lr=self.args_lr*self.args_gamma**(flr-1), momentum=0.9, weight_decay=1e-4) # epoch, net, train_loader, optimizer, criterion
+            custom_adv_optimizer_2 = optim.SGD(custom_net_2.parameters(), lr=self.adv_lr*self.args_gamma**(flr-1), momentum=0.9, weight_decay=1e-4) # looks like adversary needs same lr to hide with others
+            custom_prox_optimizer_2 = optim.SGD(wg_clone.parameters(), lr=self.args_lr*self.args_gamma**(flr-1), momentum=0.9, weight_decay=1e-4)
+            
+            
             for param_group in custom_optimizer.param_groups:
                 logger.info("Effective lr in FL round: {} is {}".format(flr, param_group['lr']))
             for e_ in range(1, self.local_training_period+1):
                 train(custom_net, self.device, custom_data_loader, custom_optimizer, e_, log_interval=self.log_interval, criterion=self.criterion)        
                
+            for param_group in custom_optimizer_2.param_groups:
+                logger.info("Effective lr in FL round: {} is {}".format(flr, param_group['lr']))
+            for e_ in range(1, self.local_training_period+1):
+                train(custom_net_2, self.device, poisoned_train_loader, custom_optimizer_2, e_, log_interval=self.log_interval, criterion=self.criterion)        
             
             for net_idx, global_client_indx in enumerate(selected_node_indices):
                 flatten_local_model = flatten_model(net_list[net_idx])
@@ -1027,8 +1048,8 @@ class FixedPoolFederatedLearningTrainer(FederatedLearningTrainer):
 
             self.net_avg = fed_avg_aggregator(net_list, net_freq, device=self.device, model=self.model)
             self.flatten_net_avg = flatten_model(self.net_avg)
-            logging_items = get_logging_items(net_list, custom_net, selected_node_indices, prev_avg, self.net_avg, selected_attackers, flr)
-            with open('logging/new_w_benchmark_01_200.csv', 'a+') as lf:
+            logging_items = get_logging_items(net_list, custom_net, custom_net_2, selected_node_indices, prev_avg, self.net_avg, selected_attackers, flr)
+            with open('logging/new_w_benchmark_01_400.csv', 'a+') as lf:
                 write = csv.writer(lf)
                 write.writerows(logging_items)
 
