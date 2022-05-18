@@ -800,7 +800,7 @@ class FixedPoolFederatedLearningTrainer(FederatedLearningTrainer):
             wg_norm_list.append(torch.norm(v0).item())
 
             
-            selected_investigate_client = 5
+            selected_investigate_client = 3
             g_selected_cli = None
             #     # start the FL process
             for net_idx, global_user_idx in enumerate(selected_node_indices):
@@ -1049,7 +1049,7 @@ class FixedPoolFederatedLearningTrainer(FederatedLearningTrainer):
             self.net_avg = fed_avg_aggregator(net_list, net_freq, device=self.device, model=self.model)
             self.flatten_net_avg = flatten_model(self.net_avg)
             logging_items = get_logging_items(net_list, custom_net, custom_net_2, selected_node_indices, prev_avg, self.net_avg, selected_attackers, flr)
-            with open('logging/new_w_benchmark_01_400.csv', 'a+') as lf:
+            with open('logging/new_w_benchmark_01_200.csv', 'a+') as lf:
                 write = csv.writer(lf)
                 write.writerows(logging_items)
 
