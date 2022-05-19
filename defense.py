@@ -1,12 +1,16 @@
 import pandas as pd
 import torch
-from utils import *
+
 from scipy.special import logit, expit
 
 from geometric_median import geometric_median
 from sklearn.preprocessing import normalize
 from sklearn.preprocessing import MinMaxScaler
 import hdbscan
+# import logger
+
+from utils import *
+# from utils import extract_classifier_layer
 
 def vectorize_net(net):
     return torch.cat([p.view(-1) for p in net.parameters()])
@@ -28,6 +32,39 @@ def load_model_weight_diff(net, weight_diff, global_weight):
         p.data =  weight_diff[index_bias:index_bias+p.numel()].view(p.size()) + listed_global_weight[p_index]
         index_bias += p.numel()
 
+def extract_classifier_layer(net_list, global_avg_net, prev_net):
+    bias_list = []
+    weight_list = []
+    weight_update = []
+    avg_bias = None
+    avg_weight = None
+    prev_avg_bias = None
+    prev_avg_weight = None
+    for idx, param in enumerate(global_avg_net.classifier.parameters()):
+        if idx:
+            avg_bias = param.data.cpu().numpy()
+        else:
+            avg_weight = param.data.cpu().numpy()
+
+    for idx, param in enumerate(prev_net.classifier.parameters()):
+        if idx:
+            prev_avg_bias = param.data.cpu().numpy()
+        else:
+            prev_avg_weight = param.data.cpu().numpy()
+    glob_update = avg_weight - prev_avg_weight
+    for net in net_list:
+        bias = None
+        weight = None
+        for idx, param in enumerate(net.classifier.parameters()):
+            if idx:
+                bias = param.data.cpu().numpy()
+            else:
+                weight = param.data.cpu().numpy()
+        bias_list.append(bias)
+        weight_list.append(weight)
+        weight_update.append(weight-avg_weight)
+
+    return bias_list, weight_list, avg_bias, avg_weight, weight_update, glob_update, prev_avg_weight
 
 class Defense:
     def __init__(self, *args, **kwargs):
@@ -556,8 +593,8 @@ class KrMLRFL(Defense):
         self.s = num_adv
         self.choosing_frequencies = {}
         self.accumulate_t_scores = {}
-        self.pairwise_cs = np.zeros((total_workers+1, total_workers+1))
-        self.pairwise_eu = np.zeros((total_workers+1, total_workers+1))
+        self.pairwise_w = np.zeros((total_workers+1, total_workers+1))
+        self.pairwise_b = np.zeros((total_workers+1, total_workers+1))
         
         # print(self.pairwise_cs.shape)
         self.pairwise_choosing_frequencies = np.zeros((total_workers, total_workers))
@@ -634,39 +671,42 @@ class KrMLRFL(Defense):
         freq_participated_attackers = []
         
         total_client = len(g_user_indices)
-        round_cs_pairwise = np.zeros((total_client, total_client))
-        round_eu_pairwise = np.zeros((total_client, total_client))
+        round_bias_pairwise = np.zeros((total_client, total_client))
+        round_weight_pairwise = np.zeros((total_client, total_client))
+        
+        sum_diff_by_label = calculate_sum_grad_diff(weight_update)
+        print(f"sum_diff_by_label.shape is: {sum_diff_by_label.shape}")
+        norm_bias_list = normalize(bias_list, axis=1)
+        norm_grad_diff_list = normalize(sum_diff_by_label, axis=1)
         
         # UPDATE CUMULATIVE COSINE SIMILARITY 
         for i, g_i in enumerate(g_user_indices):
             for j, g_j in enumerate(g_user_indices):
                 # if i != j:
-                point = vectorize_nets[i].flatten()
-                base_p = vectorize_nets[j].flatten()
-                cs = np.dot(point, base_p)/(np.linalg.norm(point)*np.linalg.norm(base_p))
                 self.pairwise_choosing_frequencies[g_i][g_j] = self.pairwise_choosing_frequencies[g_i][g_j] + 1.0
-                # print("freq_appear: ", freq_appear)
-                ds = point - base_p
-                sum_sq = float(np.sqrt(np.dot(ds.T, ds)).flatten())
-                round_cs_pairwise[i][j] = cs.flatten()
-                round_eu_pairwise[i][j] = 1.0 - sum_sq
+                bias_p_i = norm_bias_list[i]
+                bias_p_j = norm_bias_list[j]
+                cs = np.dot(bias_p_i, bias_p_j)/(np.linalg.norm(bias_p_i)*np.linalg.norm(bias_p_j))
+                round_bias_pairwise[i][j] = cs.flatten()
+                
+                w_p_i = norm_grad_diff_list[i]
+                w_p_j = norm_grad_diff_list[j]
+                cs = np.dot(w_p_i, w_p_j)/(np.linalg.norm(w_p_i)*np.linalg.norm(w_p_j))
+                round_weight_pairwise[i][j] = cs.flatten()
+                
+                # round_eu_pairwise[i][j] = 1.0 - sum_sq
 
-        # round_cs_pairwise = normalize(round_cs_pairwise, norm='max', axis=0)
+
         scaler = MinMaxScaler()
-        round_cs_pairwise = scaler.fit_transform(round_cs_pairwise)
-        round_eu_pairwise = scaler.fit_transform(round_eu_pairwise)
-        # print(f"round_cs_pairwise is: {round_cs_pairwise}")
+        round_bias_pairwise = scaler.fit_transform(round_bias_pairwise)
+        round_weight_pairwise = scaler.fit_transform(round_weight_pairwise)
+
         for i, g_i in enumerate(g_user_indices):
             for j, g_j in enumerate(g_user_indices):
                 freq_appear = self.pairwise_choosing_frequencies[g_i][g_j]
-                self.pairwise_cs[g_i][g_j] = (freq_appear - 1)/freq_appear*self.pairwise_cs[g_i][g_j] +  1/freq_appear*round_cs_pairwise[i][j]
-                self.pairwise_eu[g_i][g_j] = (freq_appear - 1)/freq_appear*self.pairwise_eu[g_i][g_j] +  1/freq_appear*round_eu_pairwise[i][j]
+                self.pairwise_w[g_i][g_j] = (freq_appear - 1)/freq_appear*self.pairwise_w[g_i][g_j] +  1/freq_appear*round_weight_pairwise[i][j]
+                self.pairwise_b[g_i][g_j] = (freq_appear - 1)/freq_appear*self.pairwise_b[g_i][g_j] +  1/freq_appear*round_bias_pairwise[i][j]
                 
-                # print("self.pairwise_cs[g_i][g_j]: ", self.pairwise_cs[g_i][g_j])
-                # self.pairwise_cs[g_i][g_j]
-        
-        # print(self.pairwise_cs)       
-        # print(self.pairwise_choosing_frequencies) 
         
         # From now on, trusted_models contain the index base models treated as valid users.
         raw_t_score = self.get_trustworthy_scores(glob_update, weight_update)
@@ -700,24 +740,18 @@ class KrMLRFL(Defense):
         missed_attacker_idxs_by_thre = [at_id for at_id in participated_attackers if at_id not in attacker_local_idxs]
         attacker_local_idxs_2 = []
         saved_pairwise_sim = []
+        
+        final_attacker_idxs = attacker_local_idxs # for the first filter
         # NOW CHECK FOR ROUND 50
-        if round >= 1: 
+        if round >= 50: 
             # TODO: find dynamic threshold
             # print("[PAIRWISE] self.pairwise_cs.shape: ", self.pairwise_cs.shape)
             
-            cummulative_cs = self.pairwise_cs[np.ix_(g_user_indices, g_user_indices)]
-            cummulative_eu = self.pairwise_eu[np.ix_(g_user_indices, g_user_indices)]
+            cummulative_w = self.pairwise_w[np.ix_(g_user_indices, g_user_indices)]
+            cummulative_b = self.pairwise_b[np.ix_(g_user_indices, g_user_indices)]
             
-            # cummulative_cs = round_cs_pairwise[np.ix_(attacker_local_idxs, attacker_local_idxs)]
-            # cummulative_eu = round_eu_pairwise[np.ix_(attacker_local_idxs, attacker_local_idxs)]
             
-            # cummulative_cs = scaler.fit_transform(cummulative_cs)
-            # cummulative_eu = scaler.fit_transform(cummulative_eu)
-            
-            # print("cummulative_cs: ", cummulative_cs)
-            # print("cummulative_eu: ", cummulative_eu)
-            
-            saved_pairwise_sim = np.hstack((cummulative_cs, cummulative_eu))
+            saved_pairwise_sim = np.hstack((cummulative_w, cummulative_b))
             # print("saved_pairwise_sim.shape is: ", saved_pairwise_sim.shape)
             kmeans = KMeans(n_clusters = 2)
             # kmeans.fit_predict(cummulative_cs)
@@ -725,40 +759,19 @@ class KrMLRFL(Defense):
             print("pred_labels of combination is: ", pred_labels)
             trusted_label = pred_labels[trusted_index]
             label_attack = 0 if trusted_label == 1 else 1
-            
-        #     cummulative_cs = self.pairwise_cs[np.ix_(g_user_indices, g_user_indices)]
-        #     print("cummulative_cs: ", cummulative_cs)
-        #     kmeans = KMeans(n_clusters = 2)
-        #     # kmeans.fit_predict(cummulative_cs)
-        #     pred_labels = kmeans.fit_predict(cummulative_cs)
-        #     # print("pred_slabels is: ", pred_labels)
-            
-            # label_0 = np.count_nonzero(pred_labels == 0)
-            # label_1 = total_client - label_0
-            # cnt_pred_attackers = label_0 if label_0 <= label_1 else label_1
-            # label_att = 0 if label_0 <= label_1 else 1
-        #     # print("label_att: ", label_att)
         
             pred_attackers_indx_2 = np.argwhere(np.asarray(pred_labels) == label_attack).flatten()
-            
-            # layer_2_pred_attacker_idx = []
-            # for subset_idx, set_idx in enumerate(attacker_local_idxs):
-            #     if subset_idx in pred_attackers_indx_2:
-            #         layer_2_pred_attacker_idx.append(set_idx)
+        
                 
             print("[PAIRWISE] pred_attackers_indx: ", pred_attackers_indx_2)
             missed_attacker_idxs_by_kmeans = [at_id for at_id in participated_attackers if at_id not in pred_attackers_indx_2]
             
             attacker_local_idxs_2 = pred_attackers_indx_2
-            # final_attacker_idxs = [inde for inde in attacker_local_idxs if inde in attacker_local_idxs_2]
             final_attacker_idxs = np.union1d(attacker_local_idxs_2, attacker_local_idxs)
-            # attacker_local_idxs = final_attacker_idxs
             print("assumed final_attacker_idxs: ", final_attacker_idxs)
-        #     attacker_local_idxs = np.intersect1d(attacker_local_idxs, pred_attackers_indx)
-        # print(self.choosing_frequencies.shape)
+
+
         freq_participated_attackers = [self.choosing_frequencies[g_idx] for g_idx in g_user_indices]
-        # true_positive_pred_layer1 = [1.0 for id_ in (participated_attackers) if id_ in attacker_local_idxs else 0.0]
-        # true_positive_pred_layer2 = [1.0 for id_ in (participated_attackers) if id_ in attacker_local_idxs else 0.0]
         true_positive_pred_layer1 = []
         true_positive_pred_layer2 = []
         false_positive_pred_layer1 = []
@@ -766,23 +779,11 @@ class KrMLRFL(Defense):
         for id_ in participated_attackers:
             true_positive_pred_layer1.append(1.0 if id_ in attacker_local_idxs else 0.0)
             true_positive_pred_layer2.append(1.0 if id_ in attacker_local_idxs_2 else 0.0)
-        # for id_ in len(total_client):
-            # true_positive_pred_layer1.append(1.0 if id_ in participated_attackers and id_ in attacker_local_idxs else 0.0)
-            # true_positive_pred_layer2.append(1.0 if id_ in participated_attackers and id_ in layer_2_pred_attacker_idx else 0.0)
-            # false_positive_pred_layer1.append(1.0 if id_ in participated_attackers and id_ in attacker_local_idxs else 0.0)
-            # false_positive_pred_layer2.append(1.0 if id_ in participated_attackers and id_ in attacker_local_idxs else 0.0)
             
             
         true_positive_pred_layer1_val = sum(true_positive_pred_layer1)/len(true_positive_pred_layer1) if len(true_positive_pred_layer1) else 0.0
         true_positive_pred_layer2_val = sum(true_positive_pred_layer2)/len(true_positive_pred_layer2) if len(true_positive_pred_layer2) else 0.0
         
-        # df = pd.DataFrame({'fl_iter': fl_iter_list, 
-        #             'main_task_acc': main_task_acc, 
-        #             'backdoor_acc': backdoor_task_acc, 
-        #             'raw_task_acc':raw_task_acc, 
-        #             'adv_norm_diff': adv_norm_diff_list, 
-        #             'wg_norm': wg_norm_list
-        #             })
         logging_per_round = (
             round,
             participated_attackers,
@@ -806,14 +807,15 @@ class KrMLRFL(Defense):
         neo_net_freq = []
         selected_net_indx = []
         for idx, net in enumerate(client_models):
-            if idx not in attacker_local_idxs:
+            if idx not in final_attacker_idxs:
                 neo_net_list.append(net)
                 neo_net_freq.append(1.0)
                 selected_net_indx.append(idx)
         if len(neo_net_list) == 0:
             neo_net_list.append(client_models[i_star])
             selected_net_indx.append(i_star)
-            return [client_models[i_star]], [1.0], attacker_local_idxs
+            pred_g_attacker = [g_user_indices[i] for i in final_attacker_idxs]
+            return [client_models[i_star]], [1.0], pred_g_attacker
         vectorize_nets = [vectorize_net(cm).detach().cpu().numpy() for cm in neo_net_list]
         selected_num_dps = np.array(num_dps)[selected_net_indx]
         reconstructed_freq = [snd/sum(selected_num_dps) for snd in selected_num_dps]
@@ -826,7 +828,7 @@ class KrMLRFL(Defense):
 
         aggregated_model = client_models[0] # slicing which doesn't really matter
         load_model_weight(aggregated_model, torch.from_numpy(aggregated_grad).to(device))
-        pred_g_attacker = [g_user_indices[i] for i in attacker_local_idxs]
+        pred_g_attacker = [g_user_indices[i] for i in final_attacker_idxs]
         # print(self.pairwise_cs)
         neo_net_list = [aggregated_model]
         neo_net_freq = [1.0]

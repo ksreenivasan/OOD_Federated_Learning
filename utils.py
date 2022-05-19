@@ -1164,40 +1164,19 @@ def get_logging_items_new(net_list, selected_node_indices, avg_net, exploration_
     logging_list.append(prev_avg_item)
     logging_list.append(avg_item)
     return logging_list
-       
-def extract_classifier_layer(net_list, global_avg_net, prev_net):
-    bias_list = []
-    weight_list = []
-    weight_update = []
-    avg_bias = None
-    avg_weight = None
-    prev_avg_bias = None
-    prev_avg_weight = None
-    for idx, param in enumerate(global_avg_net.classifier.parameters()):
-        if idx:
-            avg_bias = param.data.cpu().numpy()
-        else:
-            avg_weight = param.data.cpu().numpy()
 
-    for idx, param in enumerate(prev_net.classifier.parameters()):
-        if idx:
-            prev_avg_bias = param.data.cpu().numpy()
-        else:
-            prev_avg_weight = param.data.cpu().numpy()
-    glob_update = avg_weight - prev_avg_weight
-    for net in net_list:
-        bias = None
-        weight = None
-        for idx, param in enumerate(net.classifier.parameters()):
-            if idx:
-                bias = param.data.cpu().numpy()
-            else:
-                weight = param.data.cpu().numpy()
-        bias_list.append(bias)
-        weight_list.append(weight)
-        weight_update.append(weight-avg_weight)
-
-    return bias_list, weight_list, avg_bias, avg_weight, weight_update, glob_update, prev_avg_weight
+def calculate_sum_grad_diff(meta_data, num_cli=11, num_w=512):
+    v_x = [num_w * i for i in range(num_cli)]
+    total_label = 10
+    sum_diff_by_label = []
+    for data in meta_data:
+        data = data.flatten()
+        ret = []
+        for i in range(total_label):
+            temp_sum = np.sum(data[v_x[i]:v_x[i+1]])
+            ret.append(temp_sum)
+        sum_diff_by_label.append(ret)
+    return np.asarray(sum_diff_by_label)
 
 def get_distance_on_avg_net(weight_list, avg_weight, weight_update, total_cli = 10):
     eucl_dis = []
