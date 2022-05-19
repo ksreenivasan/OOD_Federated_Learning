@@ -3,17 +3,17 @@ import numpy as np
 import torch
 import torch.nn.functional as F
 
-from utils import *
-from helpers import *
-from defense import *
+
 # from defense import Con
 
 from models.vgg import get_vgg_model
 import pandas as pd
 
 from torch.nn.utils import parameters_to_vector, vector_to_parameters
+from utils import *
+from helpers import *
+from defense import *
 import datasets
-
 
 import csv
 
@@ -1048,10 +1048,10 @@ class FixedPoolFederatedLearningTrainer(FederatedLearningTrainer):
 
             self.net_avg = fed_avg_aggregator(net_list, net_freq, device=self.device, model=self.model)
             self.flatten_net_avg = flatten_model(self.net_avg)
-            logging_items = get_logging_items(net_list, custom_net, custom_net_2, selected_node_indices, prev_avg, self.net_avg, selected_attackers, flr)
-            with open('logging/new_w_benchmark_01_200.csv', 'a+') as lf:
-                write = csv.writer(lf)
-                write.writerows(logging_items)
+            # logging_items = get_logging_items(net_list, custom_net, custom_net_2, selected_node_indices, prev_avg, self.net_avg, selected_attackers, flr)
+            # with open('logging/new_w_benchmark_01_200.csv', 'a+') as lf:
+            #     write = csv.writer(lf)
+            #     write.writerows(logging_items)
 
             # df_data = logging_items
             # df_writer = pd.DataFrame(df_data)

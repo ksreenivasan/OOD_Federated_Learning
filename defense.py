@@ -2,6 +2,7 @@ import pandas as pd
 import torch
 
 from scipy.special import logit, expit
+from utils import *
 
 from geometric_median import geometric_median
 from sklearn.preprocessing import normalize
@@ -9,7 +10,13 @@ from sklearn.preprocessing import MinMaxScaler
 import hdbscan
 # import logger
 
-from utils import *
+
+# from all_utils import calculate_sum_grad_diff
+# import logging
+# logging.basicConfig()
+# logger = logging.getLogger()
+# logger.setLevel(logging.INFO)
+
 # from utils import extract_classifier_layer
 
 def vectorize_net(net):
@@ -597,20 +604,21 @@ class KrMLRFL(Defense):
         self.pairwise_b = np.zeros((total_workers+1, total_workers+1))
         
         # print(self.pairwise_cs.shape)
+        logger.info("Starting performing KrMLRFL...")
         self.pairwise_choosing_frequencies = np.zeros((total_workers, total_workers))
         with open('combined_file_klfrl.csv', 'w', newline='') as outcsv:
             writer = csv.DictWriter(outcsv, fieldnames = ["flr", 
                                                           "attacker_idxs",
                                                           "pred_idxs_1", 
-           "pred_idxs_2",
-            "true_positive_1",
-            "true_positive_2",
-            "missed_idxs_1",
-            "missed_idxs_2",
-            "freq",
-            "t_score",
-            "num_dps",
-            "saved_pairwise_sim"])
+                                                          "pred_idxs_2",
+                                                          "true_positive_1",
+                                                            "true_positive_2",
+                                                            "missed_idxs_1",
+                                                            "missed_idxs_2",
+                                                            "freq",
+                                                            "t_score",
+                                                            "num_dps",
+                                                            "saved_pairwise_sim"])
             writer.writeheader()
         
 
@@ -620,7 +628,7 @@ class KrMLRFL(Defense):
         trusted_models = []
         neighbor_distances = []
         bias_list, weight_list, avg_bias, avg_weight, weight_update, glob_update, prev_avg_weight = extract_classifier_layer(client_models, pseudo_avg_net, net_avg)
-        
+        logger.info("Starting performing KrMLRFL...")
         for i, g_i in enumerate(vectorize_nets):
             distance = []
             for j in range(i+1, len(vectorize_nets)):
@@ -743,7 +751,7 @@ class KrMLRFL(Defense):
         
         final_attacker_idxs = attacker_local_idxs # for the first filter
         # NOW CHECK FOR ROUND 50
-        if round >= 50: 
+        if round >= 1: 
             # TODO: find dynamic threshold
             # print("[PAIRWISE] self.pairwise_cs.shape: ", self.pairwise_cs.shape)
             
@@ -767,8 +775,11 @@ class KrMLRFL(Defense):
             missed_attacker_idxs_by_kmeans = [at_id for at_id in participated_attackers if at_id not in pred_attackers_indx_2]
             
             attacker_local_idxs_2 = pred_attackers_indx_2
-            final_attacker_idxs = np.union1d(attacker_local_idxs_2, attacker_local_idxs)
-            print("assumed final_attacker_idxs: ", final_attacker_idxs)
+            
+            pseudo_final_attacker_idxs = np.union1d(attacker_local_idxs_2, attacker_local_idxs)
+            if round >= 50:
+                final_attacker_idxs = pseudo_final_attacker_idxs
+            print("assumed final_attacker_idxs: ", pseudo_final_attacker_idxs)
 
 
         freq_participated_attackers = [self.choosing_frequencies[g_idx] for g_idx in g_user_indices]
@@ -863,16 +874,6 @@ class KrMLRFL(Defense):
         hb_clusterer.fit(stack_dis)
         print("hb_clusterer.labels_ is: ", hb_clusterer.labels_)
         return temp_score
-
-        # print("stack_dis.shape: ", stack_dis.shape)
-        # kmeans = KMeans(n_clusters = 2)
-        # pred_labels = kmeans.fit_predict(stack_dis)
-        # print("pred_labels is: ", pred_labels)
-        # label_0 = np.count_nonzero(pred_labels == 0)
-        # label_1 = total_client - label_0
-        # cnt_pred_attackers = label_0 if label_0 <= label_1 else label_1
-        # label_att = 0 if label_0 <= label_1 else 1
-        # print("label_att: ", label_att)
     
 if __name__ == "__main__":
     # some tests here

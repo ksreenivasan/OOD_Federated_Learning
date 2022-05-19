@@ -27,7 +27,7 @@ import pickle
 import random
 import csv
 
-# from defense import vectorize_net
+from defense import vectorize_net
 
 from datasets import MNIST_truncated, EMNIST_truncated, CIFAR10_truncated, CIFAR10_Poisoned, CIFAR10NormalCase_truncated, EMNIST_NormalCase_truncated
 import logging
@@ -37,10 +37,6 @@ logger.setLevel(logging.INFO)
 
 from sklearn import preprocessing
 min_max_scaler = preprocessing.MinMaxScaler()
-
-def vectorize_net(net):
-    return torch.cat([p.view(-1) for p in net.parameters()])
-
 def min_max_scale(data_r):
     data_r = np.asarray(data_r)
     v = data_r[:].reshape((-1,1))
@@ -902,7 +898,7 @@ def load_poisoned_dataset_test(idxs, batch_size, dataset="cifar10", poison_type=
     num_sampled_data_points = 400 # M
     # samped_data_indices = np.random.choice(poisoned_trainset.data.shape[0], num_sampled_data_points, replace=False)
     samped_data_indices = idxs
-    # print(f"idxs: {idxs}")
+    print(f"idxs: {idxs}")
     poisoned_trainset.data = poisoned_trainset.data[samped_data_indices, :, :, :]
     poisoned_trainset.targets = np.array(poisoned_trainset.targets)[samped_data_indices]
     logger.info("!!!!!!!!!!!Num clean data points in the mixed dataset: {}".format(num_sampled_data_points))
@@ -910,8 +906,8 @@ def load_poisoned_dataset_test(idxs, batch_size, dataset="cifar10", poison_type=
     clean_trainset = copy.deepcopy(poisoned_trainset)
     ########################################################
     # benign_train_data_loader = torch.utils.data.DataLoader(clean_trainset, batch_size=args.batch_size, shuffle=True)
-    # print("clean data target: ", poisoned_trainset.targets)
-    # print("clean data target's shape: ", poisoned_trainset.targets.shape)
+    print("clean data target: ", poisoned_trainset.targets)
+    print("clean data target's shape: ", poisoned_trainset.targets.shape)
     labels_clean_set = poisoned_trainset.targets
     unique, counts = np.unique(labels_clean_set, return_counts=True)
     cnt_clean_label = dict(zip(unique, counts))
