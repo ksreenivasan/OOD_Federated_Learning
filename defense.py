@@ -683,6 +683,10 @@ class KrMLRFL(Defense):
         round_weight_pairwise = np.zeros((total_client, total_client))
         
         sum_diff_by_label = calculate_sum_grad_diff(weight_update)
+        with open("w_sum_grad.csv", "a+") as w_f:
+            bias_arr = np.asarray(bias_list)
+            writer = csv.writer(w_f)
+            writer.writerow((round, sum_diff_by_label, bias_arr))
         print(f"sum_diff_by_label.shape is: {sum_diff_by_label.shape}")
         norm_bias_list = normalize(bias_list, axis=1)
         norm_grad_diff_list = normalize(sum_diff_by_label, axis=1)
@@ -765,6 +769,9 @@ class KrMLRFL(Defense):
             # kmeans.fit_predict(cummulative_cs)
             pred_labels = kmeans.fit_predict(saved_pairwise_sim)
             print("pred_labels of combination is: ", pred_labels)
+            print(f"trusted_index is {trusted_index}")
+            print(f"g_trusted_index is {g_user_indices[trusted_index]}")
+            
             trusted_label = pred_labels[trusted_index]
             label_attack = 0 if trusted_label == 1 else 1
         
