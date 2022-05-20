@@ -47,13 +47,13 @@ def extract_classifier_layer(net_list, global_avg_net, prev_net):
     avg_weight = None
     prev_avg_bias = None
     prev_avg_weight = None
-    for idx, param in enumerate(global_avg_net.classifier.parameters()):
+    for idx, param in enumerate(global_avg_net.fc2.parameters()):
         if idx:
             avg_bias = param.data.cpu().numpy()
         else:
             avg_weight = param.data.cpu().numpy()
 
-    for idx, param in enumerate(prev_net.classifier.parameters()):
+    for idx, param in enumerate(prev_net.fc2.parameters()):
         if idx:
             prev_avg_bias = param.data.cpu().numpy()
         else:
@@ -62,7 +62,7 @@ def extract_classifier_layer(net_list, global_avg_net, prev_net):
     for net in net_list:
         bias = None
         weight = None
-        for idx, param in enumerate(net.classifier.parameters()):
+        for idx, param in enumerate(net.fc2.parameters()):
             if idx:
                 bias = param.data.cpu().numpy()
             else:
