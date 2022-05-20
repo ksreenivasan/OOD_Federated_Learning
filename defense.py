@@ -628,16 +628,63 @@ class KrMLRFL(Defense):
         trusted_models = []
         neighbor_distances = []
         bias_list, weight_list, avg_bias, avg_weight, weight_update, glob_update, prev_avg_weight = extract_classifier_layer(client_models, pseudo_avg_net, net_avg)
-        logger.info("Starting performing KrMLRFL...")
-        for i, g_i in enumerate(vectorize_nets):
+
+        missed_attacker_idxs_by_thre = []
+        missed_attacker_idxs_by_kmeans = []
+        freq_participated_attackers = []
+        
+        total_client = len(g_user_indices)
+        round_bias_pairwise = np.zeros((total_client, total_client))
+        round_weight_pairwise = np.zeros((total_client, total_client))
+        
+        sum_diff_by_label = calculate_sum_grad_diff(weight_update)
+        with open("w_sum_grad.csv", "a+") as w_f:
+            bias_arr = np.asarray(bias_list)
+            writer = csv.writer(w_f)
+            writer.writerow((round, sum_diff_by_label, bias_arr))
+        print(f"sum_diff_by_label.shape is: {sum_diff_by_label.shape}")
+        norm_bias_list = normalize(bias_list, axis=1)
+        norm_grad_diff_list = normalize(sum_diff_by_label, axis=1)
+        
+        # UPDATE CUMULATIVE COSINE SIMILARITY 
+        for i, g_i in enumerate(g_user_indices):
             distance = []
-            for j in range(i+1, len(vectorize_nets)):
-                if i != j:
-                    g_j = vectorize_nets[j]
-                    distance.append(float(np.linalg.norm(g_i-g_j)**2)) # let's change this to pytorch version
+            for j, g_j in enumerate(g_user_indices):
+                # if i != j:
+                
+                self.pairwise_choosing_frequencies[g_i][g_j] = self.pairwise_choosing_frequencies[g_i][g_j] + 1.0
+                bias_p_i = norm_bias_list[i]
+                bias_p_j = norm_bias_list[j]
+                cs_1 = np.dot(bias_p_i, bias_p_j)/(np.linalg.norm(bias_p_i)*np.linalg.norm(bias_p_j))
+                round_bias_pairwise[i][j] = cs_1.flatten()
+                
+                w_p_i = norm_grad_diff_list[i]
+                w_p_j = norm_grad_diff_list[j]
+                cs_2 = np.dot(w_p_i, w_p_j)/(np.linalg.norm(w_p_i)*np.linalg.norm(w_p_j))
+                round_weight_pairwise[i][j] = cs_2.flatten()
+                
+                cli_i_arr = np.hstack((bias_p_i, w_p_i))
+                cli_j_arr = np.hstack((bias_p_j, w_p_j))
+                
+                
+                # cs_arr = np.hstack(cs_1, cs_2)
+                
+                if j > i:
+                    distance.append(float(np.linalg.norm(cli_i_arr-cli_j_arr)**2)) # let's change this to pytorch version
             neighbor_distances.append(distance)
+                
+                # round_eu_pairwise[i][j] = 1.0 - sum_sq
+        logger.info("Starting performing KrMLRFL...")
+        # for i, g_i in enumerate(vectorize_nets):
+        #     distance = []
+        #     for j in range(i+1, len(vectorize_nets)):
+        #         if i != j:
+        #             g_j = vectorize_nets[j]
+        #             distance.append(float(np.linalg.norm(g_i-g_j)**2)) # let's change this to pytorch version
+        #     neighbor_distances.append(distance)
 
         # compute scores
+        
         nb_in_score = self.num_workers-self.s-2
         scores = []
         for i, g_i in enumerate(vectorize_nets):
@@ -659,14 +706,10 @@ class KrMLRFL(Defense):
             logger.info("@@@@ The chosen trusted worker is user: {}, which is global user: {}".format(scores.index(min(scores)), g_user_indices[scores.index(min(scores))]))
             trusted_models.append(i_star)
         else:
-            # topk_ind = np.argpartition(scores, nb_in_score+2)[:nb_in_score+2]
             topk_ind = np.argpartition(scores, nb_in_score+2)[:self.num_valid]
             
             # we reconstruct the weighted averaging here:
             selected_num_dps = np.array(num_dps)[topk_ind]
-            # reconstructed_freq = [snd/sum(selected_num_dps) for snd in selected_num_dps]
-
-            # logger.info("Num data points: {}".format(num_dps))
             logger.info("Num selected data points: {}".format(selected_num_dps))
             logger.info("The chosen ones are users: {}, which are global users: {}".format(topk_ind, [g_user_indices[ti] for ti in topk_ind]))
 
@@ -674,40 +717,6 @@ class KrMLRFL(Defense):
                 trusted_models.append(ind)
         
         trusted_index = i_star # used for get labels of attackers
-        missed_attacker_idxs_by_thre = []
-        missed_attacker_idxs_by_kmeans = []
-        freq_participated_attackers = []
-        
-        total_client = len(g_user_indices)
-        round_bias_pairwise = np.zeros((total_client, total_client))
-        round_weight_pairwise = np.zeros((total_client, total_client))
-        
-        sum_diff_by_label = calculate_sum_grad_diff(weight_update)
-        with open("w_sum_grad.csv", "a+") as w_f:
-            bias_arr = np.asarray(bias_list)
-            writer = csv.writer(w_f)
-            writer.writerow((round, sum_diff_by_label, bias_arr))
-        print(f"sum_diff_by_label.shape is: {sum_diff_by_label.shape}")
-        norm_bias_list = normalize(bias_list, axis=1)
-        norm_grad_diff_list = normalize(sum_diff_by_label, axis=1)
-        
-        # UPDATE CUMULATIVE COSINE SIMILARITY 
-        for i, g_i in enumerate(g_user_indices):
-            for j, g_j in enumerate(g_user_indices):
-                # if i != j:
-                self.pairwise_choosing_frequencies[g_i][g_j] = self.pairwise_choosing_frequencies[g_i][g_j] + 1.0
-                bias_p_i = norm_bias_list[i]
-                bias_p_j = norm_bias_list[j]
-                cs = np.dot(bias_p_i, bias_p_j)/(np.linalg.norm(bias_p_i)*np.linalg.norm(bias_p_j))
-                round_bias_pairwise[i][j] = cs.flatten()
-                
-                w_p_i = norm_grad_diff_list[i]
-                w_p_j = norm_grad_diff_list[j]
-                cs = np.dot(w_p_i, w_p_j)/(np.linalg.norm(w_p_i)*np.linalg.norm(w_p_j))
-                round_weight_pairwise[i][j] = cs.flatten()
-                
-                # round_eu_pairwise[i][j] = 1.0 - sum_sq
-
 
         scaler = MinMaxScaler()
         round_bias_pairwise = scaler.fit_transform(round_bias_pairwise)
@@ -833,7 +842,9 @@ class KrMLRFL(Defense):
             neo_net_list.append(client_models[i_star])
             selected_net_indx.append(i_star)
             pred_g_attacker = [g_user_indices[i] for i in final_attacker_idxs]
-            return [client_models[i_star]], [1.0], pred_g_attacker
+            # return [client_models[i_star]], [1.0], pred_g_attacker
+            return [net_avg], [1.0], pred_g_attacker
+            
         vectorize_nets = [vectorize_net(cm).detach().cpu().numpy() for cm in neo_net_list]
         selected_num_dps = np.array(num_dps)[selected_net_indx]
         reconstructed_freq = [snd/sum(selected_num_dps) for snd in selected_num_dps]

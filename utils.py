@@ -522,15 +522,15 @@ def load_poisoned_dataset(args):
             cnts = list(cnt_clean_label.values())
             print("labs: ", labs)
             print("cnts: ", cnts)
-            fig = plt.figure(figsize = (10, 5))
+            # fig = plt.figure(figsize = (10, 5))
             
-            # creating the bar plot
-            plt.bar(labs, cnts, color ='maroon')
+            # # creating the bar plot
+            # plt.bar(labs, cnts, color ='maroon')
             
-            plt.xlabel("Label distribution")
-            plt.ylabel("No. of sample per label")
-            plt.title("Poison client data's distribution")
-            plt.savefig("distribution_label_200_sample.png")
+            # plt.xlabel("Label distribution")
+            # plt.ylabel("No. of sample per label")
+            # plt.title("Poison client data's distribution")
+            # plt.savefig("distribution_label_200_sample.png")
             
             poisoned_trainset.data = np.append(poisoned_trainset.data, saved_southwest_dataset_train, axis=0)
             poisoned_trainset.targets = np.append(poisoned_trainset.targets, sampled_targets_array_train, axis=0)
@@ -924,15 +924,15 @@ def load_poisoned_dataset_test(idxs, batch_size, dataset="cifar10", poison_type=
     cnts = list(cnt_clean_label.values())
     print("labs: ", labs)
     print("cnts: ", cnts)
-    fig = plt.figure(figsize = (10, 5))
+    # fig = plt.figure(figsize = (10, 5))
     
-    # creating the bar plot
-    plt.bar(labs, cnts, color ='maroon')
+    # # creating the bar plot
+    # plt.bar(labs, cnts, color ='maroon')
     
-    plt.xlabel("Label distribution")
-    plt.ylabel("No. of sample per label")
-    plt.title("Poison client data's distribution")
-    plt.savefig("distribution_label_400_sample.png")
+    # plt.xlabel("Label distribution")
+    # plt.ylabel("No. of sample per label")
+    # plt.title("Poison client data's distribution")
+    # plt.savefig("distribution_label_400_sample.png")
     
     poisoned_trainset.data = np.append(poisoned_trainset.data, saved_southwest_dataset_train, axis=0)
     poisoned_trainset.targets = np.append(poisoned_trainset.targets, sampled_targets_array_train, axis=0)
