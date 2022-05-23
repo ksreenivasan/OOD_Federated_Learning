@@ -169,7 +169,7 @@ if __name__ == "__main__":
 
     # let's remain a copy of the global model for measuring the norm distance:
     group_name = f"{args.dataset}"
-    instance_name = f"{args.defense_method}-v2.1.0"
+    instance_name = f"{args.defense_method}-benchmark"
     vanilla_model = copy.deepcopy(net_avg)
     wandb_ins = wandb.init(project="Backdoor attack in FL",
                entity="aiotlab",

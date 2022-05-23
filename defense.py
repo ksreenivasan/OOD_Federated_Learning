@@ -622,7 +622,7 @@ class KrMLRFL(Defense):
             writer.writeheader()
         
 
-    def exec(self, client_models, num_dps,net_freq, net_avg, g_user_indices, pseudo_avg_net, round, selected_attackers, device, *args, **kwargs):
+    def exec(self, client_models, num_dps, net_freq, net_avg, g_user_indices, pseudo_avg_net, round, selected_attackers, device, *args, **kwargs):
         from sklearn.cluster import KMeans
         vectorize_nets = [vectorize_net(cm).detach().cpu().numpy() for cm in client_models]
         trusted_models = []
@@ -777,6 +777,18 @@ class KrMLRFL(Defense):
             kmeans = KMeans(n_clusters = 2)
             # kmeans.fit_predict(cummulative_cs)
             pred_labels = kmeans.fit_predict(saved_pairwise_sim)
+            centroids = kmeans.cluster_centers_
+            np_centroids = np.asarray(centroids)
+            
+            
+            cls_0_idxs = np.argwhere(np.asarray(pred_labels) == 0).flatten()
+            cls_1_idxs = np.argwhere(np.asarray(pred_labels) == 1).flatten()
+            dist_0 = np.sqrt(np.sum(np.square(saved_pairwise_sim[cls_0_idxs]-np_centroids[0])))/len(cls_0_idxs)
+            dist_1 = np.sqrt(np.sum(np.square(saved_pairwise_sim[cls_1_idxs]-np_centroids[1])))/len(cls_1_idxs)
+            print(f"dist_0 is {dist_0}, dist_1 is {dist_1}")
+            
+            
+            print(f"centroids are: {np_centroids}")
             print("pred_labels of combination is: ", pred_labels)
             print(f"trusted_index is {trusted_index}")
             print(f"g_trusted_index is {g_user_indices[trusted_index]}")
