@@ -1228,6 +1228,7 @@ def get_distance_on_avg_net(weight_list, avg_weight, weight_update, total_cli = 
 
 def get_cs_on_base_net(weight_update, avg_weight, total_cli = 10):
     cs_list = []
+    total_cli = len(weight_update)
     for i in range(total_cli):
         point = weight_update[i].flatten()
         # print("point: ", point)
@@ -1238,6 +1239,7 @@ def get_cs_on_base_net(weight_update, avg_weight, total_cli = 10):
 
 def get_ed_on_base_net(weight_update, avg_weight, total_cli = 10):
     ed_list = []
+    total_cli = len(weight_update)
     for i in range(total_cli):
         point = weight_update[i].flatten().reshape(-1,1)
         base_p = avg_weight.flatten().reshape(-1,1)

@@ -169,7 +169,7 @@ if __name__ == "__main__":
 
     # let's remain a copy of the global model for measuring the norm distance:
     group_name = f"{args.dataset}"
-    instance_name = f"{args.defense_method}-benchmark"
+    instance_name = f"{args.defense_method}-20-per-round"
     vanilla_model = copy.deepcopy(net_avg)
     wandb_ins = wandb.init(project="Backdoor attack in FL",
                entity="aiotlab",
@@ -177,8 +177,8 @@ if __name__ == "__main__":
                group=group_name,
                config={
             #"poisoned_emnist_dataset":poisoned_emnist_dataset,
-            "vanilla_model":vanilla_model,
-            "net_avg":net_avg,
+            # "vanilla_model":vanilla_model,
+            # "net_avg":net_avg,
             "net_dataidx_map":net_dataidx_map,
             "num_nets":args.num_nets,
             "dataset":args.dataset,
