@@ -741,7 +741,15 @@ class FixedPoolFederatedLearningTrainer(FederatedLearningTrainer):
             self._defender = KmeansBased(num_workers=self.part_nets_per_round, num_adv=1)
         elif arguments["defense_technique"] == "krum-multilayer":
             self._defender = KrMLRFL(total_workers=self.num_nets ,num_workers=self.part_nets_per_round, num_adv=1, num_valid=1)
-
+        elif arguments["defense_technique"] == "rlr":
+            pytorch_total_params = sum(p.numel() for p in self.net_avg.parameters())
+            args_rlr={
+                'aggr':'avg',
+                'noise':0,
+                'clip': 0,
+                'server_lr': self.args_lr,
+            }
+            self._defender = RLR(n_params=pytorch_total_params, device=self.device, args=args_rlr, robustLR_threshold=4)
         else:
             NotImplementedError("Unsupported defense method !")
 
@@ -983,12 +991,12 @@ class FixedPoolFederatedLearningTrainer(FederatedLearningTrainer):
                                         global_model=self.net_avg,)
             elif self.defense_technique == "krum":
                 net_list, net_freq = self._defender.exec(client_models=net_list, 
-                                                        num_dps=[self.num_dps_poisoned_dataset]+num_data_points,
+                                                        num_dps=num_data_points,
                                                         g_user_indices=selected_node_indices,
                                                         device=self.device)
             elif self.defense_technique == "multi-krum":
                 net_list, net_freq = self._defender.exec(client_models=net_list, 
-                                                        num_dps=[self.num_dps_poisoned_dataset]+num_data_points,
+                                                        num_dps=num_data_points,
                                                         g_user_indices=selected_node_indices,
                                                         device=self.device)
             elif self.defense_technique == "rfa":
@@ -1013,7 +1021,7 @@ class FixedPoolFederatedLearningTrainer(FederatedLearningTrainer):
                 #                         device=self.device)
                 # else:
                 net_list, net_freq = self._defender.exec(client_models=net_list,
-                                                        num_dps=[self.num_dps_poisoned_dataset]+num_data_points,
+                                                        num_dps=num_data_points,
                                                         net_freq=net_freq,
                                                         net_avg=self.net_avg,
                                                         g_user_indices=selected_node_indices,
@@ -1022,7 +1030,7 @@ class FixedPoolFederatedLearningTrainer(FederatedLearningTrainer):
             elif self.defense_technique == "krum-multilayer":
                 pseudo_avg_net = fed_avg_aggregator(net_list, net_freq, device=self.device, model=self.model)
                 net_list, net_freq, pred_g_attacker = self._defender.exec(client_models=net_list,
-                                                        num_dps=[self.num_dps_poisoned_dataset]+num_data_points,
+                                                        num_dps=num_data_points,
                                                         net_freq=net_freq,
                                                         net_avg=self.net_avg,
                                                         g_user_indices=selected_node_indices,
@@ -1034,6 +1042,11 @@ class FixedPoolFederatedLearningTrainer(FederatedLearningTrainer):
                 print("Selected Attackers in FL iteration-{}: {}".format(flr, selected_attackers))             
                 print("Predicted Attackers in FL iteration-{}: {}".format(flr, pred_g_attacker))             
             
+            elif self.defense_technique == 'rlr':
+                print(f"num_data_points: {num_data_points}")
+                net_list, net_freq = self._defender.exec(client_models=net_list,
+                                                        num_dps=num_data_points,
+                                                        global_model=self.net_avg)
             else:
                 NotImplementedError("Unsupported defense method !")
 

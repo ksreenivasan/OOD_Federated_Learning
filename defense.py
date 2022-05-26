@@ -935,6 +935,207 @@ class KrMLRFL(Defense):
         hb_clusterer.fit(stack_dis)
         print("hb_clusterer.labels_ is: ", hb_clusterer.labels_)
         return temp_score
+
+class RLR(Defense):
+    def __init__(self, n_params, device, args, agent_data_sizes=[], writer=None, robustLR_threshold = 0, aggr="avg", poisoned_val_loader=None):
+        self.agent_data_sizes = agent_data_sizes
+        self.args = args
+        self.writer = writer
+        # print(f"args: {args}")
+        # self.server_lr = args.server_lr
+        self.n_params = n_params
+        self.poisoned_val_loader = None
+        self.cum_net_mov = 0
+        self.device = device
+        self.robustLR_threshold = robustLR_threshold
+        
+         
+    def exec(self, global_model, client_models, num_dps, agent_updates_dict=None, cur_round=0):
+        # adjust LR if robust LR is selected
+        print(f"self.args: {self.args}")
+        print(f"self.args['server_lr']: {self.args['server_lr']}")
+        lr_vector = torch.Tensor([self.args['server_lr']]*self.n_params).to(self.device)
+        vectorize_nets = [vectorize_net(cm).detach().cpu().numpy() for cm in client_models]
+        vectorize_avg_net = vectorize_net(global_model).detach().cpu().numpy()
+        local_updates = vectorize_nets - vectorize_avg_net
+        aggr_freq = [num_dp/sum(num_dps) for num_dp in num_dps]
+        
+        if self.robustLR_threshold > 0:
+            lr_vector = self.compute_robustLR(local_updates)
+        
+        
+        aggregated_updates = 0
+        if self.args['aggr']=='avg':          
+            aggregated_updates = self.agg_avg(local_updates, num_dps)
+        elif self.args['aggr']=='comed':
+            #TODO update for the 2 remaining func
+            aggregated_updates = self.agg_comed(local_updates)
+        elif self.args['aggr'] == 'sign':
+            aggregated_updates = self.agg_sign(local_updates)
+            
+        if self.args['noise'] > 0:
+            aggregated_updates.add_(torch.normal(mean=0, std=self.args['noise']*self.args['clip'], size=(self.n_params,)).to(self.device))
+
+        cur_global_params = vectorize_avg_net
+        new_global_params =  (cur_global_params + lr_vector*aggregated_updates).astype(np.float32)
+        
+        aggregated_model = client_models[0] # slicing which doesn't really matter
+        load_model_weight(aggregated_model, torch.from_numpy(new_global_params).to(self.device))
+        neo_net_list = [aggregated_model]
+        neo_net_freq = [1.0]
+        return neo_net_list, neo_net_freq
+        
+        
+        # some plotting stuff if desired
+        # self.plot_sign_agreement(lr_vector, cur_global_params, new_global_params, cur_round)
+        # self.plot_norms(agent_updates_dict, cur_round)
+     
+    
+    def compute_robustLR(self, agent_updates):
+        agent_updates_sign = [np.sign(update) for update in agent_updates]  
+        sm_of_signs = np.abs(sum(agent_updates_sign))
+        print(f"sm_of_signs is: {sm_of_signs}")
+        
+        sm_of_signs[sm_of_signs < self.robustLR_threshold] = -self.args['server_lr']
+        sm_of_signs[sm_of_signs >= self.robustLR_threshold] = self.args['server_lr']                                            
+        return sm_of_signs
+        
+            
+    def agg_avg(self, agent_updates_dict, num_dps):
+        """ classic fed avg """
+        sm_updates, total_data = 0, 0
+        for _id, update in enumerate(agent_updates_dict):
+            n_agent_data = num_dps[_id]
+            sm_updates +=  n_agent_data * update
+            total_data += n_agent_data  
+        return  sm_updates / total_data
+    
+    def agg_comed(self, agent_updates_dict):
+        agent_updates_col_vector = [update.view(-1, 1) for update in agent_updates_dict.values()]
+        concat_col_vectors = torch.cat(agent_updates_col_vector, dim=1)
+        return torch.median(concat_col_vectors, dim=1).values
+    
+    def agg_sign(self, agent_updates_dict):
+        """ aggregated majority sign update """
+        agent_updates_sign = [torch.sign(update) for update in agent_updates_dict.values()]
+        sm_signs = torch.sign(sum(agent_updates_sign))
+        return torch.sign(sm_signs)
+
+    def clip_updates(self, agent_updates_dict):
+        for update in agent_updates_dict.values():
+            l2_update = torch.norm(update, p=2) 
+            update.div_(max(1, l2_update/self.args['clip']))
+        return
+                  
+    def plot_norms(self, agent_updates_dict, cur_round, norm=2):
+        """ Plotting average norm information for honest/corrupt updates """
+        honest_updates, corrupt_updates = [], []
+        for key in agent_updates_dict.keys():
+            if key < self.args.num_corrupt:
+                corrupt_updates.append(agent_updates_dict[key])
+            else:
+                honest_updates.append(agent_updates_dict[key])
+                              
+        l2_honest_updates = [torch.norm(update, p=norm) for update in honest_updates]
+        avg_l2_honest_updates = sum(l2_honest_updates) / len(l2_honest_updates)
+        self.writer.add_scalar(f'Norms/Avg_Honest_L{norm}', avg_l2_honest_updates, cur_round)
+        
+        if len(corrupt_updates) > 0:
+            l2_corrupt_updates = [torch.norm(update, p=norm) for update in corrupt_updates]
+            avg_l2_corrupt_updates = sum(l2_corrupt_updates) / len(l2_corrupt_updates)
+            self.writer.add_scalar(f'Norms/Avg_Corrupt_L{norm}', avg_l2_corrupt_updates, cur_round) 
+        return
+        
+    def comp_diag_fisher(self, model_params, data_loader, adv=True):
+
+        model = models.get_model(self.args.data)
+        vector_to_parameters(model_params, model.parameters())
+        params = {n: p for n, p in model.named_parameters() if p.requires_grad}
+        precision_matrices = {}
+        for n, p in deepcopy(params).items():
+            p.data.zero_()
+            precision_matrices[n] = p.data
+            
+        model.eval()
+        for _, (inputs, labels) in enumerate(data_loader):
+            model.zero_grad()
+            inputs, labels = inputs.to(device=self.args.device, non_blocking=True),\
+                                    labels.to(device=self.args.device, non_blocking=True).view(-1, 1)
+            if not adv:
+                labels.fill_(self.args.base_class)
+                
+            outputs = model(inputs)
+            log_all_probs = F.log_softmax(outputs, dim=1)
+            target_log_probs = outputs.gather(1, labels)
+            batch_target_log_probs = target_log_probs.sum()
+            batch_target_log_probs.backward()
+            
+            for n, p in model.named_parameters():
+                precision_matrices[n].data += (p.grad.data ** 2) / len(data_loader.dataset)
+                
+        return parameters_to_vector(precision_matrices.values()).detach()
+
+        
+    def plot_sign_agreement(self, robustLR, cur_global_params, new_global_params, cur_round):
+        """ Getting sign agreement of updates between honest and corrupt agents """
+        # total update for this round
+        update = new_global_params - cur_global_params
+        
+        # compute FIM to quantify these parameters: (i) parameters which induces adversarial mapping on trojaned, (ii) parameters which induces correct mapping on trojaned
+        fisher_adv = self.comp_diag_fisher(cur_global_params, self.poisoned_val_loader)
+        fisher_hon = self.comp_diag_fisher(cur_global_params, self.poisoned_val_loader, adv=False)
+        _, adv_idxs = fisher_adv.sort()
+        _, hon_idxs = fisher_hon.sort()
+        
+        # get most important n_idxs params
+        n_idxs = self.args.top_frac #math.floor(self.n_params*self.args.top_frac)
+        adv_top_idxs = adv_idxs[-n_idxs:].cpu().detach().numpy()
+        hon_top_idxs = hon_idxs[-n_idxs:].cpu().detach().numpy()
+        
+        # minimized and maximized indexes
+        min_idxs = (robustLR == -self.args.server_lr).nonzero().cpu().detach().numpy()
+        max_idxs = (robustLR == self.args.server_lr).nonzero().cpu().detach().numpy()
+        
+        # get minimized and maximized idxs for adversary and honest
+        max_adv_idxs = np.intersect1d(adv_top_idxs, max_idxs)
+        max_hon_idxs = np.intersect1d(hon_top_idxs, max_idxs)
+        min_adv_idxs = np.intersect1d(adv_top_idxs, min_idxs)
+        min_hon_idxs = np.intersect1d(hon_top_idxs, min_idxs)
+       
+        # get differences
+        max_adv_only_idxs = np.setdiff1d(max_adv_idxs, max_hon_idxs)
+        max_hon_only_idxs = np.setdiff1d(max_hon_idxs, max_adv_idxs)
+        min_adv_only_idxs = np.setdiff1d(min_adv_idxs, min_hon_idxs)
+        min_hon_only_idxs = np.setdiff1d(min_hon_idxs, min_adv_idxs)
+        
+        # get actual update values and compute L2 norm
+        max_adv_only_upd = update[max_adv_only_idxs] # S1
+        max_hon_only_upd = update[max_hon_only_idxs] # S2
+        
+        min_adv_only_upd = update[min_adv_only_idxs] # S3
+        min_hon_only_upd = update[min_hon_only_idxs] # S4
+
+
+        #log l2 of updates
+        max_adv_only_upd_l2 = torch.norm(max_adv_only_upd).item()
+        max_hon_only_upd_l2 = torch.norm(max_hon_only_upd).item()
+        min_adv_only_upd_l2 = torch.norm(min_adv_only_upd).item()
+        min_hon_only_upd_l2 = torch.norm(min_hon_only_upd).item()
+       
+        self.writer.add_scalar(f'Sign/Hon_Maxim_L2', max_hon_only_upd_l2, cur_round)
+        self.writer.add_scalar(f'Sign/Adv_Maxim_L2', max_adv_only_upd_l2, cur_round)
+        self.writer.add_scalar(f'Sign/Adv_Minim_L2', min_adv_only_upd_l2, cur_round)
+        self.writer.add_scalar(f'Sign/Hon_Minim_L2', min_hon_only_upd_l2, cur_round)
+        
+        
+        net_adv =  max_adv_only_upd_l2 - min_adv_only_upd_l2
+        net_hon =  max_hon_only_upd_l2 - min_hon_only_upd_l2
+        self.writer.add_scalar(f'Sign/Adv_Net_L2', net_adv, cur_round)
+        self.writer.add_scalar(f'Sign/Hon_Net_L2', net_hon, cur_round)
+        
+        self.cum_net_mov += (net_hon - net_adv)
+        self.writer.add_scalar(f'Sign/Model_Net_L2_Cumulative', self.cum_net_mov, cur_round)
+        return
     
 if __name__ == "__main__":
     # some tests here
