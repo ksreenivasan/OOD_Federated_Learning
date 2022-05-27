@@ -43,7 +43,7 @@ class Net(nn.Module):
         return output
 
 
-def get_results_filename(poison_type, attack_method, model_replacement, project_frequency, defense_method, norm_bound, prox_attack, fixed_pool=False, model_arch="vgg9"):
+def get_results_filename(poison_type, attack_method, model_replacement, project_frequency, defense_method, norm_bound, prox_attack, instance="benchmark", fixed_pool=False, model_arch="vgg9"):
     filename = "{}_{}_{}".format(poison_type, model_arch, attack_method)
     if fixed_pool:
         filename += "_fixed_pool" 
@@ -64,7 +64,7 @@ def get_results_filename(poison_type, attack_method, model_replacement, project_
     elif defense_method in ("krum", "multi-krum", "rfa"):
         filename += "_{}".format(defense_method)
                
-    filename += "_acc_results.csv"
+    filename += f"_{instance}_acc_results.csv"
 
     return filename
 
@@ -343,6 +343,7 @@ class FrequencyFederatedLearningTrainer(FederatedLearningTrainer):
         self.prox_attack = arguments['prox_attack']
         self.attack_case = arguments['attack_case']
         self.stddev = arguments['stddev']
+        self.instance = arguments['instance']
 
         logger.info("Posion type! {}".format(self.poison_type))
 
@@ -379,6 +380,10 @@ class FrequencyFederatedLearningTrainer(FederatedLearningTrainer):
             self._defender = RFA()
         elif arguments["defense_technique"] == "kmeans-based":
             self._defender = KmeansBased()
+        elif arguments["defense_technique"] == "upper-by-class":
+            self._defender = UpperBoundByClass()
+        elif arguments["defense_technique"] == "upper-bound":
+            self._defender = UpperBound()
         else:
             NotImplementedError("Unsupported defense method !")
 
@@ -606,6 +611,19 @@ class FrequencyFederatedLearningTrainer(FederatedLearningTrainer):
                                                         net_freq=net_freq,
                                                         net_avg=self.net_avg,
                                                         device=self.device)
+            elif self.defense_technique == "upper-by-class":
+                participated_attackers = []
+                for in_, id_ in enumerate(selected_node_indices):
+                    if id_ in [0]:
+                        participated_attackers.append(in_)
+                net_list, net_freq = self._defender.exec(client_models=net_list, num_dps=num_data_points, g_user_indices=selected_node_indices, device=self.device, attacker_idxs=participated_attackers)
+            
+            elif self.defense_technique == "upper-bound":
+                participated_attackers = []
+                for in_, id_ in enumerate(selected_node_indices):
+                    if id_ in [0]:
+                        participated_attackers.append(in_)
+                net_list, net_freq = self._defender.exec(client_models=net_list, num_dps=num_data_points, g_user_indices=selected_node_indices, device=self.device, attacker_idxs=participated_attackers)
             else:
                 NotImplementedError("Unsupported defense method !")
 
@@ -646,7 +664,7 @@ class FrequencyFederatedLearningTrainer(FederatedLearningTrainer):
             df = pd.concat([df1, df])
 
         results_filename = get_results_filename(self.poison_type, self.attack_method, self.model_replacement, self.project_frequency,
-                self.defense_technique, self.norm_bound, self.prox_attack, False, self.model)
+                self.defense_technique, self.norm_bound, self.prox_attack, self.instance , False, self.model)
 
         df.to_csv(results_filename, index=False)
         logger.info("Wrote accuracy results to: {}".format(results_filename))
@@ -700,8 +718,6 @@ class FixedPoolFederatedLearningTrainer(FederatedLearningTrainer):
         self.flatten_weights = []
         self.flatten_net_avg = None
 
-
-
         logger.info("Posion type! {}".format(self.poison_type))
 
         if self.attack_method == "pgd":
@@ -740,7 +756,11 @@ class FixedPoolFederatedLearningTrainer(FederatedLearningTrainer):
         elif arguments["defense_technique"] == "kmeans-based":
             self._defender = KmeansBased(num_workers=self.part_nets_per_round, num_adv=1)
         elif arguments["defense_technique"] == "krum-multilayer":
-            self._defender = KrMLRFL(total_workers=self.num_nets ,num_workers=self.part_nets_per_round, num_adv=1, num_valid=1)
+            self._defender = KrMLRFL(total_workers=self.num_nets ,num_workers=self.part_nets_per_round, num_adv=1, num_valid=1, instance=arguments['instance'])
+        elif arguments["defense_technique"] == "upper-by-class":
+            self._defender = UpperBoundByClass()
+        elif arguments["defense_technique"] == "upper-bound":
+            self._defender = UpperBound()
         elif arguments["defense_technique"] == "rlr":
             pytorch_total_params = sum(p.numel() for p in self.net_avg.parameters())
             args_rlr={
@@ -750,6 +770,8 @@ class FixedPoolFederatedLearningTrainer(FederatedLearningTrainer):
                 'server_lr': self.args_lr,
             }
             self._defender = RLR(n_params=pytorch_total_params, device=self.device, args=args_rlr, robustLR_threshold=4)
+        elif arguments["defense_technique"] == "flame":
+            self._defender = FLAME()
         else:
             NotImplementedError("Unsupported defense method !")
 
@@ -1006,6 +1028,10 @@ class FixedPoolFederatedLearningTrainer(FederatedLearningTrainer):
                                                         eps=1e-5,
                                                         ftol=1e-7,
                                                         device=self.device)
+            elif self.defense_technique == "flame":
+                net_list, net_freq = self._defender.exec(client_models=net_list,
+                                                        net_avg=self.net_avg,
+                                                        device=self.device)
             elif self.defense_technique == "contra":
                 delta = 0.1
                 thr = 0.5
@@ -1041,7 +1067,19 @@ class FixedPoolFederatedLearningTrainer(FederatedLearningTrainer):
             # logger.info("Selected Attackers in FL iteration-{}: {}".format(flr, selected_attackers))
                 print("Selected Attackers in FL iteration-{}: {}".format(flr, selected_attackers))             
                 print("Predicted Attackers in FL iteration-{}: {}".format(flr, pred_g_attacker))             
+            elif self.defense_technique == "upper-by-class":
+                participated_attackers = []
+                for in_, id_ in enumerate(selected_node_indices):
+                    if id_ in selected_attackers:
+                        participated_attackers.append(in_)
+                net_list, net_freq = self._defender.exec(client_models=net_list, num_dps=num_data_points, g_user_indices=selected_node_indices, device=self.device, attacker_idxs=participated_attackers)
             
+            elif self.defense_technique == "upper-bound":
+                participated_attackers = []
+                for in_, id_ in enumerate(selected_node_indices):
+                    if id_ in selected_attackers:
+                        participated_attackers.append(in_)
+                net_list, net_freq = self._defender.exec(client_models=net_list, num_dps=num_data_points, g_user_indices=selected_node_indices, device=self.device, attacker_idxs=participated_attackers)
             elif self.defense_technique == 'rlr':
                 print(f"num_data_points: {num_data_points}")
                 net_list, net_freq = self._defender.exec(client_models=net_list,

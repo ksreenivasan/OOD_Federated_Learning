@@ -47,13 +47,13 @@ def extract_classifier_layer(net_list, global_avg_net, prev_net):
     avg_weight = None
     prev_avg_bias = None
     prev_avg_weight = None
-    for idx, param in enumerate(global_avg_net.fc2.parameters()):
+    for idx, param in enumerate(global_avg_net.classifier.parameters()):
         if idx:
             avg_bias = param.data.cpu().numpy()
         else:
             avg_weight = param.data.cpu().numpy()
 
-    for idx, param in enumerate(prev_net.fc2.parameters()):
+    for idx, param in enumerate(prev_net.classifier.parameters()):
         if idx:
             prev_avg_bias = param.data.cpu().numpy()
         else:
@@ -62,7 +62,7 @@ def extract_classifier_layer(net_list, global_avg_net, prev_net):
     for net in net_list:
         bias = None
         weight = None
-        for idx, param in enumerate(net.fc2.parameters()):
+        for idx, param in enumerate(net.classifier.parameters()):
             if idx:
                 bias = param.data.cpu().numpy()
             else:
@@ -593,11 +593,12 @@ class KrMLRFL(Defense):
     we implement the robust aggregator at: https://papers.nips.cc/paper/6617-machine-learning-with-adversaries-byzantine-tolerant-gradient-descent.pdf
     and we integrate both krum and multi-krum in this single class
     """
-    def __init__(self, total_workers, num_workers, num_adv, num_valid = 1, *args, **kwargs):
+    def __init__(self, total_workers, num_workers, num_adv, num_valid = 1, instance="benchmark", *args, **kwargs):
         # assert (mode in ("krum", "multi-krum"))
         self.num_valid = num_valid
         self.num_workers = num_workers
         self.s = num_adv
+        self.instance = instance
         self.choosing_frequencies = {}
         self.accumulate_t_scores = {}
         self.pairwise_w = np.zeros((total_workers+1, total_workers+1))
@@ -606,13 +607,17 @@ class KrMLRFL(Defense):
         # print(self.pairwise_cs.shape)
         logger.info("Starting performing KrMLRFL...")
         self.pairwise_choosing_frequencies = np.zeros((total_workers, total_workers))
-        with open('combined_file_klfrl.csv', 'w', newline='') as outcsv:
+        with open(f'{self.instance}_combined_file_klfrl.csv', 'w', newline='') as outcsv:
             writer = csv.DictWriter(outcsv, fieldnames = ["flr", 
                                                           "attacker_idxs",
                                                           "pred_idxs_1", 
                                                           "pred_idxs_2",
                                                           "true_positive_1",
                                                             "true_positive_2",
+                                                            "false_negative_1",
+                                                            "false_negative_2",
+                                                            "false_positive_1",
+                                                            "false_positive_2",
                                                             "missed_idxs_1",
                                                             "missed_idxs_2",
                                                             "freq",
@@ -638,11 +643,6 @@ class KrMLRFL(Defense):
         round_weight_pairwise = np.zeros((total_client, total_client))
         
         sum_diff_by_label = calculate_sum_grad_diff(weight_update)
-        with open("w_sum_grad.csv", "a+") as w_f:
-            bias_arr = np.asarray(bias_list)
-            writer = csv.writer(w_f)
-            writer.writerow((round, sum_diff_by_label, bias_arr))
-        print(f"sum_diff_by_label.shape is: {sum_diff_by_label.shape}")
         norm_bias_list = normalize(bias_list, axis=1)
         norm_grad_diff_list = normalize(sum_diff_by_label, axis=1)
         
@@ -673,35 +673,11 @@ class KrMLRFL(Defense):
             #         distance.append(float(np.linalg.norm(cli_i_arr-cli_j_arr)**2)) # let's change this to pytorch version
             # neighbor_distances.append(distance)
                 
-                # round_eu_pairwise[i][j] = 1.0 - sum_sq
         logger.info("Starting performing KrMLRFL...")
-        # for i, g_i in enumerate(vectorize_nets):
-        #     distance = []
-        #     for j in range(i+1, len(vectorize_nets)):
-        #         if i != j:
-        #             g_j = vectorize_nets[j]
-        #             distance.append(float(np.linalg.norm(g_i-g_j)**2)) # let's change this to pytorch version
-        #     neighbor_distances.append(distance)
+       
 
         # # compute scores by KRUM*
         
-        # nb_in_score = self.num_workers-self.s-2
-        # scores = []
-        # for i, g_i in enumerate(vectorize_nets):
-        #     dists = []
-        #     for j, g_j in enumerate(vectorize_nets):
-        #         if j == i:
-        #             continue
-        #         if j < i:
-        #             dists.append(neighbor_distances[j][i - j - 1])
-        #         else:
-        #             dists.append(neighbor_distances[i][j - i - 1])
-        #     # alternative to topk in pytorch and tensorflow
-        #     topk_ind = np.argpartition(dists, nb_in_score)[:nb_in_score]
-        #     scores.append(sum(np.take(dists, topk_ind)))
-            
-        # vectorize_nets = [vectorize_net(cm).detach().cpu().numpy() for cm in client_models]
-        # neighbor_distances = []
         for i, g_i in enumerate(vectorize_nets):
             distance = []
             for j in range(i+1, len(vectorize_nets)):
@@ -727,6 +703,7 @@ class KrMLRFL(Defense):
             topk_ind = np.argpartition(dists, nb_in_score)[:nb_in_score]
             scores.append(sum(np.take(dists, topk_ind)))
         
+        print(f"scores of krum method: {scores}")
         i_star = scores.index(min(scores))
         
         # use krum as the baseline to improve, mark the one chosen by krum as trusted
@@ -761,8 +738,6 @@ class KrMLRFL(Defense):
         # From now on, trusted_models contain the index base models treated as valid users.
         raw_t_score = self.get_trustworthy_scores(glob_update, weight_update)
         t_score = []
-        # print(f"raw_t_score: {raw_t_score}")
-        # print(f"self.accumulate_t_scores: {self.accumulate_t_scores}")
         for idx, cli in enumerate(g_user_indices):
             # increase the frequency of the selected choosen clients
             self.choosing_frequencies[cli] = self.choosing_frequencies.get(cli, 0) + 1
@@ -772,7 +747,6 @@ class KrMLRFL(Defense):
         
         
         t_score = np.array(t_score)
-        # threshold = np.quantile(t_score, 0.5)
         threshold = min(0.5, np.median(t_score))
         
         
@@ -781,6 +755,8 @@ class KrMLRFL(Defense):
             if id_ in selected_attackers:
                 participated_attackers.append(in_)
         print("At round: ", round)
+        if not len(selected_attackers):
+            print("THIS ROUND HAS NO ATTACKER!!!")
         print("real attackers indx: ", participated_attackers)
         print(f'[T_SCORE] median score: {np.median(t_score)}')
         print("[T_SCORE] trustworthy score is: ", t_score)
@@ -792,21 +768,19 @@ class KrMLRFL(Defense):
         missed_attacker_idxs_by_thre = [at_id for at_id in participated_attackers if at_id not in attacker_local_idxs]
         attacker_local_idxs_2 = []
         saved_pairwise_sim = []
-        
+
+        np_scores = np.asarray(scores)
         final_attacker_idxs = attacker_local_idxs # for the first filter
         # NOW CHECK FOR ROUND 50
         if round >= 1: 
             # TODO: find dynamic threshold
-            # print("[PAIRWISE] self.pairwise_cs.shape: ", self.pairwise_cs.shape)
             
             cummulative_w = self.pairwise_w[np.ix_(g_user_indices, g_user_indices)]
             cummulative_b = self.pairwise_b[np.ix_(g_user_indices, g_user_indices)]
             
             
             saved_pairwise_sim = np.hstack((cummulative_w, cummulative_b))
-            # print("saved_pairwise_sim.shape is: ", saved_pairwise_sim.shape)
             kmeans = KMeans(n_clusters = 2)
-            # kmeans.fit_predict(cummulative_cs)
             pred_labels = kmeans.fit_predict(saved_pairwise_sim)
             centroids = kmeans.cluster_centers_
             np_centroids = np.asarray(centroids)
@@ -819,18 +793,30 @@ class KrMLRFL(Defense):
             print(f"dist_0 is {dist_0}, dist_1 is {dist_1}")
             
             
-            print(f"centroids are: {np_centroids}")
-            print("pred_labels of combination is: ", pred_labels)
-            print(f"trusted_index is {trusted_index}")
-            print(f"g_trusted_index is {g_user_indices[trusted_index]}")
-            
             trusted_label = pred_labels[trusted_index]
             label_attack = 0 if trusted_label == 1 else 1
         
             pred_attackers_indx_2 = np.argwhere(np.asarray(pred_labels) == label_attack).flatten()
         
-                
+            
             print("[PAIRWISE] pred_attackers_indx: ", pred_attackers_indx_2)
+            pred_normal_client = [_id for _id in range(total_client) if _id not in pred_attackers_indx_2]
+
+            #FOR LOGGING ONLY
+            adv_krum_s = np_scores[pred_attackers_indx_2]
+            ben_krum_s = np_scores[pred_normal_client]
+            adv_krum_s_avg = np.average(adv_krum_s).flatten()
+            ben_krum_s_avg = np.average(ben_krum_s).flatten()
+            print(f"trusted client score is: {np_scores[i_star]}")
+            print(f"attackers' scores by krum are: {np_scores[pred_attackers_indx_2]}")
+            print(f"adv_krum_s_avg: {adv_krum_s_avg}")
+            print(f"pred_normal_client's score by krum are: {np_scores[pred_normal_client]}")
+            print(f"ben_krum_s_avg: {ben_krum_s_avg}")
+            has_attacker = True if len(selected_attackers) else False
+            cluster_log_row = (round, has_attacker, np_scores[i_star], adv_krum_s_avg, ben_krum_s_avg, adv_krum_s, ben_krum_s)
+            with open (f"{self.instance}_cluster_log.csv", "a+") as log_csv:
+                writer = csv.writer(log_csv)
+                writer.writerow(cluster_log_row)
             missed_attacker_idxs_by_kmeans = [at_id for at_id in participated_attackers if at_id not in pred_attackers_indx_2]
             
             attacker_local_idxs_2 = pred_attackers_indx_2
@@ -849,11 +835,24 @@ class KrMLRFL(Defense):
         for id_ in participated_attackers:
             true_positive_pred_layer1.append(1.0 if id_ in attacker_local_idxs else 0.0)
             true_positive_pred_layer2.append(1.0 if id_ in attacker_local_idxs_2 else 0.0)
+        for id_ in attacker_local_idxs:
+            if id_ not in participated_attackers:
+                false_positive_pred_layer1.append(1.0)
+        for id_ in attacker_local_idxs_2:
+            if id_ not in participated_attackers:
+                false_positive_pred_layer2.append(1.0)
+            # if id_ not in 
             
             
-        true_positive_pred_layer1_val = sum(true_positive_pred_layer1)/len(true_positive_pred_layer1) if len(true_positive_pred_layer1) else 0.0
-        true_positive_pred_layer2_val = sum(true_positive_pred_layer2)/len(true_positive_pred_layer2) if len(true_positive_pred_layer2) else 0.0
-        
+        # true_positive_pred_layer1_val = sum(true_positive_pred_layer1)/len(true_positive_pred_layer1) if len(true_positive_pred_layer1) else 0.0
+        # true_positive_pred_layer2_val = sum(true_positive_pred_layer2)/len(true_positive_pred_layer2) if len(true_positive_pred_layer2) else 0.0
+        true_positive_pred_layer1_val = sum(true_positive_pred_layer1)/len(participated_attackers) if len(true_positive_pred_layer1) else 0.0
+        true_positive_pred_layer2_val = sum(true_positive_pred_layer2)/len(participated_attackers) if len(true_positive_pred_layer2) else 0.0
+        fn_layer1_val = 1.0 - true_positive_pred_layer1_val
+        fn_layer2_val = 1.0 - true_positive_pred_layer2_val
+        fp_layer1_val = sum(false_positive_pred_layer1)/(total_client-len(participated_attackers)) if len(false_positive_pred_layer1) else 0.0
+        fp_layer2_val = sum(false_positive_pred_layer2)/(total_client-len(participated_attackers)) if len(false_positive_pred_layer2) else 0.0
+
         logging_per_round = (
             round,
             participated_attackers,
@@ -861,6 +860,10 @@ class KrMLRFL(Defense):
             attacker_local_idxs_2,
             true_positive_pred_layer1_val,
             true_positive_pred_layer2_val,
+            fn_layer1_val,
+            fn_layer2_val,
+            fp_layer1_val,
+            fp_layer2_val,
             missed_attacker_idxs_by_thre,
             missed_attacker_idxs_by_kmeans,
             freq_participated_attackers,
@@ -869,8 +872,7 @@ class KrMLRFL(Defense):
             saved_pairwise_sim
         )
         
-        
-        with open("combined_file_klfrl.csv", "a+") as w_f:
+        with open(f'{self.instance}_combined_file_klfrl.csv', "a+") as w_f:
             writer = csv.writer(w_f)
             writer.writerow(logging_per_round)
         neo_net_list = []
@@ -934,7 +936,7 @@ class KrMLRFL(Defense):
                                 metric='euclidean', min_cluster_size=2, min_samples=None, p=None)
         hb_clusterer.fit(stack_dis)
         print("hb_clusterer.labels_ is: ", hb_clusterer.labels_)
-        return temp_score
+        return abnormal_score
 
 class RLR(Defense):
     def __init__(self, n_params, device, args, agent_data_sizes=[], writer=None, robustLR_threshold = 0, aggr="avg", poisoned_val_loader=None):
@@ -1136,7 +1138,138 @@ class RLR(Defense):
         self.cum_net_mov += (net_hon - net_adv)
         self.writer.add_scalar(f'Sign/Model_Net_L2_Cumulative', self.cum_net_mov, cur_round)
         return
+
+class FLAME(Defense):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)    
+    def exec(self, client_models, net_avg, device, *args, **kwargs):
+        total_client = len(client_models)
+        vectorize_nets = [vectorize_net(cm).detach().cpu().numpy() for cm in client_models]
+        vectorize_avg_net = vectorize_net(net_avg).detach().cpu().numpy()
+        local_updates = vectorize_nets - vectorize_avg_net
+        
+        #FILTERING C1:
+        pairwise_cs = np.zeros((total_client, total_client))
+        for i, w_p_i in enumerate(local_updates):
+            for j, w_p_j in enumerate(local_updates):
+                pairwise_cs[i][j] = np.dot(w_p_i, w_p_j)/(np.linalg.norm(w_p_i)*np.linalg.norm(w_p_j))
+        pairwise_cs = normalize(pairwise_cs)
+        # print(f"pairwise_cs: {pairwise_cs}")
+        
+        min_cluster_sz = int(total_client/2+1)
+        # hb_clusterer = hdbscan.HDBSCAN(min_cluster_size=min_cluster_sz, min_samples=1)
+        hb_clusterer = hdbscan.HDBSCAN(algorithm='best', alpha=1.0, approx_min_span_tree=True,
+                                gen_min_span_tree=False, leaf_size=40,
+                                metric='euclidean', min_cluster_size=2, min_samples=None, p=None)
+        hb_clusterer.fit(pairwise_cs)
+        layer_1_pred_labels = hb_clusterer.labels_
+        layer_1_pred_labels = np.asarray(layer_1_pred_labels)
+        print(f"layer_1_pred_labels: {layer_1_pred_labels}")
+        
+        # unique_dict = np.unique(layer_1_pred_labels, return_counts=True)
+        # max_lab_key = max(unique_dict, key=unique_dict.get)
+        values, counts = np.unique(layer_1_pred_labels, return_counts=True)
+
+        normal_client_label = layer_1_pred_labels[np.argmax(counts)]
+        print(f"max_lab_key is: {normal_client_label}")
+        # normal_client_label = np.bincount(layer_1_pred_labels).argmax()
+        normal_client_idxs = np.argwhere(layer_1_pred_labels == normal_client_label).flatten()
+        print(f"normal_client_idxs: {normal_client_idxs}")
+        eucl_dist = []
+        for i, g_p_i in enumerate(vectorize_nets):
+            ds = g_p_i-vectorize_avg_net
+            el_dis = np.sqrt(np.dot(ds, ds.T)).flatten()
+            eucl_dist.append(el_dis)
+        s_t = np.median(eucl_dist)
+        
+        normal_w = []
+        for _id in normal_client_idxs:
+            dym_thres = s_t/eucl_dist[_id]
+            w_c = vectorize_avg_net + local_updates[_id]*min(1.0, dym_thres)
+            normal_w.append(w_c)
+        print(len(normal_w))
+        
+        normal_w = np.asarray(normal_w)
+        print(f"normal_w.shape is: {normal_w.shape}")
+        new_global_w = np.average(normal_w, axis=0)
+        lambda_ = 0.001
+        sigma_n = lambda_*s_t
+        # new_global_w =  new_global_w + np.random.normal(0, sigma_n, new_global_w.shape[0])
+        aggregated_model = client_models[0]
+        print(f"new_global_w.shape is: {new_global_w.shape}")
+        g_noise = np.random.normal(0, sigma_n, new_global_w.shape[0])
+        new_global_w =  (new_global_w + g_noise)
+        load_model_weight(aggregated_model, torch.from_numpy(new_global_w.astype(np.float32)).to(device))
+        return [aggregated_model],  [1.0]
+        
+class UpperBound(Defense):
+    def __init__(self, *args, **kwargs):
+        pass
     
+    def exec(self, client_models, num_dps, attacker_idxs, g_user_indices, device=torch.device("cuda"), *args, **kwargs):
+        #GET KRUM VECTOR
+        vectorize_nets = [vectorize_net(cm).detach().cpu().numpy() for cm in client_models]
+        
+        
+        
+        # vectorize_nets = [vectorize_net(cm).detach().cpu().numpy() for cm in client_models]
+        selected_idxs = [idx for idx in range(len(client_models)) if idx not in attacker_idxs]
+        print("selected_idxs: ", selected_idxs)
+        selected_num_dps = np.array(num_dps)[selected_idxs]
+        reconstructed_freq = [snd/sum(selected_num_dps) for snd in selected_num_dps]
+        logger.info("Num data points: {}".format(num_dps))
+        logger.info("Num selected data points: {}".format(selected_num_dps))
+        vectorize_nets = np.asarray(vectorize_nets)[selected_idxs]
+        
+        aggregated_grad = np.average(vectorize_nets, weights=reconstructed_freq, axis=0).astype(np.float32)
+        
+        aggregated_model = client_models[0] # slicing which doesn't really matter
+        load_model_weight(aggregated_model, torch.from_numpy(aggregated_grad).to(device)) 
+        neo_net_list = [aggregated_model]
+        neo_net_freq = [1.0]
+        
+        
+        return neo_net_list, neo_net_freq         
+
+class UpperBoundByClass(Defense):
+    def __init__(self, *args, **kwargs):
+        pass
+    
+    def exec(self, client_models, num_dps, attacker_idxs, g_user_indices, device=torch.device("cuda"), *args, **kwargs):
+        #GET KRUM VECTOR
+        print(f"attacker_idxs is: {attacker_idxs}")
+        vectorize_nets = [vectorize_net(cm).detach().cpu().numpy() for cm in client_models]
+        selected_idxs = [idx for idx in range(len(client_models)) if idx not in attacker_idxs]
+        # print("selected_idxs: ", selected_idxs)
+        selected_num_dps = np.array(num_dps)
+        reconstructed_freq = [snd/sum(selected_num_dps) for snd in selected_num_dps]
+        logger.info("Num data points: {}".format(num_dps))
+        logger.info("Num selected data points: {}".format(selected_num_dps))
+        vectorize_nets = np.asarray(vectorize_nets)
+        new_freq = reconstructed_freq.copy()
+        for idx, freq in enumerate(reconstructed_freq):
+            if idx in attacker_idxs:
+                new_freq[idx] = freq/10.0
+        new_freq = [snd/sum(new_freq) for snd in new_freq]
+        print(f"new freq is: {new_freq}")
+                
+        logger.info("Num data points: {}".format(num_dps))
+        logger.info("Num selected data points: {}".format(selected_num_dps))
+        vectorize_nets = np.asarray(vectorize_nets)
+        
+        aggregated_grad = np.average(vectorize_nets, weights=new_freq, axis=0).astype(np.float32)
+
+        # aggregated_grad = np.average(vectorize_nets, weights=reconstructed_freq, axis=0).astype(np.float32)
+
+        # aggregated_grad = avg_by_class(vectorize_nets, reconstructed_freq, attacker_idxs)
+        
+        aggregated_model = client_models[0] # slicing which doesn't really matter
+        load_model_weight(aggregated_model, torch.from_numpy(aggregated_grad).to(device)) 
+        neo_net_list = [aggregated_model]
+        neo_net_freq = [1.0]
+        
+        
+        return neo_net_list, neo_net_freq  
 if __name__ == "__main__":
     # some tests here
     import copy
