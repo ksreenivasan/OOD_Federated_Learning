@@ -96,7 +96,9 @@ if __name__ == "__main__":
     parser.add_argument('--stddev', type=float, default=0.158,
                         help='choose std_dev for weak-dp defense')
     parser.add_argument('--attacker_percent', type=float, default=0.1,
-                        help='the percentage of attackers per all clients')                       
+                        help='the percentage of attackers per all clients')  
+    parser.add_argument('--instance', type=str, default="benchmark",
+                        help='the instance name of wandb')                      
     args = parser.parse_args()
     use_cuda = not args.no_cuda and torch.cuda.is_available()
     kwargs = {'num_workers': 1, 'pin_memory': True} if use_cuda else {}
@@ -168,8 +170,8 @@ if __name__ == "__main__":
     test(net_avg, device, targetted_task_test_loader, test_batch_size=args.test_batch_size, criterion=criterion, mode="targetted-task", dataset=args.dataset, poison_type=args.poison_type)
 
     # let's remain a copy of the global model for measuring the norm distance:
-    group_name = f"CIFAR-10"
-    instance_name = f"{args.defense_method}"
+    group_name = f"{args.dataset}"
+    instance_name = f"{args.instance}"
     vanilla_model = copy.deepcopy(net_avg)
     wandb_ins = wandb.init(project="Backdoor attack in FL",
                entity="aiotlab",
@@ -292,6 +294,7 @@ if __name__ == "__main__":
             "attack_case":args.attack_case,
             "stddev":args.stddev,
             "attacker_percent":args.attacker_percent,
+            "instance": args.instance,
      }
             
         fixed_pool_fl_trainer = FixedPoolFederatedLearningTrainer(arguments=arguments)
