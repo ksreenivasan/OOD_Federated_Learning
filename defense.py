@@ -72,6 +72,50 @@ def extract_classifier_layer(net_list, global_avg_net, prev_net):
         weight_update.append(weight-avg_weight)
 
     return bias_list, weight_list, avg_bias, avg_weight, weight_update, glob_update, prev_avg_weight
+def rlr_avg(vectorize_nets, vectorize_avg_net, freq, attacker_idxs, lr, n_params, device, robustLR_threshold=4):
+    lr_vector = torch.Tensor([lr]*n_params).to(device)
+    total_client = len(vectorize_nets)
+    local_updates = vectorize_nets - vectorize_avg_net
+    print(f"len freq: {len(freq)}")
+    print(f"local_updates.shape is: {len(local_updates)}")
+    fed_avg_updates_vector = np.average(local_updates, weights=freq, axis=0).astype(float32)
+    print(f"fed_avg_vector.shape is: {fed_avg_updates_vector.shape}")
+    # vectorize_nets = [vectorize_net(cm).detach().cpu().numpy() for cm in neo_net_list]
+    selected_net_indx = [i for i in range(total_client) if i not in attacker_idxs]
+    selected_freq = np.array(freq)[selected_net_indx]
+    selected_freq = [freq/sum(selected_freq) for freq in selected_freq]
+    
+    
+    agent_updates_sign = [np.sign(update) for update in local_updates]  
+    sm_of_signs = np.abs(sum(agent_updates_sign))
+    sm_of_signs[sm_of_signs < robustLR_threshold] = -lr
+    sm_of_signs[sm_of_signs >= robustLR_threshold] = lr
+    print(f"sm_of_signs is: {sm_of_signs}")
+    
+    lr_vector = sm_of_signs
+    poison_w_idxs = sm_of_signs < 0
+    # poison_w_idxs = poison_w_idxs*1
+    print(f"poison_w_idxs: {poison_w_idxs}")
+    print(f"lr_vector: {lr_vector}")
+    local_updates = np.asarray(local_updates)
+    print(f"local_updates.shape is: {local_updates.shape}")
+    # local_updates[attacker_idxs][poison_w_idxs] = 0
+    cnt = 0
+    sm_updates_2 = 0
+    # for _id, update in enumerate(local_updates):
+    #     if _id not in attacker_idxs:
+    #         sm_updates_2 += selected_freq[cnt]*update[poison_w_idxs]
+    #         cnt+=1
+    for _id, update in enumerate(local_updates):
+        if _id not in attacker_idxs:
+            sm_updates_2 += freq[_id]*update[poison_w_idxs]
+        else:
+            sm_updates_2 += freq[_id]*(-update[poison_w_idxs])
+            
+    print(f"sm_updates_2.shape is: {sm_updates_2.shape}")
+    fed_avg_updates_vector[poison_w_idxs] = sm_updates_2
+    new_global_params =  (vectorize_avg_net + lr*fed_avg_updates_vector).astype(np.float32)
+    return new_global_params
 
 class Defense:
     def __init__(self, *args, **kwargs):
@@ -607,6 +651,8 @@ class KrMLRFL(Defense):
         # print(self.pairwise_cs.shape)
         logger.info("Starting performing KrMLRFL...")
         self.pairwise_choosing_frequencies = np.zeros((total_workers, total_workers))
+
+
         with open(f'{self.instance}_combined_file_klfrl.csv', 'w', newline='') as outcsv:
             writer = csv.DictWriter(outcsv, fieldnames = ["flr", 
                                                           "attacker_idxs",
@@ -781,6 +827,13 @@ class KrMLRFL(Defense):
             
             saved_pairwise_sim = np.hstack((cummulative_w, cummulative_b))
             kmeans = KMeans(n_clusters = 2)
+                    
+            hb_clusterer = hdbscan.HDBSCAN(algorithm='best', alpha=1.0, approx_min_span_tree=True,
+                                    gen_min_span_tree=False,
+                                    metric='euclidean', min_cluster_size=2, min_samples=1, p=None)
+            hb_clusterer.fit(saved_pairwise_sim[attacker_local_idxs])
+            print("hb_clusterer.labels_ is: ", hb_clusterer.labels_)
+
             pred_labels = kmeans.fit_predict(saved_pairwise_sim)
             centroids = kmeans.cluster_centers_
             np_centroids = np.asarray(centroids)
@@ -805,8 +858,8 @@ class KrMLRFL(Defense):
             #FOR LOGGING ONLY
             adv_krum_s = np_scores[pred_attackers_indx_2]
             ben_krum_s = np_scores[pred_normal_client]
-            adv_krum_s_avg = np.average(adv_krum_s).flatten()
-            ben_krum_s_avg = np.average(ben_krum_s).flatten()
+            adv_krum_s_avg = np.average(adv_krum_s).flatten()[0]
+            ben_krum_s_avg = np.average(ben_krum_s).flatten()[0]
             print(f"trusted client score is: {np_scores[i_star]}")
             print(f"attackers' scores by krum are: {np_scores[pred_attackers_indx_2]}")
             print(f"adv_krum_s_avg: {adv_krum_s_avg}")
@@ -818,10 +871,15 @@ class KrMLRFL(Defense):
                 writer = csv.writer(log_csv)
                 writer.writerow(cluster_log_row)
             missed_attacker_idxs_by_kmeans = [at_id for at_id in participated_attackers if at_id not in pred_attackers_indx_2]
-            
+
             attacker_local_idxs_2 = pred_attackers_indx_2
-            
+            temp_diff_score = (adv_krum_s_avg-np_scores[i_star])/(ben_krum_s_avg-np_scores[i_star])
+            if temp_diff_score <= 2.0:
+                # pseudo_final_attacker_idxs = []
+                attacker_local_idxs_2 = []
             pseudo_final_attacker_idxs = np.union1d(attacker_local_idxs_2, attacker_local_idxs)
+            print(f"temp_diff_score is: {temp_diff_score}")
+
             if round >= 50:
                 final_attacker_idxs = pseudo_final_attacker_idxs
             print("assumed final_attacker_idxs: ", pseudo_final_attacker_idxs)
@@ -842,12 +900,430 @@ class KrMLRFL(Defense):
             if id_ not in participated_attackers:
                 false_positive_pred_layer2.append(1.0)
             # if id_ not in 
-            
+        
+
             
         # true_positive_pred_layer1_val = sum(true_positive_pred_layer1)/len(true_positive_pred_layer1) if len(true_positive_pred_layer1) else 0.0
         # true_positive_pred_layer2_val = sum(true_positive_pred_layer2)/len(true_positive_pred_layer2) if len(true_positive_pred_layer2) else 0.0
         true_positive_pred_layer1_val = sum(true_positive_pred_layer1)/len(participated_attackers) if len(true_positive_pred_layer1) else 0.0
+        if len(participated_attackers) == 0 and len(attacker_local_idxs) == 0:
+            true_positive_pred_layer1_val = 1.0
         true_positive_pred_layer2_val = sum(true_positive_pred_layer2)/len(participated_attackers) if len(true_positive_pred_layer2) else 0.0
+        
+        if len(participated_attackers) == 0 and len(attacker_local_idxs_2) == 0:
+            true_positive_pred_layer2_val = 1.0
+        fn_layer1_val = 1.0 - true_positive_pred_layer1_val
+        fn_layer2_val = 1.0 - true_positive_pred_layer2_val
+        fp_layer1_val = sum(false_positive_pred_layer1)/(total_client-len(participated_attackers)) if len(false_positive_pred_layer1) else 0.0
+        fp_layer2_val = sum(false_positive_pred_layer2)/(total_client-len(participated_attackers)) if len(false_positive_pred_layer2) else 0.0
+
+        logging_per_round = (
+            round,
+            participated_attackers,
+            attacker_local_idxs,
+            attacker_local_idxs_2,
+            true_positive_pred_layer1_val,
+            true_positive_pred_layer2_val,
+            fn_layer1_val,
+            fn_layer2_val,
+            fp_layer1_val,
+            fp_layer2_val,
+            missed_attacker_idxs_by_thre,
+            missed_attacker_idxs_by_kmeans,
+            freq_participated_attackers,
+            t_score,
+            num_dps,
+            saved_pairwise_sim
+        )
+        
+        with open(f'{self.instance}_combined_file_klfrl.csv', "a+") as w_f:
+            writer = csv.writer(w_f)
+            writer.writerow(logging_per_round)
+        neo_net_list = []
+        neo_net_freq = []
+        selected_net_indx = []
+        for idx, net in enumerate(client_models):
+            if idx not in final_attacker_idxs:
+                neo_net_list.append(net)
+                neo_net_freq.append(1.0)
+                selected_net_indx.append(idx)
+        if len(neo_net_list) == 0:
+            neo_net_list.append(client_models[i_star])
+            selected_net_indx.append(i_star)
+            pred_g_attacker = [g_user_indices[i] for i in final_attacker_idxs]
+            # return [client_models[i_star]], [1.0], pred_g_attacker
+            return [net_avg], [1.0], pred_g_attacker
+            
+        vectorize_nets = [vectorize_net(cm).detach().cpu().numpy() for cm in neo_net_list]
+        selected_num_dps = np.array(num_dps)[selected_net_indx]
+        reconstructed_freq = [snd/sum(selected_num_dps) for snd in selected_num_dps]
+
+        logger.info("Num data points: {}".format(num_dps))
+        logger.info("Num selected data points: {}".format(selected_num_dps))
+        logger.info("The chosen ones are users: {}, which are global users: {}".format(selected_net_indx, [g_user_indices[ti] for ti in selected_net_indx]))
+        
+        aggregated_grad = np.average(vectorize_nets, weights=reconstructed_freq, axis=0).astype(np.float32)
+
+        aggregated_model = client_models[0] # slicing which doesn't really matter
+        load_model_weight(aggregated_model, torch.from_numpy(aggregated_grad).to(device))
+        pred_g_attacker = [g_user_indices[i] for i in final_attacker_idxs]
+        # print(self.pairwise_cs)
+        neo_net_list = [aggregated_model]
+        neo_net_freq = [1.0]
+        return neo_net_list, neo_net_freq, pred_g_attacker
+
+    def get_trustworthy_scores(self, global_update, weight_update):
+        # print("base_model_update: ", base_model_update)
+        cs_dist = get_cs_on_base_net(weight_update, global_update)
+        score = np.array(cs_dist)
+        # print("score_avg:= ", score_avg)
+        norm_score = min_max_scale(score)
+        
+        return norm_score
+        # for cli_ind, weight_update in enumerate(weight_update):
+
+    def get_predicted_attackers(self, weight_list, avg_weight, weight_update, total_client):
+        # from sklearn.cluster import KMeans
+        eucl_dis, cs_dis = get_distance_on_avg_net(weight_list, avg_weight, weight_update, total_client)
+        norm_cs_data = min_max_scale(cs_dis)
+        norm_eu_data = 1.0 - min_max_scale(eucl_dis)
+        # norm_eu_data = min_max_scale(eucl_dis)
+        stack_dis = np.hstack((norm_cs_data,norm_eu_data))
+        print("stack dis is: ", stack_dis)
+        temp_score = [0.5*norm_cs_data[i] + 0.5*norm_eu_data[i] for i in range(total_client)]
+        threshold = sum(temp_score)/total_client
+        abnormal_score = [1.0 if temp_score[i] > threshold else 0.0 for i in range(total_client)]
+        print("abnormal_score: ", abnormal_score)
+        
+        hb_clusterer = hdbscan.HDBSCAN(algorithm='best', alpha=1.0, approx_min_span_tree=True,
+                                gen_min_span_tree=False, leaf_size=40,
+                                metric='euclidean', min_cluster_size=2, min_samples=None, p=None)
+        hb_clusterer.fit(stack_dis)
+        print("hb_clusterer.labels_ is: ", hb_clusterer.labels_)
+        return abnormal_score
+
+class MlFrl(Defense):
+    """
+    we implement the robust aggregator at: https://papers.nips.cc/paper/6617-machine-learning-with-adversaries-byzantine-tolerant-gradient-descent.pdf
+    and we integrate both krum and multi-krum in this single class
+    """
+    def __init__(self, total_workers, num_workers, num_adv, num_valid = 1, instance="benchmark", *args, **kwargs):
+        # assert (mode in ("krum", "multi-krum"))
+        self.num_valid = num_valid
+        self.num_workers = num_workers
+        self.s = num_adv
+        self.instance = instance
+        self.choosing_frequencies = {}
+        self.accumulate_t_scores = {}
+        self.pairwise_w = np.zeros((total_workers+1, total_workers+1))
+        self.pairwise_b = np.zeros((total_workers+1, total_workers+1))
+        
+        # print(self.pairwise_cs.shape)
+        logger.info("Starting performing KrMLRFL...")
+        self.pairwise_choosing_frequencies = np.zeros((total_workers, total_workers))
+
+
+        with open(f'{self.instance}_combined_file_klfrl.csv', 'w', newline='') as outcsv:
+            writer = csv.DictWriter(outcsv, fieldnames = ["flr", 
+                                                          "attacker_idxs",
+                                                          "pred_idxs_1", 
+                                                          "pred_idxs_2",
+                                                          "true_positive_1",
+                                                            "true_positive_2",
+                                                            "false_negative_1",
+                                                            "false_negative_2",
+                                                            "false_positive_1",
+                                                            "false_positive_2",
+                                                            "missed_idxs_1",
+                                                            "missed_idxs_2",
+                                                            "freq",
+                                                            "t_score",
+                                                            "num_dps",
+                                                            "saved_pairwise_sim"])
+            writer.writeheader()
+        
+
+    def exec(self, client_models, num_dps, net_freq, net_avg, g_user_indices, pseudo_avg_net, round, selected_attackers, device, *args, **kwargs):
+        from sklearn.cluster import KMeans
+        vectorize_nets = [vectorize_net(cm).detach().cpu().numpy() for cm in client_models]
+        vectorize_avg_net = vectorize_net(net_avg).detach().cpu().numpy()
+        
+        trusted_models = []
+        neighbor_distances = []
+        bias_list, weight_list, avg_bias, avg_weight, weight_update, glob_update, prev_avg_weight = extract_classifier_layer(client_models, pseudo_avg_net, net_avg)
+
+        missed_attacker_idxs_by_thre = []
+        missed_attacker_idxs_by_kmeans = []
+        freq_participated_attackers = []
+        
+        total_client = len(g_user_indices)
+
+        # NEW IDEA
+        robustLR_threshold = 2
+        local_updates = vectorize_nets - vectorize_avg_net
+        # print(f"len freq: {len(freq)}")
+        local_updates = np.asarray(local_updates)
+        print(f"local_updates.shape is: {local_updates.shape}")
+        # vectorize_nets = [vectorize_net(cm).detach().cpu().numpy() for cm in neo_net_list]        
+        
+        agent_updates_sign = [np.sign(update) for update in local_updates]  
+        sm_of_signs = np.abs(sum(agent_updates_sign))
+        sm_of_signs[sm_of_signs < robustLR_threshold] = -0.2
+        sm_of_signs[sm_of_signs >= robustLR_threshold] = 0.2
+        print(f"sm_of_signs is: {sm_of_signs}")
+        poison_w_idxs = sm_of_signs < 0
+        # poison_w_idxs = poison_w_idxs*1
+        print(f"poison_w_idxs: {poison_w_idxs}")
+
+        np_vectorize_nets = np.asarray(vectorize_nets)
+        print(f"np_vectorize_nets.shape is: {np_vectorize_nets.shape}")
+        filtered_vectorize_nets = np_vectorize_nets[:,poison_w_idxs]
+        print(f"filtered_vectorize_nets.shape is: {filtered_vectorize_nets.shape}")
+        filtered_update_nets = local_updates[:,poison_w_idxs]
+        print(f"filtered_update_nets.shape is: {filtered_update_nets.shape}")
+
+
+        round_bias_pairwise = np.zeros((total_client, total_client))
+        round_weight_pairwise = np.zeros((total_client, total_client))
+        round_update_pw_cs = np.zeros((total_client, total_client))
+        round_update_pw_eu = np.zeros((total_client, total_client))
+        
+        sum_diff_by_label = calculate_sum_grad_diff(weight_update)
+        norm_bias_list = normalize(bias_list, axis=1)
+        norm_grad_diff_list = normalize(sum_diff_by_label, axis=1)
+        
+        # UPDATE CUMMULATIVE COSINE SIMILARITY 
+        for i, g_i in enumerate(g_user_indices):
+            distance = []
+            for j, g_j in enumerate(g_user_indices):
+                # if i != j:
+                
+                u_i = filtered_update_nets[i]
+                u_j = filtered_update_nets[j]
+                cs_ij = np.dot(u_i, u_j)/(np.linalg.norm(u_i)*np.linalg.norm(u_j)).flatten()
+                ed_ij = np.linalg.norm(u_i - u_j)
+                round_update_pw_cs[i][j] = cs_ij
+                round_update_pw_eu[i][j] = ed_ij
+
+                self.pairwise_choosing_frequencies[g_i][g_j] = self.pairwise_choosing_frequencies[g_i][g_j] + 1.0
+                bias_p_i = norm_bias_list[i]
+                bias_p_j = norm_bias_list[j]
+                cs_1 = np.dot(bias_p_i, bias_p_j)/(np.linalg.norm(bias_p_i)*np.linalg.norm(bias_p_j))
+                round_bias_pairwise[i][j] = cs_1.flatten()
+
+
+                
+                w_p_i = norm_grad_diff_list[i]
+                w_p_j = norm_grad_diff_list[j]
+                cs_2 = np.dot(w_p_i, w_p_j)/(np.linalg.norm(w_p_i)*np.linalg.norm(w_p_j))
+                round_weight_pairwise[i][j] = cs_2.flatten()
+                
+                cli_i_arr = np.hstack((bias_p_i, w_p_i))
+                cli_j_arr = np.hstack((bias_p_j, w_p_j))
+
+        scaler = MinMaxScaler()
+        round_update_pw_cs = scaler.fit_transform(round_update_pw_cs)
+        round_update_pw_eu = scaler.fit_transform(round_update_pw_eu)       
+                
+                # cs_arr = np.hstack(cs_1, cs_2)
+                
+            #     if j > i:
+            #         distance.append(float(np.linalg.norm(cli_i_arr-cli_j_arr)**2)) # let's change this to pytorch version
+            # neighbor_distances.append(distance)
+                
+        logger.info("Starting performing KrMLRFL...")
+       
+
+        # # compute scores by KRUM*
+        
+        for i, g_i in enumerate(vectorize_nets):
+            distance = []
+            for j in range(i+1, len(vectorize_nets)):
+                if i != j:
+                    g_j = vectorize_nets[j]
+                    distance.append(float(np.linalg.norm(g_i-g_j)**2)) # let's change this to pytorch version
+            neighbor_distances.append(distance)
+
+        # compute scores
+        nb_in_score = self.num_workers-self.s-2
+        scores = []
+        for i, g_i in enumerate(vectorize_nets):
+            dists = []
+            for j, g_j in enumerate(vectorize_nets):
+                if j == i:
+                    continue
+                if j < i:
+                    dists.append(neighbor_distances[j][i - j - 1])
+                else:
+                    dists.append(neighbor_distances[i][j - i - 1])
+
+            # alternative to topk in pytorch and tensorflow
+            topk_ind = np.argpartition(dists, nb_in_score)[:nb_in_score]
+            scores.append(sum(np.take(dists, topk_ind)))
+        
+        print(f"scores of krum method: {scores}")
+        i_star = scores.index(min(scores))
+        
+        # use krum as the baseline to improve, mark the one chosen by krum as trusted
+        if self.num_valid == 1:
+            i_star = scores.index(min(scores))
+            logger.info("@@@@ The chosen trusted worker is user: {}, which is global user: {}".format(scores.index(min(scores)), g_user_indices[scores.index(min(scores))]))
+            trusted_models.append(i_star)
+        else:
+            topk_ind = np.argpartition(scores, nb_in_score+2)[:self.num_valid]
+            
+            # we reconstruct the weighted averaging here:
+            selected_num_dps = np.array(num_dps)[topk_ind]
+            logger.info("Num selected data points: {}".format(selected_num_dps))
+            logger.info("The chosen ones are users: {}, which are global users: {}".format(topk_ind, [g_user_indices[ti] for ti in topk_ind]))
+
+            for ind in topk_ind:
+                trusted_models.append(ind)
+        
+        trusted_index = i_star # used for get labels of attackers
+
+
+        round_bias_pairwise = scaler.fit_transform(round_bias_pairwise)
+        round_weight_pairwise = scaler.fit_transform(round_weight_pairwise)
+
+        for i, g_i in enumerate(g_user_indices):
+            for j, g_j in enumerate(g_user_indices):
+                freq_appear = self.pairwise_choosing_frequencies[g_i][g_j]
+                self.pairwise_w[g_i][g_j] = (freq_appear - 1)/freq_appear*self.pairwise_w[g_i][g_j] +  1/freq_appear*round_weight_pairwise[i][j]
+                self.pairwise_b[g_i][g_j] = (freq_appear - 1)/freq_appear*self.pairwise_b[g_i][g_j] +  1/freq_appear*round_bias_pairwise[i][j]
+                
+        
+        # From now on, trusted_models contain the index base models treated as valid users.
+        raw_t_score = self.get_trustworthy_scores(glob_update, weight_update)
+        t_score = []
+        for idx, cli in enumerate(g_user_indices):
+            # increase the frequency of the selected choosen clients
+            self.choosing_frequencies[cli] = self.choosing_frequencies.get(cli, 0) + 1
+            # update the accumulator
+            self.accumulate_t_scores[cli] = ((self.choosing_frequencies[cli] - 1) / self.choosing_frequencies[cli]) * self.accumulate_t_scores.get(cli, 0) + (1 / self.choosing_frequencies[cli]) *  raw_t_score[idx]
+            t_score.append(self.accumulate_t_scores[cli])
+        
+        
+        t_score = np.array(t_score)
+        threshold = min(0.5, np.median(t_score))
+        
+        
+        participated_attackers = []
+        for in_, id_ in enumerate(g_user_indices):
+            if id_ in selected_attackers:
+                participated_attackers.append(in_)
+        print("At round: ", round)
+        if not len(selected_attackers):
+            print("THIS ROUND HAS NO ATTACKER!!!")
+        print("real attackers indx: ", participated_attackers)
+        print(f'[T_SCORE] median score: {np.median(t_score)}')
+        print("[T_SCORE] trustworthy score is: ", t_score)
+        
+        attacker_local_idxs = [ind_ for ind_ in range(len(g_user_indices)) if t_score[ind_] > threshold]
+        print("[T_SCORE] attacker_local_idxs is: ", attacker_local_idxs)
+        global_pred_attackers_indx = [g_user_indices[ind_] for ind_ in attacker_local_idxs]
+        print("[T_SCORE] global_pred_attackers_indx: ", global_pred_attackers_indx)
+        missed_attacker_idxs_by_thre = [at_id for at_id in participated_attackers if at_id not in attacker_local_idxs]
+        attacker_local_idxs_2 = []
+        saved_pairwise_sim = []
+
+        np_scores = np.asarray(scores)
+        final_attacker_idxs = attacker_local_idxs # for the first filter
+        # NOW CHECK FOR ROUND 50
+        if round >= 1: 
+            # TODO: find dynamic threshold
+            
+            cummulative_w = self.pairwise_w[np.ix_(g_user_indices, g_user_indices)]
+            cummulative_b = self.pairwise_b[np.ix_(g_user_indices, g_user_indices)]
+            
+            
+            saved_pairwise_sim = np.hstack((cummulative_w, cummulative_b))
+            kmeans = KMeans(n_clusters = 2)
+                    
+            hb_clusterer = hdbscan.HDBSCAN(algorithm='best', alpha=1.0, approx_min_span_tree=True,
+                                    gen_min_span_tree=False,
+                                    metric='euclidean', min_cluster_size=2, min_samples=1, p=None)
+            hb_clusterer.fit(round_update_pw_cs)
+            print("hb_clusterer.labels_ is: ", hb_clusterer.labels_)
+
+            pred_labels = kmeans.fit_predict(saved_pairwise_sim)
+            centroids = kmeans.cluster_centers_
+            np_centroids = np.asarray(centroids)
+            
+            
+            cls_0_idxs = np.argwhere(np.asarray(pred_labels) == 0).flatten()
+            cls_1_idxs = np.argwhere(np.asarray(pred_labels) == 1).flatten()
+            dist_0 = np.sqrt(np.sum(np.square(saved_pairwise_sim[cls_0_idxs]-np_centroids[0])))/len(cls_0_idxs)
+            dist_1 = np.sqrt(np.sum(np.square(saved_pairwise_sim[cls_1_idxs]-np_centroids[1])))/len(cls_1_idxs)
+            print(f"dist_0 is {dist_0}, dist_1 is {dist_1}")
+            
+            
+            trusted_label = pred_labels[trusted_index]
+            label_attack = 0 if trusted_label == 1 else 1
+        
+            pred_attackers_indx_2 = np.argwhere(np.asarray(pred_labels) == label_attack).flatten()
+        
+            
+            print("[PAIRWISE] pred_attackers_indx: ", pred_attackers_indx_2)
+            pred_normal_client = [_id for _id in range(total_client) if _id not in pred_attackers_indx_2]
+
+            #FOR LOGGING ONLY
+            adv_krum_s = np_scores[pred_attackers_indx_2]
+            ben_krum_s = np_scores[pred_normal_client]
+            adv_krum_s_avg = np.average(adv_krum_s).flatten()[0]
+            ben_krum_s_avg = np.average(ben_krum_s).flatten()[0]
+            print(f"trusted client score is: {np_scores[i_star]}")
+            print(f"attackers' scores by krum are: {np_scores[pred_attackers_indx_2]}")
+            print(f"adv_krum_s_avg: {adv_krum_s_avg}")
+            print(f"pred_normal_client's score by krum are: {np_scores[pred_normal_client]}")
+            print(f"ben_krum_s_avg: {ben_krum_s_avg}")
+            has_attacker = True if len(selected_attackers) else False
+            cluster_log_row = (round, has_attacker, np_scores[i_star], adv_krum_s_avg, ben_krum_s_avg, adv_krum_s, ben_krum_s)
+            with open (f"{self.instance}_cluster_log.csv", "a+") as log_csv:
+                writer = csv.writer(log_csv)
+                writer.writerow(cluster_log_row)
+            missed_attacker_idxs_by_kmeans = [at_id for at_id in participated_attackers if at_id not in pred_attackers_indx_2]
+
+            attacker_local_idxs_2 = pred_attackers_indx_2
+            temp_diff_score = (adv_krum_s_avg-np_scores[i_star])/(ben_krum_s_avg-np_scores[i_star])
+            if temp_diff_score <= 2.0:
+                # pseudo_final_attacker_idxs = []
+                attacker_local_idxs_2 = []
+            pseudo_final_attacker_idxs = np.union1d(attacker_local_idxs_2, attacker_local_idxs)
+            print(f"temp_diff_score is: {temp_diff_score}")
+
+            if round >= 50:
+                final_attacker_idxs = pseudo_final_attacker_idxs
+            print("assumed final_attacker_idxs: ", pseudo_final_attacker_idxs)
+
+
+        freq_participated_attackers = [self.choosing_frequencies[g_idx] for g_idx in g_user_indices]
+        true_positive_pred_layer1 = []
+        true_positive_pred_layer2 = []
+        false_positive_pred_layer1 = []
+        false_positive_pred_layer2 = []
+        for id_ in participated_attackers:
+            true_positive_pred_layer1.append(1.0 if id_ in attacker_local_idxs else 0.0)
+            true_positive_pred_layer2.append(1.0 if id_ in attacker_local_idxs_2 else 0.0)
+        for id_ in attacker_local_idxs:
+            if id_ not in participated_attackers:
+                false_positive_pred_layer1.append(1.0)
+        for id_ in attacker_local_idxs_2:
+            if id_ not in participated_attackers:
+                false_positive_pred_layer2.append(1.0)
+            # if id_ not in 
+        
+
+            
+        # true_positive_pred_layer1_val = sum(true_positive_pred_layer1)/len(true_positive_pred_layer1) if len(true_positive_pred_layer1) else 0.0
+        # true_positive_pred_layer2_val = sum(true_positive_pred_layer2)/len(true_positive_pred_layer2) if len(true_positive_pred_layer2) else 0.0
+        true_positive_pred_layer1_val = sum(true_positive_pred_layer1)/len(participated_attackers) if len(true_positive_pred_layer1) else 0.0
+        if len(participated_attackers) == 0 and len(attacker_local_idxs) == 0:
+            true_positive_pred_layer1_val = 1.0
+        true_positive_pred_layer2_val = sum(true_positive_pred_layer2)/len(participated_attackers) if len(true_positive_pred_layer2) else 0.0
+        
+        if len(participated_attackers) == 0 and len(attacker_local_idxs_2) == 0:
+            true_positive_pred_layer2_val = 1.0
         fn_layer1_val = 1.0 - true_positive_pred_layer1_val
         fn_layer2_val = 1.0 - true_positive_pred_layer2_val
         fp_layer1_val = sum(false_positive_pred_layer1)/(total_client-len(participated_attackers)) if len(false_positive_pred_layer1) else 0.0

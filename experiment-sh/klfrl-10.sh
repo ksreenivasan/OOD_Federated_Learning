@@ -22,5 +22,5 @@ CUDA_VISIBLE_DEVICES=0 python simulated_averaging.py \
 --poison_type southwest \
 --norm_bound 2 \
 --attacker_percent 0.1 \
---instance klflr-v2.0.2-10-percent \
+--instance klflr-v2.0.2-10-percent-new \
 --device=cuda
