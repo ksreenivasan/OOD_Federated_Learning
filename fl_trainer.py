@@ -134,7 +134,6 @@ def train(model, device, train_loader, optimizer, epoch, log_interval, criterion
     # get learning rate
     for param_group in optimizer.param_groups:
         eta = param_group['lr']
-    print(f"len(train_loader): {len(train_loader)}")
     for batch_idx, (data, target) in enumerate(train_loader):
         data, target = data.to(device), target.to(device)
         optimizer.zero_grad()

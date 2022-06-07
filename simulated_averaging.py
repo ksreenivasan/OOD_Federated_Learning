@@ -173,9 +173,13 @@ if __name__ == "__main__":
 
     # let's remain a copy of the global model for measuring the norm distance:
     # group_name = f"{args.dataset}"
+    if not os.path.exists(f'logging/{args.wandb_group}'):
+        os.makedirs(f'logging/{args.wandb_group}')
     group_name = f"{args.wandb_group}"
     instance_name = f"{args.instance}"
     vanilla_model = copy.deepcopy(net_avg)
+    log_file_name = f"logging/{args.wandb_group}/{args.instance}"
+
     wandb_ins = wandb.init(project="Backdoor attack in FL",
                entity="aiotlab",
                name=instance_name,
@@ -297,7 +301,7 @@ if __name__ == "__main__":
             "attack_case":args.attack_case,
             "stddev":args.stddev,
             "attacker_percent":args.attacker_percent,
-            "instance": args.instance,
+            "instance": log_file_name,
      }
             
         fixed_pool_fl_trainer = FixedPoolFederatedLearningTrainer(arguments=arguments)

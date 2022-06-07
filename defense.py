@@ -702,6 +702,9 @@ class KrMLRFL(Defense):
                                                             "saved_pairwise_sim"])
             writer.writeheader()
         
+        with open(f'{self.instance}_cluster_log.csv', 'w', newline='') as log_csv:
+            writer = csv.DictWriter(log_csv, fieldnames=['round', 'has_attacker', 'trusted_krum_s', 'adv_krum_s_avg', 'ben_krum_s_avg', 'adv_krum_s', 'ben_krum_s'])
+            writer.writeheader()  
 
     def exec(self, client_models, num_dps, net_freq, net_avg, g_user_indices, pseudo_avg_net, round, selected_attackers, model_name, device, *args, **kwargs):
         from sklearn.cluster import KMeans
