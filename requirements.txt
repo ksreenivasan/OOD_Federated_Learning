@@ -1,11 +1,11 @@
-pandas==1.4.2 
 python==3.8
-# torch==1.10.1
-# torchvision==0.11.2
 torch==1.10.2+cu113
 torchaudio==0.10.1
 torchvision==0.11.3+cu113
+pandas==1.4.2 
 wandb
 numpy
 matplotlib  
 hdbscan
+sklearn
+PIL
