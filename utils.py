@@ -386,7 +386,7 @@ def get_dataloader_normal_case(dataset, datadir, train_bs, test_bs,
 
 def load_poisoned_dataset(args):
     use_cuda = not args.no_cuda and torch.cuda.is_available()
-    kwargs = {'num_workers': 1, 'pin_memory': True} if use_cuda else {}
+    kwargs = {'num_workers': 0, 'pin_memory': True} if use_cuda else {}
     # benign_train_data_loader = None
     if args.dataset in ("mnist", "emnist"):
         if args.fraction < 1:
@@ -442,7 +442,7 @@ def load_poisoned_dataset(args):
         clean_trainset = copy.deepcopy(poisoned_dataset)
         ########################################################
         # benign_train_data_loader = torch.utils.data.DataLoader(clean_trainset, batch_size=args.batch_size, shuffle=True)
-        print("clean data target: ", poisoned_dataset.targets)
+        # print("clean data target: ", poisoned_dataset.targets)
         print("clean data target's shape: ", poisoned_dataset.targets.shape)
         labels_clean_set = poisoned_dataset.targets
         unique, counts = np.unique(labels_clean_set, return_counts=True)

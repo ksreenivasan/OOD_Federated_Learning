@@ -10,7 +10,7 @@ CUDA_VISIBLE_DEVICES=0 python simulated_averaging.py \
 --model vgg9 \
 --fl_mode fixed-pool \
 --attacker_pool_size 100 \
---defense_method krum-multilayer-old \
+--defense_method rlr \
 --attack_method blackbox \
 --attack_case edge-case \
 --model_replacement False \
@@ -22,5 +22,5 @@ CUDA_VISIBLE_DEVICES=0 python simulated_averaging.py \
 --poison_type southwest \
 --norm_bound 2 \
 --attacker_percent 0.25 \
---instance klflr-v2.0.2-25-percent-old \
+--instance rlr-benchmark-25-percent \
 --device=cuda

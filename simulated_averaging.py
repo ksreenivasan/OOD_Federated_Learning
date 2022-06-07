@@ -98,10 +98,12 @@ if __name__ == "__main__":
     parser.add_argument('--attacker_percent', type=float, default=0.1,
                         help='the percentage of attackers per all clients')  
     parser.add_argument('--instance', type=str, default="benchmark",
-                        help='the instance name of wandb')                      
+                        help='the instance name of wandb')       
+    parser.add_argument('--wandb_group', type=str, default="Scenario 1",
+                        help='the group name of wandb')                   
     args = parser.parse_args()
     use_cuda = not args.no_cuda and torch.cuda.is_available()
-    kwargs = {'num_workers': 1, 'pin_memory': True} if use_cuda else {}
+    kwargs = {'num_workers': 0, 'pin_memory': True} if use_cuda else {}
 
     device = torch.device(args.device if use_cuda else "cpu")    
     """
@@ -170,7 +172,8 @@ if __name__ == "__main__":
     test(net_avg, device, targetted_task_test_loader, test_batch_size=args.test_batch_size, criterion=criterion, mode="targetted-task", dataset=args.dataset, poison_type=args.poison_type)
 
     # let's remain a copy of the global model for measuring the norm distance:
-    group_name = f"{args.dataset}"
+    # group_name = f"{args.dataset}"
+    group_name = f"{args.wandb_group}"
     instance_name = f"{args.instance}"
     vanilla_model = copy.deepcopy(net_avg)
     wandb_ins = wandb.init(project="Backdoor attack in FL",
@@ -181,7 +184,7 @@ if __name__ == "__main__":
             #"poisoned_emnist_dataset":poisoned_emnist_dataset,
             # "vanilla_model":vanilla_model,
             # "net_avg":net_avg,
-            "net_dataidx_map":net_dataidx_map,
+            # "net_dataidx_map":net_dataidx_map,
             "num_nets":args.num_nets,
             "dataset":args.dataset,
             # "model":args.model,

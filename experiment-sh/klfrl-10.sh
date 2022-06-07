@@ -1,4 +1,4 @@
-CUDA_VISIBLE_DEVICES=0 python simulated_averaging.py \
+python simulated_averaging.py \
 --lr 0.02 \
 --gamma 0.998 \
 --num_nets 200 \

@@ -22,7 +22,7 @@ def seed_experiment(seed=1):
 def load_poisoned_dataset(args):
     seed_experiment()
     use_cuda = not args.no_cuda and torch.cuda.is_available()
-    kwargs = {'num_workers': 1, 'pin_memory': True} if use_cuda else {}
+    kwargs = {'num_workers': 0, 'pin_memory': True} if use_cuda else {}
 
     # DATASET: cifar10
 

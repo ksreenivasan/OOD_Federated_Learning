@@ -1,8 +1,8 @@
-CUDA_VISIBLE_DEVICES=0 python simulated_averaging.py \
+python simulated_averaging.py \
 --lr 0.02 \
 --gamma 0.998 \
 --num_nets 200 \
---fl_round 500 \
+--fl_round 1500 \
 --part_nets_per_round 10 \
 --local_train_period 2 \
 --adversarial_local_training_period 2 \
@@ -10,8 +10,8 @@ CUDA_VISIBLE_DEVICES=0 python simulated_averaging.py \
 --model vgg9 \
 --fl_mode fixed-pool \
 --attacker_pool_size 100 \
---defense_method krum-multilayer-old \
---attack_method blackbox \
+--defense_method krum \
+--attack_method pgd \
 --attack_case edge-case \
 --model_replacement False \
 --project_frequency 10 \
@@ -22,5 +22,6 @@ CUDA_VISIBLE_DEVICES=0 python simulated_averaging.py \
 --poison_type southwest \
 --norm_bound 2 \
 --attacker_percent 0.25 \
---instance klflr-v2.0.2-25-percent-old \
+--instance benchmark-KRUM-25-percent \
+--wandb_group VGG9-CIFAR10-SOUTHWEST-PGD \
 --device=cuda

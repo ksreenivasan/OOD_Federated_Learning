@@ -52,7 +52,7 @@ The main script is `./simulated_averaging.py`, to launch the jobs, we provide a 
 | `device` | Specify the hardware to run the experiment. |
 
 
-#### Sample command
+<!-- #### Sample command
 Blackbox attack on Southwest Airline exmaple over CIFAR-19 dataset where there is no defense on the data center. The attacker participate in the fixed-frequency manner.
 ```
 python simulated_averaging.py \
@@ -79,4 +79,15 @@ python simulated_averaging.py \
 --poison_type southwest \
 --norm_bound 2 \
 --device=cuda
-```
+``` 
+
+### Experiment guide (by Dung):
+---
+0. Set up appropriate environment with all packgages listed on file `requirements.txt`
+1. Before starting, run: `get_ardis_data.sh` then -> `python generating_poisoned_DA.py`, to generate poisoning data
+2. Folder containing all bash files to run experiments:
+    ```
+    bash-experiment-all
+        --scenario1.1 
+        --scenario1.2
+    ```

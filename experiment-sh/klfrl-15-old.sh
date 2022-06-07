@@ -1,4 +1,4 @@
-CUDA_VISIBLE_DEVICES=0 python simulated_averaging.py \
+python simulated_averaging.py \
 --lr 0.02 \
 --gamma 0.998 \
 --num_nets 200 \
@@ -21,6 +21,6 @@ CUDA_VISIBLE_DEVICES=0 python simulated_averaging.py \
 --prox_attack False \
 --poison_type southwest \
 --norm_bound 2 \
---attacker_percent 0.25 \
---instance klflr-v2.0.2-25-percent-old \
+--attacker_percent 0.15 \
+--instance klflr-v2.0.2-15-percent-old \
 --device=cuda

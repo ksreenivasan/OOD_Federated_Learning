@@ -1,3 +1,4 @@
+import pdb
 import pandas as pd
 import torch
 
@@ -7,6 +8,7 @@ from utils import *
 from geometric_median import geometric_median
 from sklearn.preprocessing import normalize
 from sklearn.preprocessing import MinMaxScaler
+import sklearn.metrics.pairwise as smp
 import hdbscan
 # import logger
 
@@ -39,7 +41,7 @@ def load_model_weight_diff(net, weight_diff, global_weight):
         p.data =  weight_diff[index_bias:index_bias+p.numel()].view(p.size()) + listed_global_weight[p_index]
         index_bias += p.numel()
 
-def extract_classifier_layer(net_list, global_avg_net, prev_net):
+def extract_classifier_layer(net_list, global_avg_net, prev_net, model="vgg9"):
     bias_list = []
     weight_list = []
     weight_update = []
@@ -47,30 +49,58 @@ def extract_classifier_layer(net_list, global_avg_net, prev_net):
     avg_weight = None
     prev_avg_bias = None
     prev_avg_weight = None
-    for idx, param in enumerate(global_avg_net.classifier.parameters()):
-        if idx:
-            avg_bias = param.data.cpu().numpy()
-        else:
-            avg_weight = param.data.cpu().numpy()
-
-    for idx, param in enumerate(prev_net.classifier.parameters()):
-        if idx:
-            prev_avg_bias = param.data.cpu().numpy()
-        else:
-            prev_avg_weight = param.data.cpu().numpy()
-    glob_update = avg_weight - prev_avg_weight
-    for net in net_list:
-        bias = None
-        weight = None
-        for idx, param in enumerate(net.classifier.parameters()):
+    last_model_layer = "classifier" if model=="vgg9" else "fc3" 
+    # print(f"state_dict: {prev_net.state_dict()}")
+    # print(f"{last_model_layer}")
+    if model == "vgg9":
+        for idx, param in enumerate(global_avg_net.classifier.parameters()):
             if idx:
-                bias = param.data.cpu().numpy()
+                avg_bias = param.data.cpu().numpy()
             else:
-                weight = param.data.cpu().numpy()
-        bias_list.append(bias)
-        weight_list.append(weight)
-        weight_update.append(weight-avg_weight)
+                avg_weight = param.data.cpu().numpy()
 
+        for idx, param in enumerate(prev_net.classifier.parameters()):
+            if idx:
+                prev_avg_bias = param.data.cpu().numpy()
+            else:
+                prev_avg_weight = param.data.cpu().numpy()
+        glob_update = avg_weight - prev_avg_weight
+        for net in net_list:
+            bias = None
+            weight = None
+            for idx, param in enumerate(net.classifier.parameters()):
+                if idx:
+                    bias = param.data.cpu().numpy()
+                else:
+                    weight = param.data.cpu().numpy()
+            bias_list.append(bias)
+            weight_list.append(weight)
+            weight_update.append(weight-avg_weight)
+    elif model == "lenet":
+        for idx, param in enumerate(global_avg_net.fc2.parameters()):
+            if idx:
+                avg_bias = param.data.cpu().numpy()
+            else:
+                avg_weight = param.data.cpu().numpy()
+
+        for idx, param in enumerate(prev_net.fc2.parameters()):
+            if idx:
+                prev_avg_bias = param.data.cpu().numpy()
+            else:
+                prev_avg_weight = param.data.cpu().numpy()
+        glob_update = avg_weight - prev_avg_weight
+        for net in net_list:
+            bias = None
+            weight = None
+            for idx, param in enumerate(net.fc2.parameters()):
+                if idx:
+                    bias = param.data.cpu().numpy()
+                else:
+                    weight = param.data.cpu().numpy()
+            bias_list.append(bias)
+            weight_list.append(weight)
+            weight_update.append(weight-avg_weight)
+    
     return bias_list, weight_list, avg_bias, avg_weight, weight_update, glob_update, prev_avg_weight
 def rlr_avg(vectorize_nets, vectorize_avg_net, freq, attacker_idxs, lr, n_params, device, robustLR_threshold=4):
     lr_vector = torch.Tensor([lr]*n_params).to(device)
@@ -673,12 +703,12 @@ class KrMLRFL(Defense):
             writer.writeheader()
         
 
-    def exec(self, client_models, num_dps, net_freq, net_avg, g_user_indices, pseudo_avg_net, round, selected_attackers, device, *args, **kwargs):
+    def exec(self, client_models, num_dps, net_freq, net_avg, g_user_indices, pseudo_avg_net, round, selected_attackers, model_name, device, *args, **kwargs):
         from sklearn.cluster import KMeans
         vectorize_nets = [vectorize_net(cm).detach().cpu().numpy() for cm in client_models]
         trusted_models = []
         neighbor_distances = []
-        bias_list, weight_list, avg_bias, avg_weight, weight_update, glob_update, prev_avg_weight = extract_classifier_layer(client_models, pseudo_avg_net, net_avg)
+        bias_list, weight_list, avg_bias, avg_weight, weight_update, glob_update, prev_avg_weight = extract_classifier_layer(client_models, pseudo_avg_net, net_avg, model_name)
 
         missed_attacker_idxs_by_thre = []
         missed_attacker_idxs_by_kmeans = []
@@ -874,15 +904,16 @@ class KrMLRFL(Defense):
 
             attacker_local_idxs_2 = pred_attackers_indx_2
             temp_diff_score = (adv_krum_s_avg-np_scores[i_star])/(ben_krum_s_avg-np_scores[i_star])
-            if temp_diff_score <= 2.0:
-                # pseudo_final_attacker_idxs = []
-                attacker_local_idxs_2 = []
-            pseudo_final_attacker_idxs = np.union1d(attacker_local_idxs_2, attacker_local_idxs)
+            # if temp_diff_score <= 2.0:
+            #     # pseudo_final_attacker_idxs = []
+            #     attacker_local_idxs_2 = []
+            pseudo_final_attacker_idxs = np.union1d(attacker_local_idxs_2, attacker_local_idxs).flatten()
             print(f"temp_diff_score is: {temp_diff_score}")
 
             if round >= 50:
                 final_attacker_idxs = pseudo_final_attacker_idxs
             print("assumed final_attacker_idxs: ", pseudo_final_attacker_idxs)
+            print(f"final_attacker_idxs is: {final_attacker_idxs}")
 
 
         freq_participated_attackers = [self.choosing_frequencies[g_idx] for g_idx in g_user_indices]
@@ -952,7 +983,7 @@ class KrMLRFL(Defense):
             selected_net_indx.append(i_star)
             pred_g_attacker = [g_user_indices[i] for i in final_attacker_idxs]
             # return [client_models[i_star]], [1.0], pred_g_attacker
-            return [net_avg], [1.0], pred_g_attacker
+            return [net_avg], [1.0], []
             
         vectorize_nets = [vectorize_net(cm).detach().cpu().numpy() for cm in neo_net_list]
         selected_num_dps = np.array(num_dps)[selected_net_indx]
@@ -1042,7 +1073,9 @@ class MlFrl(Defense):
                                                             "saved_pairwise_sim"])
             writer.writeheader()
         
-
+        with open(f'{self.instance}_cluster_log.csv', 'w', newline='') as log_csv:
+            writer = csv.DictWriter(log_csv, fieldnames=['round', 'has_attacker', 'trusted_krum_s', 'adv_krum_s_avg', 'ben_krum_s_avg', 'adv_krum_s', 'ben_krum_s'])
+            writer.writeheader()    
     def exec(self, client_models, num_dps, net_freq, net_avg, g_user_indices, pseudo_avg_net, round, selected_attackers, device, *args, **kwargs):
         from sklearn.cluster import KMeans
         vectorize_nets = [vectorize_net(cm).detach().cpu().numpy() for cm in client_models]
@@ -1242,13 +1275,15 @@ class MlFrl(Defense):
                     
             hb_clusterer = hdbscan.HDBSCAN(algorithm='best', alpha=1.0, approx_min_span_tree=True,
                                     gen_min_span_tree=False,
-                                    metric='euclidean', min_cluster_size=2, min_samples=1, p=None)
+                                    metric='euclidean', min_cluster_size=int((total_client/2)+1), min_samples=1, p=None)
             hb_clusterer.fit(round_update_pw_cs)
-            print("hb_clusterer.labels_ is: ", hb_clusterer.labels_)
+            # print("hb_clusterer.labels_ is: ", hb_clusterer.labels_)
 
             pred_labels = kmeans.fit_predict(saved_pairwise_sim)
             centroids = kmeans.cluster_centers_
             np_centroids = np.asarray(centroids)
+            test_labels = kmeans.fit_predict(round_update_pw_cs)
+            print(f"test_labels: {test_labels}")
             
             
             cls_0_idxs = np.argwhere(np.asarray(pred_labels) == 0).flatten()
@@ -1286,11 +1321,19 @@ class MlFrl(Defense):
 
             attacker_local_idxs_2 = pred_attackers_indx_2
             temp_diff_score = (adv_krum_s_avg-np_scores[i_star])/(ben_krum_s_avg-np_scores[i_star])
-            if temp_diff_score <= 2.0:
-                # pseudo_final_attacker_idxs = []
-                attacker_local_idxs_2 = []
+            # if temp_diff_score <= 2.0:
+            #     # pseudo_final_attacker_idxs = []
+            #     attacker_local_idxs_2 = []
             pseudo_final_attacker_idxs = np.union1d(attacker_local_idxs_2, attacker_local_idxs)
             print(f"temp_diff_score is: {temp_diff_score}")
+
+            print(f"attacker_local_idxs: {attacker_local_idxs}")
+            # START USING FUZZY HERE
+            if temp_diff_score <= 1.0:
+                attacker_local_idxs_2 = []
+                pseudo_final_attacker_idxs = attacker_local_idxs
+            elif temp_diff_score >= 5.0 and temp_diff_score <= 12.0:
+                pseudo_final_attacker_idxs = np.intersect1d(attacker_local_idxs_2, attacker_local_idxs)
 
             if round >= 50:
                 final_attacker_idxs = pseudo_final_attacker_idxs
@@ -1626,17 +1669,17 @@ class FLAME(Defense):
         
         #FILTERING C1:
         pairwise_cs = np.zeros((total_client, total_client))
-        for i, w_p_i in enumerate(local_updates):
-            for j, w_p_j in enumerate(local_updates):
-                pairwise_cs[i][j] = np.dot(w_p_i, w_p_j)/(np.linalg.norm(w_p_i)*np.linalg.norm(w_p_j))
+        for i, w_p_i in enumerate(vectorize_nets):
+            for j, w_p_j in enumerate(vectorize_nets):
+                pairwise_cs[i][j] = 1.0 - np.dot(w_p_i, w_p_j)/(np.linalg.norm(w_p_i)*np.linalg.norm(w_p_j))
         pairwise_cs = normalize(pairwise_cs)
-        # print(f"pairwise_cs: {pairwise_cs}")
+        print(f"pairwise_cs: {pairwise_cs}")
         
         min_cluster_sz = int(total_client/2+1)
-        # hb_clusterer = hdbscan.HDBSCAN(min_cluster_size=min_cluster_sz, min_samples=1)
-        hb_clusterer = hdbscan.HDBSCAN(algorithm='best', alpha=1.0, approx_min_span_tree=True,
-                                gen_min_span_tree=False, leaf_size=40,
-                                metric='euclidean', min_cluster_size=2, min_samples=None, p=None)
+        hb_clusterer = hdbscan.HDBSCAN(min_cluster_size=min_cluster_sz, min_samples=1)
+        # hb_clusterer = hdbscan.HDBSCAN(algorithm='best', alpha=1.0, approx_min_span_tree=True,
+        #                         gen_min_span_tree=False, leaf_size=40,
+        #                         metric='euclidean', min_cluster_size=2, min_samples=None, p=None)
         hb_clusterer.fit(pairwise_cs)
         layer_1_pred_labels = hb_clusterer.labels_
         layer_1_pred_labels = np.asarray(layer_1_pred_labels)
@@ -1677,7 +1720,182 @@ class FLAME(Defense):
         new_global_w =  (new_global_w + g_noise)
         load_model_weight(aggregated_model, torch.from_numpy(new_global_w.astype(np.float32)).to(device))
         return [aggregated_model],  [1.0]
+
+class FoolsGold(Defense):
+    def __init__(self, num_clients, num_features, num_classes, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.n_clients = num_clients
+        self.n_features = num_features
+        self.n_classes = num_classes
+
+    def get_cos_similarity(self, full_deltas):
+        '''
+        Returns the pairwise cosine similarity of client gradients
+        '''
+        if True in np.isnan(full_deltas):
+            pdb.set_trace()
+        return smp.cosine_similarity(full_deltas)
+
+    def importanceFeatureMapGlobal(self, model):
+        # aggregate = np.abs(np.sum( np.reshape(model, (10, 784)), axis=0))
+        # aggregate = aggregate / np.linalg.norm(aggregate)
+        # return np.repeat(aggregate, 10)
+        return np.abs(model) / np.sum(np.abs(model))
+
+    def importanceFeatureMapLocal(self, model, topk_prop=0.5):
+        # model: np arr
+        d = self.n_features # dim of flatten weight
+        class_d = int(d / self.n_classes)
+
+        M = model.copy()
+        M = np.reshape(M, (self.n_classes, class_d))
         
+        # #Take abs?
+        # M = np.abs(M)
+
+        for i in range(self.n_classes):
+            if (M[i].sum() == 0):
+                pdb.set_trace()
+            M[i] = np.abs(M[i] - M[i].mean())
+            
+            M[i] = M[i] / M[i].sum()
+
+            # Top k of 784
+            topk = int(class_d * topk_prop)
+            sig_features_idx = np.argpartition(M[i], -topk)[0:-topk]
+            M[i][sig_features_idx] = 0
+        
+        return M.flatten()   
+
+    def importanceFeatureHard(self, model, topk_prop=0.5):
+
+        class_d = int(self.n_features / self.n_classes)
+
+        M = np.reshape(model, (self.n_classes, class_d))
+        importantFeatures = np.ones((self.n_classes, class_d))
+        # Top k of 784
+        topk = int(class_d * topk_prop)
+        for i in range(self.n_classes):
+            sig_features_idx = np.argpartition(M[i], -topk)[0:-topk]     
+            importantFeatures[i][sig_features_idx] = 0
+        return importantFeatures.flatten()  
+
+
+    def get_krum_scores(self, X, groupsize):
+
+        krum_scores = np.zeros(len(X))
+
+        # Calculate distances
+        distances = np.sum(X**2, axis=1)[:, None] + np.sum(
+            X**2, axis=1)[None] - 2 * np.dot(X, X.T)
+
+        for i in range(len(X)):
+            krum_scores[i] = np.sum(np.sort(distances[i])[1:(groupsize - 1)])
+
+        return krum_scores
+
+    def foolsgold(self, this_delta, summed_deltas, sig_features_idx, iter, model, topk_prop=0, importance=False, importanceHard=False, clip=0):
+        epsilon = 1e-5
+        # Take all the features of sig_features_idx for each clients
+        sd = summed_deltas.copy()
+        # print(f"summed_deltas: {summed_deltas}")
+        # print(f"this delta: {this_delta}")
+        sig_filtered_deltas = np.take(sd, sig_features_idx, axis=1)
+        # print(f"sig_filtered_deltas: {sig_filtered_deltas}")
+
+        if importance or importanceHard:
+            if importance:
+                # smooth version of importance features
+                importantFeatures = self.importanceFeatureMapLocal(model, topk_prop)
+            if importanceHard:
+                # hard version of important features
+                importantFeatures = self.importanceFeatureHard(model, topk_prop)
+            for i in range(self.n_clients):
+                sig_filtered_deltas[i] = np.multiply(sig_filtered_deltas[i], importantFeatures)
+
+        cs = smp.cosine_similarity(sig_filtered_deltas) - np.eye(self.n_clients)
+        # print(f"cs1 is: {cs}")
+
+        # Pardoning: reweight by the max value seen
+        maxcs = np.max(cs, axis=1) + epsilon
+        # print(f"maxcs: {maxcs}")
+        for i in range(self.n_clients):
+            for j in range(self.n_clients):
+                if i == j:
+                    continue
+                if maxcs[i] < maxcs[j]:
+                    cs[i][j] = cs[i][j] * maxcs[i] / maxcs[j]
+        # print(f"cs is: {cs}")
+        wv = 1 - (np.max(cs, axis=1))
+        # print(f"wv: {wv}")
+        wv[wv > 1] = 1
+        wv[wv < 0] = 0
+
+        # Rescale so that max value is wv
+        wv = wv / np.max(wv)
+        # print(f"wv2: {wv}")
+
+        wv[(wv == 1)] = .99
+        # print(f"wv3: {wv}")
+
+        
+        # Logit function
+        wv = (np.log((wv / (1 - wv)) + epsilon) + 0.5)
+        wv[(np.isinf(wv) + wv > 1)] = 1
+        wv[(wv < 0)] = 0
+        
+        # if iter % 10 == 0 and iter != 0:
+        #     print maxcs
+        #     print wv
+
+        if clip != 0:
+
+            # Augment onto krum
+            scores = self.get_krum_scores(this_delta, self.n_clients - clip)
+            bad_idx = np.argpartition(scores, self.n_clients - clip)[(self.n_clients - clip):self.n_clients]
+
+            # Filter out the highest krum scores
+            wv[bad_idx] = 0
+
+        # Apply the weight vector on this delta
+        # print(f"this_delta.shape is: {this_delta.shape}")
+        # delta = np.reshape(this_delta, (self.n_clients, self.n_features))
+        # print(f"wv: {wv}")
+        # print(f"delta: {this_delta}")
+        avg_updates = np.average(this_delta, axis=0, weights=wv)
+        # print(f"avg_updates.shape is: {avg_updates.shape}")
+        return avg_updates
+        # return np.dot(this_delta.T, wv) 
+
+    def exec(self, client_models, delta, summed_deltas, net_avg, r, device, *args, **kwargs):
+        '''
+        Aggregates history of gradient directions
+        '''
+        print(f"START Aggregating history of gradient directions")
+        total_client = len(client_models)
+        vectorize_nets = [vectorize_net(cm).detach().cpu().numpy() for cm in client_models]
+        vectorize_avg_net = vectorize_net(net_avg).detach().cpu().numpy()
+        local_updates = vectorize_nets - vectorize_avg_net
+
+        print(f"historical_local_updates.shape is: {summed_deltas.shape}")
+        flatten_net_avg = vectorize_net(net_avg).detach().cpu().numpy()
+        # summed_deltas = historical_local_updates # aggregated historical gradients
+        # sig_features_idx = self.im # important features
+        # importanceHard = None
+        # Take all the features of sig_features_idx for each clients
+        # sd = summed_deltas.copy()
+        # sig_filtered_deltas = np.take(sd, sig_features_idx, axis=1)
+
+        # Significant features filter, the top k biggest weights
+        topk = int(self.n_features / 2)
+        sig_features_idx = np.argpartition(flatten_net_avg, -topk)[-topk:]
+        sig_features_idx = np.arange(self.n_features)
+        avg_delta = self.foolsgold(delta, summed_deltas, sig_features_idx, r, vectorize_avg_net, clip = 0)
+        avg_vector_net = vectorize_avg_net + avg_delta
+        final_net = client_models[0]
+        load_model_weight(final_net, torch.from_numpy(avg_vector_net.astype(np.float32)).to(device))
+        return [final_net], [1.0]
+
 class UpperBound(Defense):
     def __init__(self, *args, **kwargs):
         pass
